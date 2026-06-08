@@ -43,7 +43,7 @@ A no-build, dependency-free static site you can open at the table on a phone or 
 
 - **Crew Builder** (`docs/builder.html`) — *player-safe.* Loads the four pregens by default; edit names, stats, and kit; print or save a card; or roll a fresh recruit. Saves to the browser; export/import as JSON.
 - **NPC Soundboard** (`docs/soundboard.html`) — *Warden, spoilers.* Tap-to-speak GLADYS, SADYS, Mr. Munch and the rest using your browser's built-in voice. No internet needed once loaded.
-- **Deck Maps** (`docs/maps.html`) — *Warden, spoilers.* Schematic plans for the mess hall, crawlspace, and the nest, with the airlock play marked. Print-friendly.
+- **Deck Maps** (`docs/maps.html`) — *Warden, spoilers.* Deck plans rendered live from the ship model (`docs/assets/ship.js`), with a **Warden/Player spoiler toggle** (player view hides the nest, SADYS, the infection spine, etc.) and a light/print theme. Edit `setting/ship-layout.json` and the maps follow.
 
 Everything uses relative paths, so it serves identically from **GitHub Pages** (Settings → Pages → deploy from this branch, `/docs`), any static host (Netlify, S3/CloudFront, etc.), or just by opening `docs/index.html` directly.
 

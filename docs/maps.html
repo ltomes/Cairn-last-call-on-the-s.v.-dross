@@ -3,292 +3,288 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Deck Maps · S.V. Dross (Warden)</title>
-<meta name="description" content="Schematic deck plans for Last Call on the S.V. Dross. Warden reference — contains spoilers.">
+<title>Deck Maps · S.V. Dross</title>
+<meta name="description" content="Data-driven deck plans for Last Call on the S.V. Dross, rendered from the canonical ship model. Warden/Player spoiler toggle.">
 <link rel="stylesheet" href="assets/style.css">
 <style>
   svg.deck{ width:100%; height:auto; display:block; background:var(--bg-2); border-radius:8px; border:1px solid var(--line); }
   .deck .room{ fill:var(--panel-2); stroke:var(--teal); stroke-width:2; }
-  .deck .duct{ fill:none; stroke:var(--teal); stroke-width:14; stroke-linecap:round; stroke-linejoin:round; opacity:.55; }
+  .deck .room.duct{ stroke-dasharray:7 5; }
+  .deck .room.spoiler{ stroke:var(--coral); }
+  .deck .room.unexplored{ stroke:var(--line); fill:var(--bg-2); opacity:.5; stroke-dasharray:3 4; }
+  .deck .room.scene{ fill:#22323b; }
   .deck .wall{ fill:none; stroke:var(--line); stroke-width:2; }
-  .deck .web{ stroke:var(--ink-dim); stroke-width:1; opacity:.45; }
-  .deck .lbl{ fill:var(--ink); font:600 14px var(--sans,sans-serif); }
-  .deck .sub{ fill:var(--ink-dim); font:12px var(--sans,sans-serif); }
-  .deck .key{ fill:var(--amber); font:600 12px var(--mono,monospace); letter-spacing:.04em; }
-  .deck .danger{ fill:var(--coral); }
-  .deck .dlbl{ fill:var(--coral); font:600 12px var(--sans,sans-serif); }
-  .deck .flow{ fill:none; stroke:var(--amber); stroke-width:2.5; stroke-dasharray:6 5; marker-end:url(#arrow); }
-  .deck .ico{ fill:var(--ink); }
-  .deck .ico.t{ fill:var(--teal); } .deck .ico.a{ fill:var(--amber); } .deck .ico.c{ fill:var(--coral); }
+  .deck .lbl{ fill:var(--ink); font:600 12px var(--sans,sans-serif); }
+  .deck .lbl.sp{ fill:var(--coral); }
+  .deck .lbl.un{ fill:var(--ink-dim); font-style:italic; }
+  .deck .sub{ fill:var(--ink-dim); font:11px var(--sans,sans-serif); }
+  .deck .axis{ fill:var(--ink-dim); font:600 10px var(--mono,monospace); letter-spacing:.1em; opacity:.7; }
+  .deck .door{ stroke:var(--teal); stroke-width:2; opacity:.35; fill:none; }
+  .deck .door.duct{ stroke-dasharray:4 4; }
+  .deck .ent circle{ stroke:var(--bg); stroke-width:1.5; }
+  .deck .ent-lbl{ font:600 10px var(--sans,sans-serif); }
+  .deck .conn{ fill:none; stroke-width:3; }
+  .deck .conn-lbl{ font:600 10px var(--mono,monospace); letter-spacing:.04em; }
   .map-aside{ font-size:13.5px; }
-  .map-aside h4{ margin:0 0 6px; color:var(--teal); font-size:12px; text-transform:uppercase; letter-spacing:.1em; }
-  .map-aside .spoil{ color:var(--coral); }
-  .map-grid{ display:grid; grid-template-columns: 1.5fr 1fr; gap:18px; align-items:start; }
+  .map-aside h4{ margin:0 0 4px; color:var(--teal); font-size:12px; text-transform:uppercase; letter-spacing:.1em; }
+  .map-aside .o2{ font-family:var(--mono); color:var(--amber); font-size:12px; margin:0 0 8px; }
+  .map-aside ul{ margin:4px 0 10px; padding-left:18px; } .map-aside li{ margin:2px 0; }
+  .map-aside .ent-row{ margin:3px 0; } .map-aside .ent-row b{ color:var(--ink); }
+  .map-aside .ent-row.sp b{ color:var(--coral); }
+  .map-grid{ display:grid; grid-template-columns: 1.6fr 1fr; gap:18px; align-items:start; }
   @media(max-width:820px){ .map-grid{ grid-template-columns:1fr; } }
+
+  .toggle{ display:inline-flex; border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+  .toggle button{ border:none; border-radius:0; background:var(--panel-2); }
+  .toggle button.on{ background:var(--teal); color:#06231f; font-weight:600; }
+  .legend{ display:flex; gap:14px; flex-wrap:wrap; font-size:12px; color:var(--ink-dim); margin-top:10px; }
+  .legend span{ display:inline-flex; align-items:center; gap:5px; }
+  .dot{ width:10px; height:10px; border-radius:50%; display:inline-block; }
 
   /* Print-friendly light theme toggle */
   body.lite{ background:#fff; color:#111; }
   body.lite .panel,body.lite .masthead{ background:#fff; border-color:#bbb; }
   body.lite svg.deck{ background:#fff; border-color:#999; }
   body.lite .deck .room{ fill:#f4f4f4; stroke:#333; }
-  body.lite .deck .duct{ stroke:#888; }
-  body.lite .deck .lbl,body.lite .deck .ico{ fill:#111; }
-  body.lite .deck .sub{ fill:#555; }
-  body.lite .deck .key{ fill:#7a5b00; } body.lite .deck .flow{ stroke:#7a5b00; }
-  body.lite .deck .danger,body.lite .deck .dlbl,body.lite .deck .ico.c{ fill:#b3261e; }
-  body.lite .deck .ico.t{ fill:#0b7a70; } body.lite .deck .ico.a{ fill:#7a5b00; }
-  body.lite .map-aside h4{ color:#0b7a70; } body.lite .map-aside .spoil{ color:#b3261e; }
+  body.lite .deck .room.scene{ fill:#e9eef0; }
+  body.lite .deck .lbl{ fill:#111; }
+  body.lite .deck .sub,body.lite .deck .axis,body.lite .deck .lbl.un{ fill:#555; }
+  body.lite .deck .room.spoiler,body.lite .deck .lbl.sp{ stroke:#b3261e; fill:#b3261e; }
+  body.lite .deck .room.spoiler{ fill:#f4f4f4; }
+  body.lite .map-aside h4{ color:#0b7a70; } body.lite .map-aside .ent-row.sp b{ color:#b3261e; }
   body.lite .masthead h1,body.lite .crumbs,body.lite .section-title{ color:#111; }
   @media print{ .no-print{ display:none !important; } body{ background:#fff; } .panel{ break-inside:avoid; } }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="crumbs no-print"><a href="index.html">⟵ S.V. Dross hub</a> · Deck Maps <span class="badge warden">Warden</span> <span class="badge spoiler">Spoilers</span></div>
+  <div class="crumbs no-print"><a href="index.html">⟵ S.V. Dross hub</a> · Deck Maps <span class="badge warden">Warden</span> <span class="badge spoiler" id="spoilerBadge">Spoilers</span></div>
 
   <div class="masthead">
-    <div class="eyebrow">S.V. Dross · Reclamation-class barge · schematic, not to scale</div>
+    <div class="eyebrow" id="eyebrow">S.V. Dross · Reclamation-class barge · rendered from the ship model</div>
     <h1>Deck Maps</h1>
-    <p class="sub">Warden reference for the three scene locations. The route runs <b>down</b>: stasis → mess hall → crawlspace → cargo hold.</p>
-    <div class="row no-print" style="margin-top:8px">
-      <button onclick="document.body.classList.toggle('lite')">◐ Toggle light / print theme</button>
-      <button onclick="window.print()">🖨 Print all</button>
-    </div>
-  </div>
-
-  <!-- Shared arrowhead marker -->
-  <svg width="0" height="0" style="position:absolute"><defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 z" fill="var(--amber)"/>
-    </marker>
-  </defs></svg>
-
-  <!-- ===================== OVERVIEW ===================== -->
-  <div class="section-title">Ship overview · the descent</div>
-  <div class="panel">
-    <div class="map-grid">
-      <svg class="deck" viewBox="0 0 760 440" role="img" aria-label="Ship overview, four decks descending">
-        <!-- hull -->
-        <rect x="150" y="14" width="380" height="412" rx="14" class="wall"/>
-        <!-- decks -->
-        <g>
-          <rect class="room" x="190" y="30"  width="300" height="74" rx="8"/>
-          <text class="lbl" x="210" y="60">Stasis Bay</text>
-          <text class="sub" x="210" y="80">Scene 0 · the rude awakening · O₂ 80%</text>
-        </g>
-        <line class="flow" x1="340" y1="104" x2="340" y2="128"/>
-        <g>
-          <rect class="room" x="190" y="128" width="300" height="74" rx="8"/>
-          <text class="lbl" x="210" y="158">Mess Hall</text>
-          <text class="sub" x="210" y="178">Scene 1 · the mutiny · O₂ 70 → 60%</text>
-        </g>
-        <line class="flow" x1="340" y1="202" x2="340" y2="226"/>
-        <g>
-          <rect class="room" x="190" y="226" width="300" height="74" rx="8"/>
-          <text class="lbl" x="210" y="256">Service Crawlspace</text>
-          <text class="sub" x="210" y="276">Scene 2 · scrubbers + the scare · O₂ 50%</text>
-        </g>
-        <line class="flow" x1="340" y1="300" x2="340" y2="324"/>
-        <g>
-          <rect class="room" x="190" y="324" width="300" height="82" rx="8" style="stroke:var(--coral)"/>
-          <text class="lbl" x="210" y="354">Cargo Hold — the Nest</text>
-          <text class="sub dlbl" x="210" y="374" style="font-size:12px">Scene 3 · Brood Mama · the airlock play</text>
-          <text class="sub" x="210" y="392">vent her → air climbs back to safe</text>
-        </g>
-        <!-- side annotations -->
-        <text class="key" x="544" y="66">O₂ clock</text>
-        <text class="key" x="544" y="84" style="fill:var(--ink-dim)">drops 10%</text>
-        <text class="key" x="544" y="98" style="fill:var(--ink-dim)">per scene</text>
-        <g transform="translate(544,150)">
-          <circle r="8" cx="6" cy="-4" class="ico a"/>
-          <text class="sub" x="20" y="0">customs</text>
-          <text class="sub" x="20" y="16">checkpoint</text>
-          <text class="sub" x="20" y="32">at 0% =</text>
-          <text class="sub" x="20" y="48">impound</text>
-        </g>
-      </svg>
-      <div class="map-aside">
-        <h4>How to use it</h4>
-        <p>One clean vertical line. Every scene transition is a deck down and another <b>−10% O₂</b> (GLADYS chimes it). If the table dawdles, drop an extra 10% and have an appliance panic about it.</p>
-        <p class="spoil"><b>The whole map is the gun on the mantel:</b> the only thing that ends it is vacuum in the cargo hold. Everything above just gets them down there, woozier and funnier.</p>
-        <p class="muted small">O₂ ≤ 20%: everyone but K-7 is woozy (WIL save before anything fiddly). At 40%, optionally trigger SADYS.</p>
+    <p class="sub">Four decks, the route runs <b>down</b>: stasis → mess hall → crawlspace → cargo hold. Plans are generated from <code>setting/ship-layout.json</code>.</p>
+    <div class="row no-print" style="margin-top:10px; align-items:center; gap:14px">
+      <div class="toggle" role="group" aria-label="View mode">
+        <button id="mWarden" class="on" onclick="setMode('warden')">🔓 Warden view</button>
+        <button id="mPlayer" onclick="setMode('player')">👥 Player view</button>
       </div>
+      <button onclick="document.body.classList.toggle('lite')">◐ Light / print</button>
+      <button onclick="window.print()">🖨 Print</button>
+    </div>
+    <div class="legend no-print">
+      <span><i class="dot" style="background:var(--teal)"></i>appliance / system</span>
+      <span><i class="dot" style="background:var(--amber)"></i>fixture / plot device</span>
+      <span><i class="dot" style="background:var(--coral)"></i>alien / hazard</span>
+      <span>orientation: <b>fore</b> ◀ ▶ <b>aft</b></span>
     </div>
   </div>
 
-  <!-- ===================== SCENE 1: MESS HALL ===================== -->
-  <div class="section-title">Scene 1 · the Mess Hall mutiny</div>
-  <div class="panel">
-    <div class="map-grid">
-      <svg class="deck" viewBox="0 0 760 460" role="img" aria-label="Mess hall floor plan">
-        <rect class="room" x="40" y="40" width="680" height="380" rx="12"/>
-        <!-- entry from stasis -->
-        <rect x="20" y="80" width="22" height="60" class="wall" fill="var(--bg-2)"/>
-        <line class="flow" x1="14" y1="110" x2="70" y2="110"/>
-        <text class="sub" x="48" y="74">from Stasis Bay</text>
-
-        <!-- tables -->
-        <g class="ico">
-          <rect x="150" y="150" width="80" height="46" rx="6" fill="var(--bg-2)" stroke="var(--line)"/>
-          <rect x="300" y="240" width="80" height="46" rx="6" fill="var(--bg-2)" stroke="var(--line)"/>
-          <rect x="180" y="300" width="80" height="46" rx="6" fill="var(--bg-2)" stroke="var(--line)"/>
-        </g>
-        <text class="sub" x="158" y="178">greasy tables</text>
-
-        <!-- coffee machine, left wall -->
-        <g transform="translate(60,250)">
-          <rect x="0" y="0" width="46" height="64" rx="6" class="ico a" opacity=".85"/>
-          <text class="lbl" x="-2" y="84" style="font-size:12px">Weeping</text>
-          <text class="lbl" x="-2" y="100" style="font-size:12px">coffee m.</text>
-        </g>
-
-        <!-- infected dispenser, bottom -->
-        <g transform="translate(470,330)">
-          <rect x="0" y="0" width="56" height="70" rx="6" class="danger" opacity=".9"/>
-          <circle cx="14" cy="20" r="5" fill="var(--bg)"/><circle cx="40" cy="30" r="7" fill="var(--bg)"/><circle cx="24" cy="48" r="4" fill="var(--bg)"/>
-          <text class="dlbl" x="-6" y="92">Infected dispenser</text>
-          <text class="sub" x="-6" y="108" style="font-size:11px">HP4 · hostile · first fight</text>
-        </g>
-
-        <!-- Mr Munch blocking the door, right -->
-        <g transform="translate(610,180)">
-          <rect x="0" y="0" width="60" height="92" rx="6" class="ico t"/>
-          <rect x="10" y="14" width="40" height="24" rx="3" fill="var(--bg)"/>
-          <text class="lbl" x="-2" y="-10">Mr. Munch</text>
-          <text class="sub" x="-2" y="112" style="font-size:11px">blocks the only door</text>
-        </g>
-        <!-- door to crawlspace -->
-        <rect x="718" y="200" width="22" height="60" class="wall" fill="var(--bg-2)"/>
-        <line class="flow" x1="690" y1="300" x2="746" y2="300"/>
-        <text class="key" x="600" y="320" style="font-size:11px">→ scrubber corridor / crawlspace</text>
-      </svg>
-      <div class="map-aside">
-        <h4>Three things to play with</h4>
-        <p><b style="color:var(--teal)">Mr. Munch</b> has rolled across the only door. Pay/improvise exact change (Dusty), persuade (WIL), or tip him (STR — he is <i>very</i> offended). Smashing works but he screams.</p>
-        <p><b style="color:var(--amber)">The coffee machine</b> is pure flavor — comfort it and it gives the clue: it saw “the wet thing” drag something shiny down the crawlspace.</p>
-        <p class="spoil"><b>The infected dispenser</b> — HP 4, Armor 2, hurled cans d6 / electric grab d8. Keep it quick and silly. Slime trails point down the crawlspace.</p>
-        <p class="muted small">Exit O₂ → 60%.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===================== SCENE 2: CRAWLSPACE ===================== -->
-  <div class="section-title">Scene 2 · the Crawlspace</div>
-  <div class="panel">
-    <div class="map-grid">
-      <svg class="deck" viewBox="0 0 760 460" role="img" aria-label="Service crawlspace duct network">
-        <rect class="room" x="30" y="30" width="700" height="400" rx="12" style="fill:var(--bg-2)"/>
-        <!-- duct network -->
-        <path class="duct" d="M70 90 H300 V210 H470 V120 H660"/>
-        <path class="duct" d="M300 210 V340 H560 V300"/>
-        <path class="duct" d="M70 90 V250 H150"/>
-        <!-- entry -->
-        <line class="flow" x1="50" y1="70" x2="70" y2="86"/>
-        <text class="sub" x="40" y="58">from Mess Hall</text>
-
-        <!-- scrubber intake (the repair) -->
-        <g transform="translate(255,165)">
-          <rect x="0" y="0" width="90" height="90" rx="8" class="room" style="stroke:var(--amber)"/>
-          <circle cx="45" cy="45" r="22" fill="none" stroke="var(--amber)" stroke-width="3"/>
-          <line x1="45" y1="23" x2="45" y2="67" stroke="var(--amber)" stroke-width="3"/>
-          <line x1="23" y1="45" x2="67" y2="45" stroke="var(--amber)" stroke-width="3"/>
-          <text class="key" x="-4" y="-10">Scrubber intake</text>
-          <text class="sub" x="-4" y="108" style="font-size:11px">choked with egg-sac gunk</text>
-          <text class="sub" x="-4" y="124" style="font-size:11px">DEX/STR save — K-7 auto</text>
-        </g>
-
-        <!-- egg cluster (the scare) -->
-        <g transform="translate(470,250)">
-          <circle cx="0" cy="0" r="10" class="danger" opacity=".8"/>
-          <circle cx="20" cy="8" r="8" class="danger" opacity=".8"/>
-          <circle cx="8" cy="22" r="7" class="danger" opacity=".8"/>
-          <circle cx="28" cy="-12" r="6" class="danger" opacity=".8"/>
-          <text class="dlbl" x="-30" y="48">eggs — one hatches</text>
-          <text class="sub" x="-30" y="64" style="font-size:11px">Scuttler HP3, fast, screechy</text>
-        </g>
-
-        <!-- FAULTY AIRLOCK — the gun on the mantel -->
-        <g transform="translate(600,300)">
-          <rect x="0" y="0" width="70" height="80" rx="8" class="room" style="stroke:var(--coral); stroke-dasharray:5 4"/>
-          <circle cx="35" cy="34" r="18" fill="none" stroke="var(--coral)" stroke-width="3"/>
-          <text class="dlbl" x="-30" y="-10" style="font-weight:700">⚠ Maintenance airlock</text>
-          <text class="sub" x="-30" y="100" style="font-size:11px">“SEAL FAULTY — DO NOT CYCLE”</text>
-        </g>
-
-        <!-- down to cargo hold -->
-        <line class="flow" x1="150" y1="250" x2="150" y2="300"/>
-        <text class="key" x="90" y="330" style="font-size:11px">↓ down to Cargo Hold</text>
-      </svg>
-      <div class="map-aside">
-        <h4>The maintenance beat</h4>
-        <p>Everyone's niche shines: <b>Bartleby</b> phases ahead to scout, <b>K-7</b> fits + repairs fast, <b>Crown &amp; Whisker</b> climbs anything, <b>Dusty</b> improvises a fix from junk.</p>
-        <p><b style="color:var(--amber)">The repair:</b> clear the egg-sac gunk from the scrubber intake (DEX or STR save; K-7 auto). Success slows the O₂ drop — reward it by holding at 50%.</p>
-        <p class="spoil"><b>The scare:</b> pulling the gunk reveals dozens of eggs; one hatches into a Scuttler. Chase-or-squish — the trail ends at the cargo hold either way.</p>
-        <p class="spoil"><b>Plant the airlock.</b> The faulty maintenance airlock (“DO NOT CYCLE”) is the win condition for Scene 3. If they don't clock it, GLADYS mentions it offhandedly.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===================== SCENE 3: CARGO HOLD / NEST ===================== -->
-  <div class="section-title">Scene 3 · the Nest <span class="badge spoiler">the finale</span></div>
-  <div class="panel">
-    <div class="map-grid">
-      <svg class="deck" viewBox="0 0 760 500" role="img" aria-label="Cargo hold and nest">
-        <rect class="room" x="30" y="30" width="700" height="440" rx="14" style="stroke:var(--coral)"/>
-        <!-- webbing -->
-        <g class="web">
-          <line x1="30" y1="120" x2="730" y2="90"/><line x1="30" y1="220" x2="730" y2="260"/>
-          <line x1="120" y1="30" x2="90" y2="470"/><line x1="380" y1="30" x2="420" y2="470"/>
-          <line x1="640" y1="30" x2="680" y2="470"/><line x1="30" y1="380" x2="730" y2="350"/>
-        </g>
-        <!-- entry from crawlspace -->
-        <line class="flow" x1="60" y1="60" x2="90" y2="86"/>
-        <text class="sub" x="44" y="50">from Crawlspace</text>
-
-        <!-- egg clusters around the edges (in appliances/vents) -->
-        <g>
-          <g transform="translate(120,360)"><circle r="9" class="danger" opacity=".8"/><circle cx="16" cy="6" r="7" class="danger" opacity=".8"/><circle cx="6" cy="18" r="6" class="danger" opacity=".8"/></g>
-          <g transform="translate(620,130)"><circle r="9" class="danger" opacity=".8"/><circle cx="16" cy="6" r="7" class="danger" opacity=".8"/><circle cx="6" cy="18" r="6" class="danger" opacity=".8"/></g>
-          <g transform="translate(560,400)"><circle r="9" class="danger" opacity=".8"/><circle cx="16" cy="6" r="7" class="danger" opacity=".8"/></g>
-          <text class="sub" x="92" y="404" style="font-size:11px">eggs nested in every vent &amp; appliance</text>
-        </g>
-
-        <!-- salvaged pod + Brood Mama, center -->
-        <g transform="translate(300,190)">
-          <ellipse cx="90" cy="70" rx="120" ry="80" fill="var(--panel-2)" stroke="var(--coral)" stroke-width="2"/>
-          <rect x="40" y="40" width="100" height="60" rx="14" class="ico a" opacity=".9"/>
-          <text class="sub" x="40" y="120" style="font-size:11px">salvaged Ascendance escape pod</text>
-          <!-- googly mama -->
-          <circle cx="90" cy="60" r="26" class="danger"/>
-          <circle cx="80" cy="54" r="7" fill="#fff"/><circle cx="100" cy="54" r="7" fill="#fff"/>
-          <circle cx="81" cy="55" r="3" fill="#111"/><circle cx="101" cy="56" r="3" fill="#111"/>
-          <text class="dlbl" x="120" y="58" style="font-weight:700">BROOD MAMA</text>
-          <text class="sub" x="120" y="74" style="font-size:11px">HP12 · tongue d8 · acid d10 (blast)</text>
-        </g>
-
-        <!-- THE AIRLOCK — the solution -->
-        <g transform="translate(640,300)">
-          <rect x="0" y="0" width="76" height="120" rx="8" class="room" style="stroke:var(--teal)"/>
-          <circle cx="38" cy="44" r="22" fill="none" stroke="var(--teal)" stroke-width="4"/>
-          <line x1="38" y1="22" x2="38" y2="66" stroke="var(--teal)" stroke-width="4"/>
-          <line x1="16" y1="44" x2="60" y2="44" stroke="var(--teal)" stroke-width="4"/>
-          <text class="key" x="-6" y="-10" style="fill:var(--teal)">AIRLOCK ⇒ vacuum</text>
-          <text class="sub" x="-6" y="140" style="font-size:11px">her instant weakness</text>
-        </g>
-      </svg>
-      <div class="map-aside">
-        <h4 class="spoil">The airlock play — the good ending</h4>
-        <p>Lure or shove Brood Mama into the airlock and cycle it. <b style="color:var(--teal)">K-7 can operate it from inside vacuum unharmed</b> — that's its moment. Lure (Crown &amp; Whisker, DEX), shove (STR vs her bulk), or rig the cycle (K-7 auto / DEX). Reward planning with few or no rolls.</p>
-        <p><b>If they brawl it:</b> allowed but dangerous — her d10 blast chews HP into STR. Four PCs focusing fire drop her in 2–3 rounds; expect a cocooning. Make her plead and guilt-trip the whole time.</p>
-        <p class="spoil"><b>Win:</b> vented or killed, the egg-clog blows clear, scrubbers roar back, air climbs to safe. She positions to keep the party <i>between herself and any airlock</i> — she knows.</p>
-        <p class="muted small">Cargo hold is freezing &amp; airless-adjacent — remember K-7 is Vacuum-Rated.</p>
-      </div>
-    </div>
-  </div>
+  <div id="content"><p class="muted">Loading ship model…</p></div>
 
   <div class="foot no-print">
-    Part of <a href="index.html">Last Call on the S.V. Dross</a> · Schematic, not to scale · CC BY-SA 4.0
+    Part of <a href="index.html">Last Call on the S.V. Dross</a> · Schematic, not to scale · edit
+    <code>setting/ship-layout.json</code> and these maps follow · CC BY-SA 4.0
   </div>
 </div>
+
+<script src="assets/ship.js"></script>
+<script>
+"use strict";
+const SHIP = window.DROSS_SHIP;
+let mode = "warden";   // 'warden' | 'player'
+
+/* ---------- helpers ---------- */
+const esc = s => (s==null?"":String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const stripParen = s => String(s).replace(/\s*\([^)]*\)\s*$/,"").trim();
+const entById = {};  (SHIP.entities||[]).forEach(e=>entById[e.id]=e);
+const sceneByDeck = {}; (SHIP.scenes||[]).forEach(s=>sceneByDeck[s.deck]=s);
+function kindColor(kind){
+  if(["boss","enemy","alien_growth"].includes(kind)) return "var(--coral)";
+  if(["appliance_npc","ship_ai"].includes(kind))     return "var(--teal)";
+  if(["plot_device","fixture","obstacle"].includes(kind)) return "var(--amber)";
+  return "var(--ink-dim)";
+}
+// is a room hidden-as-unexplored for players?
+const roomHidden = r => (mode==="player" && r.spoiler);
+
+/* ---------- per-deck plan ---------- */
+const S = 14, PAD = 30;   // px per grid unit, padding
+
+function deckSVG(deck){
+  const g = deck.grid;                       // {w,h}
+  const W = g.h*S + PAD*2, H = g.w*S + PAD*2; // landscape: fore->aft horizontal
+  const RX = r => PAD + r.y*S, RY = r => PAD + r.x*S, RW = r => r.h*S, RH = r => r.w*S;
+  const PX = p => PAD + p.y*S,  PY = p => PAD + p.x*S;
+  const center = r => ({ x: RX(r.rect)+RW(r.rect)/2, y: RY(r.rect)+RH(r.rect)/2 });
+  const roomById = {}; deck.rooms.forEach(r=>roomById[r.id]=r);
+
+  let out = `<svg class="deck" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(deck.name)} deck plan">`;
+  // hull + axes
+  out += `<rect class="wall" x="${PAD-8}" y="${PAD-8}" width="${W-2*PAD+16}" height="${H-2*PAD+16}" rx="10"/>`;
+  out += `<text class="axis" x="${PAD-12}" y="${H/2}" transform="rotate(-90 ${PAD-12} ${H/2})" text-anchor="middle">FORE</text>`;
+  out += `<text class="axis" x="${W-PAD+18}" y="${H/2}" transform="rotate(90 ${W-PAD+18} ${H/2})" text-anchor="middle">AFT</text>`;
+
+  // doors (same-deck only), deduped
+  const seen = {};
+  deck.rooms.forEach(r=>(r.doors||[]).forEach(d=>{
+    const t = roomById[d.to]; if(!t) return;                 // cross-deck -> shown via connectors
+    if(roomHidden(r) || roomHidden(t)) return;
+    const key = [r.id,d.to].sort().join("|"); if(seen[key]) return; seen[key]=1;
+    const a = center(r), b = center(t);
+    out += `<line class="door ${d.kind==='duct'?'duct':''}" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}"/>`;
+  }));
+
+  // rooms
+  deck.rooms.forEach(r=>{
+    const x=RX(r.rect), y=RY(r.rect), w=RW(r.rect), h=RH(r.rect);
+    const hidden = roomHidden(r);
+    const cls = hidden ? "room unexplored"
+      : "room scene" + (r.type==="duct_network"?" duct":"") + ((mode==="warden"&&r.spoiler)?" spoiler":"");
+    out += `<rect class="${cls}" x="${x}" y="${y}" width="${w}" height="${h}" rx="6"/>`;
+    // label (2-line wrap if long vs room width)
+    const name = hidden ? "Unexplored" : (mode==="player" ? stripParen(r.name) : r.name);
+    const lblCls = hidden ? "lbl un" : ((mode==="warden"&&r.spoiler) ? "lbl sp" : "lbl");
+    out += wrapLabel(name, x+6, y+16, w-10, lblCls);
+  });
+
+  // entities
+  (SHIP.entities||[]).filter(e=>e.deck===deck.id).forEach(e=>{
+    if(mode==="player" && e.spoiler) return;
+    const home = roomById[e.room];
+    if(home && roomHidden(home)) return;     // don't reveal items in unexplored rooms
+    const cx=PX(e.pos), cy=PY(e.pos);
+    const dn = mode==="player" ? stripParen(e.name) : e.name;
+    out += `<g class="ent"><circle cx="${cx}" cy="${cy}" r="5" fill="${kindColor(e.kind)}"/>`;
+    out += `<text class="ent-lbl" x="${cx+8}" y="${cy+3}" fill="${kindColor(e.kind)}">${esc(shortName(dn))}</text></g>`;
+  });
+
+  out += `</svg>`;
+  return out;
+}
+
+function shortName(n){ return n.length>22 ? n.slice(0,21)+"…" : n; }
+function wrapLabel(text, x, y, maxW, cls){
+  const approx = text.length*6.2;           // rough px width at 12px
+  if(approx <= maxW || text.indexOf(" ")<0) return `<text class="${cls}" x="${x}" y="${y}">${esc(text)}</text>`;
+  // split near middle on a space
+  const mid = Math.floor(text.length/2);
+  let cut = text.lastIndexOf(" ", mid); if(cut<3) cut = text.indexOf(" ", mid);
+  const a = text.slice(0,cut), b = text.slice(cut+1);
+  return `<text class="${cls}" x="${x}" y="${y}">${esc(a)}</text>`
+       + `<text class="${cls}" x="${x}" y="${y+13}">${esc(b)}</text>`;
+}
+
+/* ---------- aside (scene notes from data) ---------- */
+function deckAside(deck){
+  const sc = sceneByDeck[deck.id];
+  let html = "";
+  if(sc){
+    html += `<h4>Scene ${sc.n} — ${esc(mode==="player"?deck.name:sc.title)}</h4>`;
+    html += `<p class="o2">O₂ ${sc.o2_pct}% · ~${sc.minutes} min</p>`;
+    if(mode==="warden" && sc.beats){
+      html += `<ul>${sc.beats.map(b=>`<li>${esc(b)}</li>`).join("")}</ul>`;
+    } else {
+      html += `<p class="muted small">${esc(deck.summary).replace(/Scene \d:.*$/,"")}</p>`;
+    }
+  } else {
+    html += `<h4>${esc(deck.name)}</h4><p class="muted small">${esc(deck.summary)}</p>`;
+  }
+  // entities present
+  const ents = (SHIP.entities||[]).filter(e=>e.deck===deck.id && !(mode==="player"&&e.spoiler));
+  if(ents.length){
+    html += `<h4 style="margin-top:10px">On this deck</h4>`;
+    if(mode==="player"){
+      // names only — entity descriptions are Warden tactical notes
+      html += ents.map(e=>`<div class="ent-row"><b>${esc(stripParen(e.name))}</b></div>`).join("");
+    } else {
+      html += ents.map(e=>{
+        const sp = e.spoiler;
+        const st = e.stats ? ` <span class="muted small">[HP ${e.stats.hp??"–"}${e.stats.attacks?" · "+esc(e.stats.attacks):""}${e.stats.weakness?" · weak: "+esc(e.stats.weakness):""}]</span>` : "";
+        return `<div class="ent-row ${sp?'sp':''}"><b>${esc(e.name)}</b>${sp?' <span class="badge spoiler" style="font-size:9px">spoiler</span>':''} — ${esc(e.desc)}${st}</div>`;
+      }).join("");
+    }
+  }
+  return html;
+}
+
+/* ---------- overview elevation ---------- */
+function overviewSVG(){
+  const W=700, P=18, bandH=70, decks=[...SHIP.decks].sort((a,b)=>b.level-a.level);
+  const H = P*2 + decks.length*bandH + 8;
+  const x0=150, x1=560;                       // hull band span
+  const bandY = lvl => P + (3-lvl)*bandH;
+  let out = `<svg class="deck" viewBox="0 0 ${W} ${H}" role="img" aria-label="Ship overview, the descent">`;
+  out += `<rect class="wall" x="${x0-12}" y="${P-6}" width="${x1-x0+24}" height="${decks.length*bandH+12}" rx="14"/>`;
+
+  decks.forEach(d=>{
+    const y=bandY(d.level), sc=sceneByDeck[d.id];
+    const spoilerDeck = (mode==="warden" && d.scene===3);
+    out += `<rect class="room ${spoilerDeck?'spoiler':'scene'}" x="${x0}" y="${y+8}" width="${x1-x0}" height="${bandH-20}" rx="8"/>`;
+    out += `<text class="lbl ${spoilerDeck?'sp':''}" x="${x0+16}" y="${y+32}">Deck ${d.id.slice(-1).toUpperCase()} · ${esc(d.name)}</text>`;
+    let sub = sc ? `O₂ ${sc.o2_pct}%` : "";
+    if(mode==="warden" && sc) sub = `Scene ${sc.n} · ${esc(sc.title)} · O₂ ${sc.o2_pct}% · ~${sc.minutes} min`;
+    out += `<text class="sub" x="${x0+16}" y="${y+50}">${sub}</text>`;
+  });
+
+  // vertical connectors
+  const anchorX = a => a && a.indexOf("forward")>=0 ? x0-28 : a==="central" ? (x0+x1)/2 : x1+28;
+  (SHIP.connectors||[]).forEach(c=>{
+    if(mode==="player" && c.spoiler) return;
+    const lv=c.levels, top=bandY(Math.max(...lv))+8, bot=bandY(Math.min(...lv))+bandH-12, X=anchorX(c.anchor);
+    const color = c.kind==="organic_conduit" ? "var(--coral)" : "var(--teal)";
+    const dash  = c.kind==="ladder_lift" ? "" : `stroke-dasharray="6 5"`;
+    out += `<line class="conn" x1="${X}" y1="${top}" x2="${X}" y2="${bot}" stroke="${color}" ${dash}/>`;
+    out += `<circle cx="${X}" cy="${top}" r="3" fill="${color}"/><circle cx="${X}" cy="${bot}" r="3" fill="${color}"/>`;
+    const lx = X<x0 ? X-6 : X>x1 ? X+6 : X+6, anchor = X<x0?"end":"start";
+    out += `<text class="conn-lbl" x="${lx}" y="${(top+bot)/2}" fill="${color}" text-anchor="${anchor}" transform="rotate(-90 ${lx} ${(top+bot)/2})">${esc(c.name)}</text>`;
+  });
+  out += `</svg>`;
+  return out;
+}
+
+function overviewAside(){
+  let html = `<h4>The descent</h4><p class="muted small">One deck down per scene, O₂ −10% each transition (GLADYS chimes it). Two routes down: the forward <b>ladderway</b> (normal) and the <b>service crawlspace</b> (Scene 2's squeeze).</p>`;
+  if(mode==="warden"){
+    const spine=(SHIP.connectors||[]).find(c=>c.id==="infection-spine");
+    if(spine) html += `<h4 style="margin-top:10px">The infection spine <span class="badge spoiler" style="font-size:9px">spoiler</span></h4><p class="ent-row sp small">${esc(spine.note)}</p>`;
+  }
+  const o2=SHIP.systems&&SHIP.systems.o2_clock;
+  if(o2){
+    let line = `O₂: start ${o2.start_pct}%`;
+    if(mode==="warden") line += ` · SADYS at ${o2.sadys_trigger_pct}%`;
+    line += ` · woozy at ${o2.woozy_pct}% · impound at ${o2.loss_pct}%.`;
+    html += `<p class="muted small" style="margin-top:10px">${line}</p>`;
+  }
+  return html;
+}
+
+/* ---------- render ---------- */
+function panel(title, svg, aside){
+  return `<div class="section-title">${title}</div>
+    <div class="panel"><div class="map-grid">${svg}<div class="map-aside">${aside}</div></div></div>`;
+}
+function render(){
+  if(!SHIP){ document.getElementById("content").innerHTML="<p class='muted'>Ship model failed to load (assets/ship.js).</p>"; return; }
+  let html = panel(`Ship overview · the descent`, overviewSVG(), overviewAside());
+  [...SHIP.decks].sort((a,b)=>b.level-a.level).forEach(d=>{
+    const sc=sceneByDeck[d.id];
+    const tag = sc ? `Scene ${sc.n} · ${esc(mode==="warden"?sc.title:d.name)}` : esc(d.name);
+    html += panel(`Deck ${d.id.slice(-1).toUpperCase()} · ${tag}`, deckSVG(d), deckAside(d));
+  });
+  document.getElementById("content").innerHTML = html;
+}
+function setMode(m){
+  mode = m;
+  document.getElementById("mWarden").classList.toggle("on", m==="warden");
+  document.getElementById("mPlayer").classList.toggle("on", m==="player");
+  document.getElementById("spoilerBadge").style.display = m==="warden" ? "" : "none";
+  document.getElementById("eyebrow").textContent = m==="warden"
+    ? "S.V. Dross · Reclamation-class barge · rendered from the ship model"
+    : "S.V. Dross · crew schematic · safe to show the table";
+  render();
+}
+render();
+</script>
 </body>
 </html>
