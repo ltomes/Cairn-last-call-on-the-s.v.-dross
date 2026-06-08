@@ -118,7 +118,9 @@ Each room also has `lighting`, `mood`, `sensory`/`ambient` fields you can fold i
 
 ## DOWNSTREAM: HOW THE PIECES CONNECT
 
-**Deck-Maps builder (`docs/`).** The current `docs/maps.html` is hand-drawn SVG. The next refinement can render from `window.DROSS_SHIP` (loaded via `docs/assets/ship.js`): iterate `decks[].rooms[].rect` to draw boxes, route `doors` between them, drop `entities` at their `pos`, and hide anything `spoiler: true` in a player view. The data is shaped for exactly this.
+**Deck-Maps builder (`docs/`).** `docs/maps.html` now renders **live** from `window.DROSS_SHIP` (loaded via `docs/assets/ship.js`): it iterates `decks[].rooms[].rect` to draw boxes, routes same-deck `doors`, drops `entities` at their `pos` (colored by `kind`), draws the vertical `connectors` on the overview, and builds the scene asides from `scenes[].beats`. A **Warden/Player toggle** hides everything `spoiler: true` (rooms become "Unexplored"), the infection spine, scene titles, and Warden tactical text. Edit the JSON, regenerate the mirror, and the maps follow.
+
+**`map_label` (concise display names).** Rooms, entities, and connectors carry an optional short `map_label` (e.g. `"GLADYS Core"`, `"DO NOT CYCLE"`) used by the renderer instead of the long canonical `name`, so labels fit inside small rooms. The renderer also runs a measurement pass that shrinks/ellipsizes any label to its box and flips edge labels — but a good `map_label` keeps things legible. In player view, a trailing `"(…)"` is stripped from labels (e.g. `"Intake (clogged)"` → `"Intake"`).
 
 **Image-prompt writing.** Pull `style` + a room/event `prompt`, fill in, send to your image generator. Use `show_to` to decide what's safe to show players in the moment vs. Warden-only reveals.
 

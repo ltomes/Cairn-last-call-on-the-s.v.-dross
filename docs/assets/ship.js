@@ -85,7 +85,8 @@ window.DROSS_SHIP = {
           ],
           "lighting": "Forward viewport black with stars; console glow.",
           "mood": "Unmanned, autopilot blinking.",
-          "image_prompt": "the cramped forward bridge of the garbage barge S.V. Dross: a blunt hammerhead cockpit with a scuffed viewport onto starfield, mismatched analog consoles, a chipped captain's chair with a cushion, hand-labeled switches, a mug left on the dash. Unmanned, autopilot lights blinking amber."
+          "image_prompt": "the cramped forward bridge of the garbage barge S.V. Dross: a blunt hammerhead cockpit with a scuffed viewport onto starfield, mismatched analog consoles, a chipped captain's chair with a cushion, hand-labeled switches, a mug left on the dash. Unmanned, autopilot lights blinking amber.",
+          "map_label": "Bridge"
         },
         {
           "id": "gladys-core",
@@ -109,7 +110,8 @@ window.DROSS_SHIP = {
           ],
           "lighting": "Soft warm glow, one teal status bank.",
           "mood": "Grandmotherly, humming; a single coral-tinged cable creeping in (spoiler).",
-          "image_prompt": "a small humming computer-core closet aboard a grimy barge: a warm amber-lit rack of old server blades and tape reels with a kitschy framed photo of a kettle taped to it, knitted doily on top. Cozy, senile, government-issue. (Warden/spoiler variant: a single pulsing coral-red organic tendril has crept up a duct into the corner.)"
+          "image_prompt": "a small humming computer-core closet aboard a grimy barge: a warm amber-lit rack of old server blades and tape reels with a kitschy framed photo of a kettle taped to it, knitted doily on top. Cozy, senile, government-issue. (Warden/spoiler variant: a single pulsing coral-red organic tendril has crept up a duct into the corner.)",
+          "map_label": "GLADYS Core"
         },
         {
           "id": "stasis-bay",
@@ -132,7 +134,8 @@ window.DROSS_SHIP = {
           ],
           "lighting": "Frosted pod glass underlit, amber klaxon.",
           "mood": "The waking room — Scene 0 starts here.",
-          "image_prompt": "a row of open stasis pods venting cold mist in a cramped, grimy crew bay; frost on the glass, tangled monitoring cables, regulation Bermuda-shorts uniforms folded on a bench, a wall sign that reads 'WE DO HOPE THIS FINDS YOU WELL'. Groggy morning-after vibe, flickering amber emergency light."
+          "image_prompt": "a row of open stasis pods venting cold mist in a cramped, grimy crew bay; frost on the glass, tangled monitoring cables, regulation Bermuda-shorts uniforms folded on a bench, a wall sign that reads 'WE DO HOPE THIS FINDS YOU WELL'. Groggy morning-after vibe, flickering amber emergency light.",
+          "map_label": "Stasis Bay"
         },
         {
           "id": "crew-quarters",
@@ -151,7 +154,8 @@ window.DROSS_SHIP = {
             }
           ],
           "lighting": "Dim, personal lamps.",
-          "mood": "Lived-in clutter, bunks, posters."
+          "mood": "Lived-in clutter, bunks, posters.",
+          "map_label": "Quarters"
         },
         {
           "id": "commons-a",
@@ -174,7 +178,8 @@ window.DROSS_SHIP = {
             }
           ],
           "lighting": "Strip lighting, half working.",
-          "mood": "Spine of the deck."
+          "mood": "Spine of the deck.",
+          "map_label": "Corridor"
         },
         {
           "id": "holo-bay",
@@ -197,7 +202,8 @@ window.DROSS_SHIP = {
           ],
           "lighting": "Cool projector flicker.",
           "mood": "Bartleby's recharge point (the holo power point).",
-          "image_prompt": "a dingy projector alcove with a humming holo-emitter pylon and a worn 'recharge' pad ring on the floor, scuffed warning chevrons, a flickering light-projection of a prim deceased crewman in a blazer standing on it. Comic, slightly sad."
+          "image_prompt": "a dingy projector alcove with a humming holo-emitter pylon and a worn 'recharge' pad ring on the floor, scuffed warning chevrons, a flickering light-projection of a prim deceased crewman in a blazer standing on it. Comic, slightly sad.",
+          "map_label": "Holo Bay"
         }
       ]
     },
@@ -248,7 +254,8 @@ window.DROSS_SHIP = {
           ],
           "lighting": "Dim greasy strip light, vending-machine glow.",
           "mood": "The mutiny room.",
-          "image_prompt": "a grimy ship mess hall / galley at low light: bolted-down tables with chipped laminate, a wall of dented vending machines glowing, a sad coffee station, trays and crumbs, a hand-lettered 'PLEASE BUS YOUR OWN TRAY' sign. One vending machine in the corner is crusted with pulsing coral-red alien growth (Warden/spoiler variant). Cluttered, lived-in, faintly comic."
+          "image_prompt": "a grimy ship mess hall / galley at low light: bolted-down tables with chipped laminate, a wall of dented vending machines glowing, a sad coffee station, trays and crumbs, a hand-lettered 'PLEASE BUS YOUR OWN TRAY' sign. One vending machine in the corner is crusted with pulsing coral-red alien growth (Warden/spoiler variant). Cluttered, lived-in, faintly comic.",
+          "map_label": "Mess Hall"
         },
         {
           "id": "galley-store",
@@ -266,7 +273,8 @@ window.DROSS_SHIP = {
               "kind": "door"
             }
           ],
-          "mood": "Shelves of regrettable foil rations."
+          "mood": "Shelves of regrettable foil rations.",
+          "map_label": "Dry Store"
         },
         {
           "id": "rec-nook",
@@ -284,7 +292,8 @@ window.DROSS_SHIP = {
               "kind": "door"
             }
           ],
-          "mood": "A sagging couch, a dead arcade cabinet."
+          "mood": "A sagging couch, a dead arcade cabinet.",
+          "map_label": "Rec Nook"
         },
         {
           "id": "scrubber-corridor",
@@ -304,7 +313,8 @@ window.DROSS_SHIP = {
           ],
           "lighting": "Single caged bulb.",
           "mood": "The way down. Slime trail leads here.",
-          "image_prompt": "a narrow grimy service corridor leading aft and down off a ship mess hall, a single caged bulb, a 'SCRUBBER CONTROL — AUTHORIZED CREW' stencil, a faint glistening slime trail on the floor leading toward a hatch in the deck. Ominous but mundane."
+          "image_prompt": "a narrow grimy service corridor leading aft and down off a ship mess hall, a single caged bulb, a 'SCRUBBER CONTROL — AUTHORIZED CREW' stencil, a faint glistening slime trail on the floor leading toward a hatch in the deck. Ominous but mundane.",
+          "map_label": "To Scrubbers"
         }
       ]
     },
@@ -348,7 +358,8 @@ window.DROSS_SHIP = {
           ],
           "lighting": "Red 'FAULT' panel glow.",
           "mood": "The objective.",
-          "image_prompt": "a cramped air-scrubber control room aboard a grimy barge: a wall of pipework and filters, a console with a flashing red 'SCRUBBER FAULT' panel, gauges in the red, dripping condensation, a clipboard on a hook. Industrial, oppressive, amber-and-red lit."
+          "image_prompt": "a cramped air-scrubber control room aboard a grimy barge: a wall of pipework and filters, a console with a flashing red 'SCRUBBER FAULT' panel, gauges in the red, dripping condensation, a clipboard on a hook. Industrial, oppressive, amber-and-red lit.",
+          "map_label": "Scrubber Ctrl"
         },
         {
           "id": "power-plant",
@@ -366,7 +377,8 @@ window.DROSS_SHIP = {
               "kind": "hatch"
             }
           ],
-          "mood": "The 'lift' (reclaimite) reactor; warm hum, do-not-touch energy."
+          "mood": "The 'lift' (reclaimite) reactor; warm hum, do-not-touch energy.",
+          "map_label": "Reactor"
         },
         {
           "id": "crawlspace",
@@ -399,7 +411,8 @@ window.DROSS_SHIP = {
           ],
           "lighting": "Headlamp-only, pitch black beyond.",
           "mood": "The squeeze. Everyone's niche shines.",
-          "image_prompt": "the inside of a cramped, hot service crawlspace / duct network aboard a grimy barge: ribbed metal tunnels just big enough to crawl, bundled cables and pipes, dripping condensation, a headlamp cone of light, warning stencils. Claustrophobic. (Warden/spoiler variant: leathery faintly-glowing alien eggs packed into the warm machinery in the dark.)"
+          "image_prompt": "the inside of a cramped, hot service crawlspace / duct network aboard a grimy barge: ribbed metal tunnels just big enough to crawl, bundled cables and pipes, dripping condensation, a headlamp cone of light, warning stencils. Claustrophobic. (Warden/spoiler variant: leathery faintly-glowing alien eggs packed into the warm machinery in the dark.)",
+          "map_label": "Crawlspace"
         },
         {
           "id": "maintenance-airlock",
@@ -422,7 +435,8 @@ window.DROSS_SHIP = {
           ],
           "lighting": "Blinking yellow fault strobe.",
           "mood": "The gun on the mantelpiece (planted for Scene 3).",
-          "image_prompt": "a small grimy maintenance airlock set into a bulkhead, round hatch with a spoked wheel, a blinking yellow warning strobe and a stenciled sign reading 'SEAL FAULTY — DO NOT CYCLE'. Frost around the seal, the black of space beyond a tiny porthole."
+          "image_prompt": "a small grimy maintenance airlock set into a bulkhead, round hatch with a spoked wheel, a blinking yellow warning strobe and a stenciled sign reading 'SEAL FAULTY — DO NOT CYCLE'. Frost around the seal, the black of space beyond a tiny porthole.",
+          "map_label": "Airlock"
         },
         {
           "id": "water-reclamation",
@@ -440,7 +454,8 @@ window.DROSS_SHIP = {
               "kind": "door"
             }
           ],
-          "mood": "Gurgling tanks, a smell best not described."
+          "mood": "Gurgling tanks, a smell best not described.",
+          "map_label": "Water Recl."
         }
       ]
     },
@@ -496,7 +511,8 @@ window.DROSS_SHIP = {
           "lighting": "Failing floods, translucent webbing catching the light.",
           "mood": "The finale.",
           "spoiler": true,
-          "image_prompt": "a vast, freezing cargo hold aboard a garbage barge, strung with translucent alien webbing and warm clusters of leathery glowing eggs nested into stacked containers and vents; breath-fog, a few failing floodlights, a salvaged gold-trimmed escape pod at the center. B-movie scale, coral-red organic growth against grimy slate steel."
+          "image_prompt": "a vast, freezing cargo hold aboard a garbage barge, strung with translucent alien webbing and warm clusters of leathery glowing eggs nested into stacked containers and vents; breath-fog, a few failing floodlights, a salvaged gold-trimmed escape pod at the center. B-movie scale, coral-red organic growth against grimy slate steel.",
+          "map_label": "Cargo Hold (Nest)"
         },
         {
           "id": "salvaged-pod",
@@ -514,7 +530,8 @@ window.DROSS_SHIP = {
           ],
           "spoiler": true,
           "mood": "Gold-trimmed, monogrammed, founder-class. The thing they hauled in.",
-          "image_prompt": "a derelict founder-class luxury escape pod, gaudy gold trim and a monogrammed crest now scratched and frosted, hatch hanging open, draped in alien webbing, incongruously fancy amid a grimy industrial cargo hold. (The First Exodus billionaires' lifeboat.)"
+          "image_prompt": "a derelict founder-class luxury escape pod, gaudy gold trim and a monogrammed crest now scratched and frosted, hatch hanging open, draped in alien webbing, incongruously fancy amid a grimy industrial cargo hold. (The First Exodus billionaires' lifeboat.)",
+          "map_label": "Salvaged Pod"
         },
         {
           "id": "cargo-airlock",
@@ -537,7 +554,8 @@ window.DROSS_SHIP = {
           ],
           "lighting": "Teal status ring.",
           "mood": "The vacuum solution. Big enough for a forklift-sized horror.",
-          "image_prompt": "a large industrial cargo airlock at the aft wall of a freezing hold, a massive round vault door with a teal status ring and a heavy cycle lever, hazard chevrons, the black of space beyond the inner porthole. The obvious way to vent something very large."
+          "image_prompt": "a large industrial cargo airlock at the aft wall of a freezing hold, a massive round vault door with a teal status ring and a heavy cycle lever, hazard chevrons, the black of space beyond the inner porthole. The obvious way to vent something very large.",
+          "map_label": "Cargo Airlock"
         },
         {
           "id": "reclamation-maw",
@@ -555,7 +573,8 @@ window.DROSS_SHIP = {
               "kind": "hatch"
             }
           ],
-          "mood": "The garbage compactor/intake at the stern. Toothy, dormant, flavor (and a tempting hazard)."
+          "mood": "The garbage compactor/intake at the stern. Toothy, dormant, flavor (and a tempting hazard).",
+          "map_label": "Reclam. Maw"
         }
       ]
     }
@@ -572,7 +591,8 @@ window.DROSS_SHIP = {
         0
       ],
       "anchor": "forward-starboard",
-      "note": "The main vertical artery: a cramped ladder shaft with a wheezing freight lift, linking all four decks near the bow. The 'normal' route down."
+      "note": "The main vertical artery: a cramped ladder shaft with a wheezing freight lift, linking all four decks near the bow. The 'normal' route down.",
+      "map_label": "Ladderway"
     },
     {
       "id": "crawlspace-run",
@@ -584,7 +604,8 @@ window.DROSS_SHIP = {
         0
       ],
       "anchor": "central",
-      "note": "The maintenance squeeze the party uses in Scene 2: ducts dropping from the scrubber corridor (Deck B) through the machinery deck (C) and on down into the cargo hold (D). The intimate, dangerous route."
+      "note": "The maintenance squeeze the party uses in Scene 2: ducts dropping from the scrubber corridor (Deck B) through the machinery deck (C) and on down into the cargo hold (D). The intimate, dangerous route.",
+      "map_label": "Crawlspace"
     },
     {
       "id": "infection-spine",
@@ -598,7 +619,8 @@ window.DROSS_SHIP = {
       ],
       "anchor": "central-aft",
       "spoiler": true,
-      "note": "PLOT SPINE. A vertical run of warm machinery ducting from the nest in the cargo hold (D) up through the scrubber intake and crawlspace (C), the mess-hall appliances (B), and finally GLADYS's core (A). The nest grows along it: it clogs the scrubbers (the whole problem), seeds eggs in the crawlspace, infects the vending machines, and — if unchecked at 40% O2 — reaches GLADYS's core and turns her into SADYS. Clearing/venting the nest (D) clears the entire spine."
+      "note": "PLOT SPINE. A vertical run of warm machinery ducting from the nest in the cargo hold (D) up through the scrubber intake and crawlspace (C), the mess-hall appliances (B), and finally GLADYS's core (A). The nest grows along it: it clogs the scrubbers (the whole problem), seeds eggs in the crawlspace, infects the vending machines, and — if unchecked at 40% O2 — reaches GLADYS's core and turns her into SADYS. Clearing/venting the nest (D) clears the entire spine.",
+      "map_label": "Infection spine"
     }
   ],
   "systems": {
@@ -635,7 +657,8 @@ window.DROSS_SHIP = {
       },
       "scene": 0,
       "spoiler": false,
-      "desc": "Government-issue ship AI. Warm, grandmotherly, catastrophically forgetful. Becomes SADYS if the infection spine reaches her at 40% O2."
+      "desc": "Government-issue ship AI. Warm, grandmotherly, catastrophically forgetful. Becomes SADYS if the infection spine reaches her at 40% O2.",
+      "map_label": "GLADYS"
     },
     {
       "id": "infection-tendril-a",
@@ -649,7 +672,8 @@ window.DROSS_SHIP = {
       },
       "scene": 2,
       "spoiler": true,
-      "desc": "The top end of the infection spine. Only visible/relevant if SADYS fires. A single coral tendril creeping into GLADYS's rack."
+      "desc": "The top end of the infection spine. Only visible/relevant if SADYS fires. A single coral tendril creeping into GLADYS's rack.",
+      "map_label": "Tendril"
     },
     {
       "id": "stasis-pods",
@@ -663,7 +687,8 @@ window.DROSS_SHIP = {
       },
       "scene": 0,
       "spoiler": false,
-      "desc": "Where the PCs wake. One pod was skipped — Grease's, if used."
+      "desc": "Where the PCs wake. One pod was skipped — Grease's, if used.",
+      "map_label": "Stasis Pods"
     },
     {
       "id": "holo-projector",
@@ -677,7 +702,8 @@ window.DROSS_SHIP = {
       },
       "scene": 0,
       "spoiler": false,
-      "desc": "Bartleby 'Feathers' recharges here after Hard Light."
+      "desc": "Bartleby 'Feathers' recharges here after Hard Light.",
+      "map_label": "Holo Point"
     },
     {
       "id": "mr-munch",
@@ -691,7 +717,8 @@ window.DROSS_SHIP = {
       },
       "scene": 1,
       "spoiler": false,
-      "desc": "Passive-aggressive snack machine; has rolled across the only door to the scrubber corridor. Solve by change/persuasion/STR."
+      "desc": "Passive-aggressive snack machine; has rolled across the only door to the scrubber corridor. Solve by change/persuasion/STR.",
+      "map_label": "Mr. Munch"
     },
     {
       "id": "coffee-machine",
@@ -705,7 +732,8 @@ window.DROSS_SHIP = {
       },
       "scene": 1,
       "spoiler": false,
-      "desc": "Inconsolable. Comfort it and it gives the clue: it saw 'the wet thing' drag something shiny down the crawlspace. (Crown & Whisker's kin.)"
+      "desc": "Inconsolable. Comfort it and it gives the clue: it saw 'the wet thing' drag something shiny down the crawlspace. (Crown & Whisker's kin.)",
+      "map_label": "Coffee Machine"
     },
     {
       "id": "infected-dispenser",
@@ -726,7 +754,8 @@ window.DROSS_SHIP = {
         "armor": 2,
         "attacks": "hurled cans d6 / electrified grab d8"
       },
-      "desc": "Crusted with pulsing alien growth. First fight — quick and silly."
+      "desc": "Crusted with pulsing alien growth. First fight — quick and silly.",
+      "map_label": "Infected Disp."
     },
     {
       "id": "scrubber-console",
@@ -740,7 +769,8 @@ window.DROSS_SHIP = {
       },
       "scene": 2,
       "spoiler": false,
-      "desc": "Flashing FAULT. The objective panel."
+      "desc": "Flashing FAULT. The objective panel.",
+      "map_label": "Console"
     },
     {
       "id": "scrubber-intake",
@@ -754,7 +784,8 @@ window.DROSS_SHIP = {
       },
       "scene": 2,
       "spoiler": false,
-      "desc": "Choked with alien egg-sac gunk. Clearing it (DEX/STR save; K-7 auto) slows the O2 drop — and reveals the eggs."
+      "desc": "Choked with alien egg-sac gunk. Clearing it (DEX/STR save; K-7 auto) slows the O2 drop — and reveals the eggs.",
+      "map_label": "Intake (clogged)"
     },
     {
       "id": "egg-cluster-c",
@@ -768,7 +799,8 @@ window.DROSS_SHIP = {
       },
       "scene": 2,
       "spoiler": true,
-      "desc": "The scare. Dozens of leathery glowing eggs in the warm machinery; one hatches."
+      "desc": "The scare. Dozens of leathery glowing eggs in the warm machinery; one hatches.",
+      "map_label": "Eggs"
     },
     {
       "id": "scuttler",
@@ -789,7 +821,8 @@ window.DROSS_SHIP = {
         "armor": 0,
         "attacks": "claws d6"
       },
-      "desc": "Fast, screechy, more startling than dangerous. Chase-or-squish; the trail ends at the cargo hold."
+      "desc": "Fast, screechy, more startling than dangerous. Chase-or-squish; the trail ends at the cargo hold.",
+      "map_label": "Scuttler"
     },
     {
       "id": "faulty-airlock-sign",
@@ -803,7 +836,8 @@ window.DROSS_SHIP = {
       },
       "scene": 2,
       "spoiler": false,
-      "desc": "The planted solution. If the party doesn't note it, GLADYS mentions it offhandedly."
+      "desc": "The planted solution. If the party doesn't note it, GLADYS mentions it offhandedly.",
+      "map_label": "DO NOT CYCLE"
     },
     {
       "id": "salvaged-pod",
@@ -817,7 +851,8 @@ window.DROSS_SHIP = {
       },
       "scene": 3,
       "spoiler": true,
-      "desc": "Founder-class First Exodus lifeboat. Brood Mama came aboard inside it. The smoking gun behind Dusty's salvage authorization."
+      "desc": "Founder-class First Exodus lifeboat. Brood Mama came aboard inside it. The smoking gun behind Dusty's salvage authorization.",
+      "map_label": "Salvaged Pod"
     },
     {
       "id": "brood-mama",
@@ -839,7 +874,8 @@ window.DROSS_SHIP = {
         "attacks": "lashing tongue d8 / acid spew d10 (blast)",
         "weakness": "vacuum (instant)"
       },
-      "desc": "Campy googly-eyed maternal horror the size of a forklift. Not, in her view, the villain. Positions to keep the party between herself and any airlock."
+      "desc": "Campy googly-eyed maternal horror the size of a forklift. Not, in her view, the villain. Positions to keep the party between herself and any airlock.",
+      "map_label": "Brood Mama"
     },
     {
       "id": "nest-webbing",
@@ -853,7 +889,8 @@ window.DROSS_SHIP = {
       },
       "scene": 3,
       "spoiler": true,
-      "desc": "Translucent webbing and egg clusters nested into every appliance and vent. The source of the whole infection spine."
+      "desc": "Translucent webbing and egg clusters nested into every appliance and vent. The source of the whole infection spine.",
+      "map_label": "Nest"
     },
     {
       "id": "egg-clusters-d",
@@ -867,7 +904,8 @@ window.DROSS_SHIP = {
       },
       "scene": 3,
       "spoiler": true,
-      "desc": "Warm clusters in the cold hold. One survives for the stinger if you want it."
+      "desc": "Warm clusters in the cold hold. One survives for the stinger if you want it.",
+      "map_label": "Eggs"
     },
     {
       "id": "cargo-airlock-controls",
@@ -881,7 +919,8 @@ window.DROSS_SHIP = {
       },
       "scene": 3,
       "spoiler": false,
-      "desc": "Cycle it with Brood Mama inside to win. K-7 can operate it from inside vacuum unharmed — its moment."
+      "desc": "Cycle it with Brood Mama inside to win. K-7 can operate it from inside vacuum unharmed — its moment.",
+      "map_label": "Airlock Ctrl"
     }
   ],
   "scenes": [

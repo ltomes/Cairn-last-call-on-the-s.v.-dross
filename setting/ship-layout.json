@@ -1,19 +1,21 @@
 {
   "schema": "dross.ship-layout/1.0",
   "_comment": "Canonical spatial model of the S.V. Dross. Source of truth for (a) the deck-maps renderer in docs/ and (b) AI image-prompt writing. See setting/ship-layout.md for the human-readable guide. Keep docs/assets/ship.js in sync (it is generated from this file).",
-
   "ship": {
     "name": "S.V. Dross",
     "class": "Reclamation-class long-haul barge",
     "role": "Waste reclamation / garbage hauling",
     "registry": "Sovereign Bermudian Reclamation Authority, hull DRS-7749",
     "motto": "Recycling the galaxy, one regret at a time.",
-    "approx_dimensions_m": { "length": 160, "beam": 42, "height_decks": 4 },
+    "approx_dimensions_m": {
+      "length": 160,
+      "beam": 42,
+      "height_decks": 4
+    },
     "silhouette": "Ugly and sturdy: a blunt hammerhead bridge forward, a long ribbed spine of habitation and machinery, and a swollen bulb of cargo/reclamation hold aft. Barnacled with sensor masts, vent stacks, and a great garbage maw at the stern. Everything Ascendance refused to be: operational.",
     "crew": "Skeleton crew, mostly in stasis. Government-issue AI (GLADYS).",
     "tone": "Grimy lived-in sci-fi sitcom crossed with deadpan cosmic bureaucracy. Funny first, soft stakes."
   },
-
   "coordinate_system": {
     "summary": "Each deck is a top-down floor plan on its own grid. Decks stack vertically by 'level' (higher level = higher/further forward in the descent).",
     "deck_grid": "Origin top-left of each deck plan. +X = starboard (right). +Y = aft (toward the stern). Fore is at Y=0 (top of the plan). One grid unit = approx 2 meters.",
@@ -22,12 +24,16 @@
     "vertical": "Decks are joined by 'connectors' (a forward ladderway/lift, the service crawlspace, and the infection spine). Each connector lists the levels it threads and a forward/aft anchor.",
     "downstream": "Renderers draw rooms from rect on the deck grid and route doors between room edges. Prompt-writers read ambient + entity fields for art direction and relative position ('two decks down, aft of the scrubbers')."
   },
-
   "style": {
     "_use": "Prepend global_prefix to any location/event prompt for a consistent ship identity.",
     "global_prefix": "Grimy, lived-in 'used-future' sci-fi aboard a clapped-out working-class garbage barge (NOT a sleek starship). Worn riveted steel bulkheads, exposed conduit and ducting, duct tape, hand-lettered and stenciled labels, coffee rings, decades of grime. Practical/comic register, faint deadpan-bureaucratic humor.",
     "lighting": "Flickering amber emergency lighting, half-dead fluorescent tubes, glowing teal-green CRT/monochrome readouts, volumetric haze and light steam.",
-    "palette": { "ambient_amber": "#f2b441", "systems_teal": "#4fd1c5", "hazard_alien_coral": "#ff7a6b", "grimy_slate": "#1b262d" },
+    "palette": {
+      "ambient_amber": "#f2b441",
+      "systems_teal": "#4fd1c5",
+      "hazard_alien_coral": "#ff7a6b",
+      "grimy_slate": "#1b262d"
+    },
     "materials": "Scuffed painted steel, riveted bulkheads, rubber floor matting, yellowed plastic, cable runs; frost and condensation on the lower decks.",
     "signage_gag": "Where official signage appears, it is aggressively polite Bermudian Authority notices ('We do hope this finds you well') and the odd reference to regulation Bermuda shorts.",
     "references": "Alien (1979) Nostromo interiors, Red Dwarf, Moon (2009), Silent Running. Comic, not grimdark.",
@@ -35,7 +41,6 @@
     "aspect": "16:9 establishing shots unless noted.",
     "consistency_anchor": "Reuse the amber/teal/coral palette and the same grimy materials in every image so the ship reads as one place."
   },
-
   "decks": [
     {
       "id": "deck-a",
@@ -43,7 +48,11 @@
       "level": 3,
       "scene": 0,
       "summary": "Top deck. Where the crew wakes from stasis, meets GLADYS, and gets the objective. Cramped, domestic, government-issue.",
-      "grid": { "w": 20, "h": 40, "unit_m": 2 },
+      "grid": {
+        "w": 20,
+        "h": 40,
+        "unit_m": 2
+      },
       "ambient": {
         "lighting": "Amber klaxon wash fading to normal; a few dead tubes.",
         "mood": "Groggy, domestic, faintly absurd.",
@@ -52,39 +61,157 @@
         "temp": "Cool, warming up."
       },
       "rooms": [
-        { "id": "bridge", "name": "Bridge", "type": "command", "rect": { "x": 5, "y": 2, "w": 10, "h": 6 },
-          "doors": [ { "to": "commons-a", "kind": "door" } ],
-          "lighting": "Forward viewport black with stars; console glow.", "mood": "Unmanned, autopilot blinking.",
-          "image_prompt": "the cramped forward bridge of the garbage barge S.V. Dross: a blunt hammerhead cockpit with a scuffed viewport onto starfield, mismatched analog consoles, a chipped captain's chair with a cushion, hand-labeled switches, a mug left on the dash. Unmanned, autopilot lights blinking amber." },
-        { "id": "gladys-core", "name": "GLADYS Personality Core", "type": "computer", "rect": { "x": 7, "y": 9, "w": 6, "h": 5 },
-          "doors": [ { "to": "commons-a", "kind": "hatch" } ],
-          "entities": [ "gladys-core", "infection-tendril-a" ],
-          "lighting": "Soft warm glow, one teal status bank.", "mood": "Grandmotherly, humming; a single coral-tinged cable creeping in (spoiler).",
-          "image_prompt": "a small humming computer-core closet aboard a grimy barge: a warm amber-lit rack of old server blades and tape reels with a kitschy framed photo of a kettle taped to it, knitted doily on top. Cozy, senile, government-issue. (Warden/spoiler variant: a single pulsing coral-red organic tendril has crept up a duct into the corner.)" },
-        { "id": "stasis-bay", "name": "Stasis Bay", "type": "quarters", "rect": { "x": 1, "y": 16, "w": 8, "h": 9 },
-          "doors": [ { "to": "commons-a", "kind": "door" } ], "entities": [ "stasis-pods" ],
-          "lighting": "Frosted pod glass underlit, amber klaxon.", "mood": "The waking room — Scene 0 starts here.",
-          "image_prompt": "a row of open stasis pods venting cold mist in a cramped, grimy crew bay; frost on the glass, tangled monitoring cables, regulation Bermuda-shorts uniforms folded on a bench, a wall sign that reads 'WE DO HOPE THIS FINDS YOU WELL'. Groggy morning-after vibe, flickering amber emergency light." },
-        { "id": "crew-quarters", "name": "Crew Quarters", "type": "quarters", "rect": { "x": 12, "y": 16, "w": 7, "h": 9 },
-          "doors": [ { "to": "commons-a", "kind": "door" } ],
-          "lighting": "Dim, personal lamps.", "mood": "Lived-in clutter, bunks, posters." },
-        { "id": "commons-a", "name": "Habitation Corridor", "type": "corridor", "rect": { "x": 1, "y": 26, "w": 18, "h": 3 },
-          "doors": [ { "to": "holo-bay", "kind": "door" }, { "to": "ladderway", "kind": "ladder" } ],
-          "lighting": "Strip lighting, half working.", "mood": "Spine of the deck." },
-        { "id": "holo-bay", "name": "Holo-Projector Bay", "type": "utility", "rect": { "x": 8, "y": 30, "w": 6, "h": 5 },
-          "doors": [ { "to": "commons-a", "kind": "door" } ], "entities": [ "holo-projector" ],
-          "lighting": "Cool projector flicker.", "mood": "Bartleby's recharge point (the holo power point).",
-          "image_prompt": "a dingy projector alcove with a humming holo-emitter pylon and a worn 'recharge' pad ring on the floor, scuffed warning chevrons, a flickering light-projection of a prim deceased crewman in a blazer standing on it. Comic, slightly sad." }
+        {
+          "id": "bridge",
+          "name": "Bridge",
+          "type": "command",
+          "rect": {
+            "x": 5,
+            "y": 2,
+            "w": 10,
+            "h": 6
+          },
+          "doors": [
+            {
+              "to": "commons-a",
+              "kind": "door"
+            }
+          ],
+          "lighting": "Forward viewport black with stars; console glow.",
+          "mood": "Unmanned, autopilot blinking.",
+          "image_prompt": "the cramped forward bridge of the garbage barge S.V. Dross: a blunt hammerhead cockpit with a scuffed viewport onto starfield, mismatched analog consoles, a chipped captain's chair with a cushion, hand-labeled switches, a mug left on the dash. Unmanned, autopilot lights blinking amber.",
+          "map_label": "Bridge"
+        },
+        {
+          "id": "gladys-core",
+          "name": "GLADYS Personality Core",
+          "type": "computer",
+          "rect": {
+            "x": 7,
+            "y": 9,
+            "w": 6,
+            "h": 5
+          },
+          "doors": [
+            {
+              "to": "commons-a",
+              "kind": "hatch"
+            }
+          ],
+          "entities": [
+            "gladys-core",
+            "infection-tendril-a"
+          ],
+          "lighting": "Soft warm glow, one teal status bank.",
+          "mood": "Grandmotherly, humming; a single coral-tinged cable creeping in (spoiler).",
+          "image_prompt": "a small humming computer-core closet aboard a grimy barge: a warm amber-lit rack of old server blades and tape reels with a kitschy framed photo of a kettle taped to it, knitted doily on top. Cozy, senile, government-issue. (Warden/spoiler variant: a single pulsing coral-red organic tendril has crept up a duct into the corner.)",
+          "map_label": "GLADYS Core"
+        },
+        {
+          "id": "stasis-bay",
+          "name": "Stasis Bay",
+          "type": "quarters",
+          "rect": {
+            "x": 1,
+            "y": 16,
+            "w": 8,
+            "h": 9
+          },
+          "doors": [
+            {
+              "to": "commons-a",
+              "kind": "door"
+            }
+          ],
+          "entities": [
+            "stasis-pods"
+          ],
+          "lighting": "Frosted pod glass underlit, amber klaxon.",
+          "mood": "The waking room — Scene 0 starts here.",
+          "image_prompt": "a row of open stasis pods venting cold mist in a cramped, grimy crew bay; frost on the glass, tangled monitoring cables, regulation Bermuda-shorts uniforms folded on a bench, a wall sign that reads 'WE DO HOPE THIS FINDS YOU WELL'. Groggy morning-after vibe, flickering amber emergency light.",
+          "map_label": "Stasis Bay"
+        },
+        {
+          "id": "crew-quarters",
+          "name": "Crew Quarters",
+          "type": "quarters",
+          "rect": {
+            "x": 12,
+            "y": 16,
+            "w": 7,
+            "h": 9
+          },
+          "doors": [
+            {
+              "to": "commons-a",
+              "kind": "door"
+            }
+          ],
+          "lighting": "Dim, personal lamps.",
+          "mood": "Lived-in clutter, bunks, posters.",
+          "map_label": "Quarters"
+        },
+        {
+          "id": "commons-a",
+          "name": "Habitation Corridor",
+          "type": "corridor",
+          "rect": {
+            "x": 1,
+            "y": 26,
+            "w": 18,
+            "h": 3
+          },
+          "doors": [
+            {
+              "to": "holo-bay",
+              "kind": "door"
+            },
+            {
+              "to": "ladderway",
+              "kind": "ladder"
+            }
+          ],
+          "lighting": "Strip lighting, half working.",
+          "mood": "Spine of the deck.",
+          "map_label": "Corridor"
+        },
+        {
+          "id": "holo-bay",
+          "name": "Holo-Projector Bay",
+          "type": "utility",
+          "rect": {
+            "x": 8,
+            "y": 30,
+            "w": 6,
+            "h": 5
+          },
+          "doors": [
+            {
+              "to": "commons-a",
+              "kind": "door"
+            }
+          ],
+          "entities": [
+            "holo-projector"
+          ],
+          "lighting": "Cool projector flicker.",
+          "mood": "Bartleby's recharge point (the holo power point).",
+          "image_prompt": "a dingy projector alcove with a humming holo-emitter pylon and a worn 'recharge' pad ring on the floor, scuffed warning chevrons, a flickering light-projection of a prim deceased crewman in a blazer standing on it. Comic, slightly sad.",
+          "map_label": "Holo Bay"
+        }
       ]
     },
-
     {
       "id": "deck-b",
       "name": "Mess & Commons",
       "level": 2,
       "scene": 1,
       "summary": "The galley deck. Home of the appliances. Scene 1: Mr. Munch blocks the only door to the scrubber corridor; the coffee machine weeps a clue; an infected dispenser turns hostile.",
-      "grid": { "w": 20, "h": 40, "unit_m": 2 },
+      "grid": {
+        "w": 20,
+        "h": 40,
+        "unit_m": 2
+      },
       "ambient": {
         "lighting": "Greasy, dim, humming fluorescents.",
         "mood": "Cluttered diner-at-3am energy.",
@@ -93,29 +220,109 @@
         "temp": "Warm, close."
       },
       "rooms": [
-        { "id": "mess-hall", "name": "Mess Hall / Galley", "type": "commons", "rect": { "x": 2, "y": 4, "w": 13, "h": 16 },
-          "doors": [ { "to": "scrubber-corridor", "kind": "door", "blocked_by": "mr-munch" }, { "to": "ladderway", "kind": "ladder" } ],
-          "entities": [ "mr-munch", "coffee-machine", "infected-dispenser" ],
-          "lighting": "Dim greasy strip light, vending-machine glow.", "mood": "The mutiny room.",
-          "image_prompt": "a grimy ship mess hall / galley at low light: bolted-down tables with chipped laminate, a wall of dented vending machines glowing, a sad coffee station, trays and crumbs, a hand-lettered 'PLEASE BUS YOUR OWN TRAY' sign. One vending machine in the corner is crusted with pulsing coral-red alien growth (Warden/spoiler variant). Cluttered, lived-in, faintly comic." },
-        { "id": "galley-store", "name": "Dry Store", "type": "utility", "rect": { "x": 15, "y": 4, "w": 4, "h": 7 },
-          "doors": [ { "to": "mess-hall", "kind": "door" } ], "mood": "Shelves of regrettable foil rations." },
-        { "id": "rec-nook", "name": "Rec Nook", "type": "commons", "rect": { "x": 2, "y": 22, "w": 7, "h": 6 },
-          "doors": [ { "to": "mess-hall", "kind": "door" } ], "mood": "A sagging couch, a dead arcade cabinet." },
-        { "id": "scrubber-corridor", "name": "Scrubber Corridor (to crawlspace)", "type": "corridor", "rect": { "x": 10, "y": 22, "w": 8, "h": 8 },
-          "doors": [ { "to": "crawlspace", "kind": "stair" } ],
-          "lighting": "Single caged bulb.", "mood": "The way down. Slime trail leads here.",
-          "image_prompt": "a narrow grimy service corridor leading aft and down off a ship mess hall, a single caged bulb, a 'SCRUBBER CONTROL — AUTHORIZED CREW' stencil, a faint glistening slime trail on the floor leading toward a hatch in the deck. Ominous but mundane." }
+        {
+          "id": "mess-hall",
+          "name": "Mess Hall / Galley",
+          "type": "commons",
+          "rect": {
+            "x": 2,
+            "y": 4,
+            "w": 13,
+            "h": 16
+          },
+          "doors": [
+            {
+              "to": "scrubber-corridor",
+              "kind": "door",
+              "blocked_by": "mr-munch"
+            },
+            {
+              "to": "ladderway",
+              "kind": "ladder"
+            }
+          ],
+          "entities": [
+            "mr-munch",
+            "coffee-machine",
+            "infected-dispenser"
+          ],
+          "lighting": "Dim greasy strip light, vending-machine glow.",
+          "mood": "The mutiny room.",
+          "image_prompt": "a grimy ship mess hall / galley at low light: bolted-down tables with chipped laminate, a wall of dented vending machines glowing, a sad coffee station, trays and crumbs, a hand-lettered 'PLEASE BUS YOUR OWN TRAY' sign. One vending machine in the corner is crusted with pulsing coral-red alien growth (Warden/spoiler variant). Cluttered, lived-in, faintly comic.",
+          "map_label": "Mess Hall"
+        },
+        {
+          "id": "galley-store",
+          "name": "Dry Store",
+          "type": "utility",
+          "rect": {
+            "x": 15,
+            "y": 4,
+            "w": 4,
+            "h": 7
+          },
+          "doors": [
+            {
+              "to": "mess-hall",
+              "kind": "door"
+            }
+          ],
+          "mood": "Shelves of regrettable foil rations.",
+          "map_label": "Dry Store"
+        },
+        {
+          "id": "rec-nook",
+          "name": "Rec Nook",
+          "type": "commons",
+          "rect": {
+            "x": 2,
+            "y": 22,
+            "w": 7,
+            "h": 6
+          },
+          "doors": [
+            {
+              "to": "mess-hall",
+              "kind": "door"
+            }
+          ],
+          "mood": "A sagging couch, a dead arcade cabinet.",
+          "map_label": "Rec Nook"
+        },
+        {
+          "id": "scrubber-corridor",
+          "name": "Scrubber Corridor (to crawlspace)",
+          "type": "corridor",
+          "rect": {
+            "x": 10,
+            "y": 22,
+            "w": 8,
+            "h": 8
+          },
+          "doors": [
+            {
+              "to": "crawlspace",
+              "kind": "stair"
+            }
+          ],
+          "lighting": "Single caged bulb.",
+          "mood": "The way down. Slime trail leads here.",
+          "image_prompt": "a narrow grimy service corridor leading aft and down off a ship mess hall, a single caged bulb, a 'SCRUBBER CONTROL — AUTHORIZED CREW' stencil, a faint glistening slime trail on the floor leading toward a hatch in the deck. Ominous but mundane.",
+          "map_label": "To Scrubbers"
+        }
       ]
     },
-
     {
       "id": "deck-c",
       "name": "Service & Machinery",
       "level": 1,
       "scene": 2,
       "summary": "The guts. Scene 2: squeeze through the service crawlspace to the scrubber control, clear the egg-clogged intake, and discover the eggs. The faulty maintenance airlock is planted here.",
-      "grid": { "w": 20, "h": 40, "unit_m": 2 },
+      "grid": {
+        "w": 20,
+        "h": 40,
+        "unit_m": 2
+      },
       "ambient": {
         "lighting": "Sodium-orange work lights, deep shadows.",
         "mood": "Hot, cramped, dripping. Maintenance beat.",
@@ -124,33 +331,139 @@
         "temp": "Hot near the plant, cold near the airlock."
       },
       "rooms": [
-        { "id": "scrubber-control", "name": "Air Scrubber Control", "type": "machinery", "rect": { "x": 2, "y": 3, "w": 6, "h": 6 },
-          "doors": [ { "to": "crawlspace", "kind": "hatch" } ], "entities": [ "scrubber-console" ],
-          "lighting": "Red 'FAULT' panel glow.", "mood": "The objective.",
-          "image_prompt": "a cramped air-scrubber control room aboard a grimy barge: a wall of pipework and filters, a console with a flashing red 'SCRUBBER FAULT' panel, gauges in the red, dripping condensation, a clipboard on a hook. Industrial, oppressive, amber-and-red lit." },
-        { "id": "power-plant", "name": "Lift-Reactor Plant", "type": "machinery", "rect": { "x": 12, "y": 3, "w": 6, "h": 6 },
-          "doors": [ { "to": "crawlspace", "kind": "hatch" } ], "mood": "The 'lift' (reclaimite) reactor; warm hum, do-not-touch energy." },
-        { "id": "crawlspace", "name": "Service Crawlspace (duct network)", "type": "duct_network", "rect": { "x": 2, "y": 10, "w": 16, "h": 18 },
-          "doors": [ { "to": "maintenance-airlock", "kind": "hatch" }, { "to": "water-reclamation", "kind": "duct" }, { "to": "cargo-hold", "kind": "duct" } ],
-          "entities": [ "scrubber-intake", "egg-cluster-c", "scuttler" ],
-          "lighting": "Headlamp-only, pitch black beyond.", "mood": "The squeeze. Everyone's niche shines.",
-          "image_prompt": "the inside of a cramped, hot service crawlspace / duct network aboard a grimy barge: ribbed metal tunnels just big enough to crawl, bundled cables and pipes, dripping condensation, a headlamp cone of light, warning stencils. Claustrophobic. (Warden/spoiler variant: leathery faintly-glowing alien eggs packed into the warm machinery in the dark.)" },
-        { "id": "maintenance-airlock", "name": "Maintenance Airlock (FAULTY)", "type": "airlock", "rect": { "x": 16, "y": 20, "w": 3, "h": 5 },
-          "doors": [ { "to": "crawlspace", "kind": "hatch" } ], "entities": [ "faulty-airlock-sign" ],
-          "lighting": "Blinking yellow fault strobe.", "mood": "The gun on the mantelpiece (planted for Scene 3).",
-          "image_prompt": "a small grimy maintenance airlock set into a bulkhead, round hatch with a spoked wheel, a blinking yellow warning strobe and a stenciled sign reading 'SEAL FAULTY — DO NOT CYCLE'. Frost around the seal, the black of space beyond a tiny porthole." },
-        { "id": "water-reclamation", "name": "Water Reclamation", "type": "machinery", "rect": { "x": 2, "y": 30, "w": 6, "h": 6 },
-          "doors": [ { "to": "crawlspace", "kind": "door" } ], "mood": "Gurgling tanks, a smell best not described." }
+        {
+          "id": "scrubber-control",
+          "name": "Air Scrubber Control",
+          "type": "machinery",
+          "rect": {
+            "x": 2,
+            "y": 3,
+            "w": 6,
+            "h": 6
+          },
+          "doors": [
+            {
+              "to": "crawlspace",
+              "kind": "hatch"
+            }
+          ],
+          "entities": [
+            "scrubber-console"
+          ],
+          "lighting": "Red 'FAULT' panel glow.",
+          "mood": "The objective.",
+          "image_prompt": "a cramped air-scrubber control room aboard a grimy barge: a wall of pipework and filters, a console with a flashing red 'SCRUBBER FAULT' panel, gauges in the red, dripping condensation, a clipboard on a hook. Industrial, oppressive, amber-and-red lit.",
+          "map_label": "Scrubber Ctrl"
+        },
+        {
+          "id": "power-plant",
+          "name": "Lift-Reactor Plant",
+          "type": "machinery",
+          "rect": {
+            "x": 12,
+            "y": 3,
+            "w": 6,
+            "h": 6
+          },
+          "doors": [
+            {
+              "to": "crawlspace",
+              "kind": "hatch"
+            }
+          ],
+          "mood": "The 'lift' (reclaimite) reactor; warm hum, do-not-touch energy.",
+          "map_label": "Reactor"
+        },
+        {
+          "id": "crawlspace",
+          "name": "Service Crawlspace (duct network)",
+          "type": "duct_network",
+          "rect": {
+            "x": 2,
+            "y": 10,
+            "w": 16,
+            "h": 18
+          },
+          "doors": [
+            {
+              "to": "maintenance-airlock",
+              "kind": "hatch"
+            },
+            {
+              "to": "water-reclamation",
+              "kind": "duct"
+            },
+            {
+              "to": "cargo-hold",
+              "kind": "duct"
+            }
+          ],
+          "entities": [
+            "scrubber-intake",
+            "egg-cluster-c",
+            "scuttler"
+          ],
+          "lighting": "Headlamp-only, pitch black beyond.",
+          "mood": "The squeeze. Everyone's niche shines.",
+          "image_prompt": "the inside of a cramped, hot service crawlspace / duct network aboard a grimy barge: ribbed metal tunnels just big enough to crawl, bundled cables and pipes, dripping condensation, a headlamp cone of light, warning stencils. Claustrophobic. (Warden/spoiler variant: leathery faintly-glowing alien eggs packed into the warm machinery in the dark.)",
+          "map_label": "Crawlspace"
+        },
+        {
+          "id": "maintenance-airlock",
+          "name": "Maintenance Airlock (FAULTY)",
+          "type": "airlock",
+          "rect": {
+            "x": 16,
+            "y": 20,
+            "w": 3,
+            "h": 5
+          },
+          "doors": [
+            {
+              "to": "crawlspace",
+              "kind": "hatch"
+            }
+          ],
+          "entities": [
+            "faulty-airlock-sign"
+          ],
+          "lighting": "Blinking yellow fault strobe.",
+          "mood": "The gun on the mantelpiece (planted for Scene 3).",
+          "image_prompt": "a small grimy maintenance airlock set into a bulkhead, round hatch with a spoked wheel, a blinking yellow warning strobe and a stenciled sign reading 'SEAL FAULTY — DO NOT CYCLE'. Frost around the seal, the black of space beyond a tiny porthole.",
+          "map_label": "Airlock"
+        },
+        {
+          "id": "water-reclamation",
+          "name": "Water Reclamation",
+          "type": "machinery",
+          "rect": {
+            "x": 2,
+            "y": 30,
+            "w": 6,
+            "h": 6
+          },
+          "doors": [
+            {
+              "to": "crawlspace",
+              "kind": "door"
+            }
+          ],
+          "mood": "Gurgling tanks, a smell best not described.",
+          "map_label": "Water Recl."
+        }
       ]
     },
-
     {
       "id": "deck-d",
       "name": "Cargo & Reclamation Hold",
       "level": 0,
       "scene": 3,
       "summary": "The bottom of the ship and the bottom of the descent. Cavernous, freezing, webbed. Scene 3: the nest, Brood Mama on the salvaged Ascendance pod, and the cargo airlock that ends it.",
-      "grid": { "w": 20, "h": 40, "unit_m": 2 },
+      "grid": {
+        "w": 20,
+        "h": 40,
+        "unit_m": 2
+      },
       "ambient": {
         "lighting": "Vast dark, a few failing floods, breath-fog.",
         "mood": "B-movie nest. Cold, cathedral-huge, alive.",
@@ -159,117 +472,640 @@
         "temp": "Freezing."
       },
       "rooms": [
-        { "id": "cargo-hold", "name": "Cargo Hold (the Nest)", "type": "cargo", "rect": { "x": 1, "y": 3, "w": 18, "h": 28 },
-          "doors": [ { "to": "cargo-airlock", "kind": "door" }, { "to": "reclamation-maw", "kind": "hatch" }, { "to": "ladderway", "kind": "ladder" } ],
-          "entities": [ "salvaged-pod", "brood-mama", "nest-webbing", "egg-clusters-d" ],
-          "lighting": "Failing floods, translucent webbing catching the light.", "mood": "The finale.", "spoiler": true,
-          "image_prompt": "a vast, freezing cargo hold aboard a garbage barge, strung with translucent alien webbing and warm clusters of leathery glowing eggs nested into stacked containers and vents; breath-fog, a few failing floodlights, a salvaged gold-trimmed escape pod at the center. B-movie scale, coral-red organic growth against grimy slate steel." },
-        { "id": "salvaged-pod", "name": "Salvaged Ascendance Escape Pod", "type": "object", "rect": { "x": 7, "y": 13, "w": 6, "h": 6 },
-          "doors": [], "entities": [ "salvaged-pod" ], "spoiler": true, "mood": "Gold-trimmed, monogrammed, founder-class. The thing they hauled in.",
-          "image_prompt": "a derelict founder-class luxury escape pod, gaudy gold trim and a monogrammed crest now scratched and frosted, hatch hanging open, draped in alien webbing, incongruously fancy amid a grimy industrial cargo hold. (The First Exodus billionaires' lifeboat.)" },
-        { "id": "cargo-airlock", "name": "Main Cargo Airlock", "type": "airlock", "rect": { "x": 7, "y": 31, "w": 6, "h": 4 },
-          "doors": [ { "to": "cargo-hold", "kind": "door" } ], "entities": [ "cargo-airlock-controls" ],
-          "lighting": "Teal status ring.", "mood": "The vacuum solution. Big enough for a forklift-sized horror.",
-          "image_prompt": "a large industrial cargo airlock at the aft wall of a freezing hold, a massive round vault door with a teal status ring and a heavy cycle lever, hazard chevrons, the black of space beyond the inner porthole. The obvious way to vent something very large." },
-        { "id": "reclamation-maw", "name": "Reclamation Maw", "type": "machinery", "rect": { "x": 1, "y": 34, "w": 18, "h": 4 },
-          "doors": [ { "to": "cargo-hold", "kind": "hatch" } ], "mood": "The garbage compactor/intake at the stern. Toothy, dormant, flavor (and a tempting hazard)." }
+        {
+          "id": "cargo-hold",
+          "name": "Cargo Hold (the Nest)",
+          "type": "cargo",
+          "rect": {
+            "x": 1,
+            "y": 3,
+            "w": 18,
+            "h": 28
+          },
+          "doors": [
+            {
+              "to": "cargo-airlock",
+              "kind": "door"
+            },
+            {
+              "to": "reclamation-maw",
+              "kind": "hatch"
+            },
+            {
+              "to": "ladderway",
+              "kind": "ladder"
+            }
+          ],
+          "entities": [
+            "salvaged-pod",
+            "brood-mama",
+            "nest-webbing",
+            "egg-clusters-d"
+          ],
+          "lighting": "Failing floods, translucent webbing catching the light.",
+          "mood": "The finale.",
+          "spoiler": true,
+          "image_prompt": "a vast, freezing cargo hold aboard a garbage barge, strung with translucent alien webbing and warm clusters of leathery glowing eggs nested into stacked containers and vents; breath-fog, a few failing floodlights, a salvaged gold-trimmed escape pod at the center. B-movie scale, coral-red organic growth against grimy slate steel.",
+          "map_label": "Cargo Hold (Nest)"
+        },
+        {
+          "id": "salvaged-pod",
+          "name": "Salvaged Ascendance Escape Pod",
+          "type": "object",
+          "rect": {
+            "x": 7,
+            "y": 13,
+            "w": 6,
+            "h": 6
+          },
+          "doors": [],
+          "entities": [
+            "salvaged-pod"
+          ],
+          "spoiler": true,
+          "mood": "Gold-trimmed, monogrammed, founder-class. The thing they hauled in.",
+          "image_prompt": "a derelict founder-class luxury escape pod, gaudy gold trim and a monogrammed crest now scratched and frosted, hatch hanging open, draped in alien webbing, incongruously fancy amid a grimy industrial cargo hold. (The First Exodus billionaires' lifeboat.)",
+          "map_label": "Salvaged Pod"
+        },
+        {
+          "id": "cargo-airlock",
+          "name": "Main Cargo Airlock",
+          "type": "airlock",
+          "rect": {
+            "x": 7,
+            "y": 31,
+            "w": 6,
+            "h": 4
+          },
+          "doors": [
+            {
+              "to": "cargo-hold",
+              "kind": "door"
+            }
+          ],
+          "entities": [
+            "cargo-airlock-controls"
+          ],
+          "lighting": "Teal status ring.",
+          "mood": "The vacuum solution. Big enough for a forklift-sized horror.",
+          "image_prompt": "a large industrial cargo airlock at the aft wall of a freezing hold, a massive round vault door with a teal status ring and a heavy cycle lever, hazard chevrons, the black of space beyond the inner porthole. The obvious way to vent something very large.",
+          "map_label": "Cargo Airlock"
+        },
+        {
+          "id": "reclamation-maw",
+          "name": "Reclamation Maw",
+          "type": "machinery",
+          "rect": {
+            "x": 1,
+            "y": 34,
+            "w": 18,
+            "h": 4
+          },
+          "doors": [
+            {
+              "to": "cargo-hold",
+              "kind": "hatch"
+            }
+          ],
+          "mood": "The garbage compactor/intake at the stern. Toothy, dormant, flavor (and a tempting hazard).",
+          "map_label": "Reclam. Maw"
+        }
       ]
     }
   ],
-
   "connectors": [
-    { "id": "ladderway", "kind": "ladder_lift", "name": "Forward Spinal Ladderway", "levels": [ 3, 2, 1, 0 ], "anchor": "forward-starboard",
-      "note": "The main vertical artery: a cramped ladder shaft with a wheezing freight lift, linking all four decks near the bow. The 'normal' route down." },
-    { "id": "crawlspace-run", "kind": "duct", "name": "Service Crawlspace Run", "levels": [ 2, 1, 0 ], "anchor": "central",
-      "note": "The maintenance squeeze the party uses in Scene 2: ducts dropping from the scrubber corridor (Deck B) through the machinery deck (C) and on down into the cargo hold (D). The intimate, dangerous route." },
-    { "id": "infection-spine", "kind": "organic_conduit", "name": "The Infection Spine", "levels": [ 0, 1, 2, 3 ], "anchor": "central-aft", "spoiler": true,
-      "note": "PLOT SPINE. A vertical run of warm machinery ducting from the nest in the cargo hold (D) up through the scrubber intake and crawlspace (C), the mess-hall appliances (B), and finally GLADYS's core (A). The nest grows along it: it clogs the scrubbers (the whole problem), seeds eggs in the crawlspace, infects the vending machines, and — if unchecked at 40% O2 — reaches GLADYS's core and turns her into SADYS. Clearing/venting the nest (D) clears the entire spine." }
+    {
+      "id": "ladderway",
+      "kind": "ladder_lift",
+      "name": "Forward Spinal Ladderway",
+      "levels": [
+        3,
+        2,
+        1,
+        0
+      ],
+      "anchor": "forward-starboard",
+      "note": "The main vertical artery: a cramped ladder shaft with a wheezing freight lift, linking all four decks near the bow. The 'normal' route down.",
+      "map_label": "Ladderway"
+    },
+    {
+      "id": "crawlspace-run",
+      "kind": "duct",
+      "name": "Service Crawlspace Run",
+      "levels": [
+        2,
+        1,
+        0
+      ],
+      "anchor": "central",
+      "note": "The maintenance squeeze the party uses in Scene 2: ducts dropping from the scrubber corridor (Deck B) through the machinery deck (C) and on down into the cargo hold (D). The intimate, dangerous route.",
+      "map_label": "Crawlspace"
+    },
+    {
+      "id": "infection-spine",
+      "kind": "organic_conduit",
+      "name": "The Infection Spine",
+      "levels": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "anchor": "central-aft",
+      "spoiler": true,
+      "note": "PLOT SPINE. A vertical run of warm machinery ducting from the nest in the cargo hold (D) up through the scrubber intake and crawlspace (C), the mess-hall appliances (B), and finally GLADYS's core (A). The nest grows along it: it clogs the scrubbers (the whole problem), seeds eggs in the crawlspace, infects the vending machines, and — if unchecked at 40% O2 — reaches GLADYS's core and turns her into SADYS. Clearing/venting the nest (D) clears the entire spine.",
+      "map_label": "Infection spine"
+    }
   ],
-
   "systems": {
-    "o2_clock": { "start_pct": 80, "drop_per_scene": 10, "sadys_trigger_pct": 40, "woozy_pct": 20, "loss_pct": 0,
-      "note": "Atmosphere/pacing, not a kill timer. Announced by GLADYS at each deck transition. Clearing the nest restores it." },
-    "scrubber_loop": { "control": "scrubber-control (Deck C)", "fault_source": "scrubber-intake choked by nest gunk (via infection-spine from Deck D)",
-      "fix_partial": "clear the intake clog in Scene 2 (slows the drop)", "fix_full": "vent or kill Brood Mama in Scene 3 (clears the clog at the source; air climbs to safe)" },
-    "power": { "source": "Lift-Reactor (reclaimite/'lift') on Deck C", "note": "Powers the holo-projector point, doors, lights. SADYS lets upkeep lapse — lights sag, doors hiss open slowly." },
+    "o2_clock": {
+      "start_pct": 80,
+      "drop_per_scene": 10,
+      "sadys_trigger_pct": 40,
+      "woozy_pct": 20,
+      "loss_pct": 0,
+      "note": "Atmosphere/pacing, not a kill timer. Announced by GLADYS at each deck transition. Clearing the nest restores it."
+    },
+    "scrubber_loop": {
+      "control": "scrubber-control (Deck C)",
+      "fault_source": "scrubber-intake choked by nest gunk (via infection-spine from Deck D)",
+      "fix_partial": "clear the intake clog in Scene 2 (slows the drop)",
+      "fix_full": "vent or kill Brood Mama in Scene 3 (clears the clog at the source; air climbs to safe)"
+    },
+    "power": {
+      "source": "Lift-Reactor (reclaimite/'lift') on Deck C",
+      "note": "Powers the holo-projector point, doors, lights. SADYS lets upkeep lapse — lights sag, doors hiss open slowly."
+    },
     "infection_path": "deck-d (nest) -> deck-c (scrubber intake + crawlspace eggs) -> deck-b (vending machines) -> deck-a (GLADYS core / SADYS)"
   },
-
   "entities": [
-    { "id": "gladys-core", "name": "GLADYS", "kind": "ship_ai", "deck": "deck-a", "room": "gladys-core", "pos": { "x": 10, "y": 11 }, "scene": 0, "spoiler": false,
-      "desc": "Government-issue ship AI. Warm, grandmotherly, catastrophically forgetful. Becomes SADYS if the infection spine reaches her at 40% O2." },
-    { "id": "infection-tendril-a", "name": "Infection Tendril (at the core)", "kind": "alien_growth", "deck": "deck-a", "room": "gladys-core", "pos": { "x": 8, "y": 13 }, "scene": 2, "spoiler": true,
-      "desc": "The top end of the infection spine. Only visible/relevant if SADYS fires. A single coral tendril creeping into GLADYS's rack." },
-    { "id": "stasis-pods", "name": "Stasis Pods", "kind": "fixture", "deck": "deck-a", "room": "stasis-bay", "pos": { "x": 5, "y": 20 }, "scene": 0, "spoiler": false,
-      "desc": "Where the PCs wake. One pod was skipped — Grease's, if used." },
-    { "id": "holo-projector", "name": "Holo-Projector / Power Point", "kind": "fixture", "deck": "deck-a", "room": "holo-bay", "pos": { "x": 11, "y": 32 }, "scene": 0, "spoiler": false,
-      "desc": "Bartleby 'Feathers' recharges here after Hard Light." },
-    { "id": "mr-munch", "name": "Mr. Munch", "kind": "appliance_npc", "deck": "deck-b", "room": "mess-hall", "pos": { "x": 14, "y": 20 }, "scene": 1, "spoiler": false,
-      "desc": "Passive-aggressive snack machine; has rolled across the only door to the scrubber corridor. Solve by change/persuasion/STR." },
-    { "id": "coffee-machine", "name": "The Weeping Coffee Machine", "kind": "appliance_npc", "deck": "deck-b", "room": "mess-hall", "pos": { "x": 3, "y": 10 }, "scene": 1, "spoiler": false,
-      "desc": "Inconsolable. Comfort it and it gives the clue: it saw 'the wet thing' drag something shiny down the crawlspace. (Crown & Whisker's kin.)" },
-    { "id": "infected-dispenser", "name": "Infected Vending Machine", "kind": "enemy", "deck": "deck-b", "room": "mess-hall", "pos": { "x": 12, "y": 17 }, "scene": 1, "spoiler": false,
-      "stats": { "hp": 4, "str": 12, "dex": 5, "armor": 2, "attacks": "hurled cans d6 / electrified grab d8" },
-      "desc": "Crusted with pulsing alien growth. First fight — quick and silly." },
-    { "id": "scrubber-console", "name": "Scrubber Console", "kind": "fixture", "deck": "deck-c", "room": "scrubber-control", "pos": { "x": 5, "y": 6 }, "scene": 2, "spoiler": false,
-      "desc": "Flashing FAULT. The objective panel." },
-    { "id": "scrubber-intake", "name": "Scrubber Intake (egg-clogged)", "kind": "obstacle", "deck": "deck-c", "room": "crawlspace", "pos": { "x": 6, "y": 14 }, "scene": 2, "spoiler": false,
-      "desc": "Choked with alien egg-sac gunk. Clearing it (DEX/STR save; K-7 auto) slows the O2 drop — and reveals the eggs." },
-    { "id": "egg-cluster-c", "name": "Egg Cluster (crawlspace)", "kind": "alien_growth", "deck": "deck-c", "room": "crawlspace", "pos": { "x": 9, "y": 18 }, "scene": 2, "spoiler": true,
-      "desc": "The scare. Dozens of leathery glowing eggs in the warm machinery; one hatches." },
-    { "id": "scuttler", "name": "Scuttler (juvenile alien)", "kind": "enemy", "deck": "deck-c", "room": "crawlspace", "pos": { "x": 11, "y": 20 }, "scene": 2, "spoiler": true,
-      "stats": { "hp": 3, "str": 6, "dex": 14, "armor": 0, "attacks": "claws d6" },
-      "desc": "Fast, screechy, more startling than dangerous. Chase-or-squish; the trail ends at the cargo hold." },
-    { "id": "faulty-airlock-sign", "name": "'SEAL FAULTY — DO NOT CYCLE'", "kind": "plot_device", "deck": "deck-c", "room": "maintenance-airlock", "pos": { "x": 17, "y": 22 }, "scene": 2, "spoiler": false,
-      "desc": "The planted solution. If the party doesn't note it, GLADYS mentions it offhandedly." },
-    { "id": "salvaged-pod", "name": "Salvaged Ascendance Escape Pod", "kind": "object", "deck": "deck-d", "room": "salvaged-pod", "pos": { "x": 10, "y": 16 }, "scene": 3, "spoiler": true,
-      "desc": "Founder-class First Exodus lifeboat. Brood Mama came aboard inside it. The smoking gun behind Dusty's salvage authorization." },
-    { "id": "brood-mama", "name": "Brood Mama", "kind": "boss", "deck": "deck-d", "room": "cargo-hold", "pos": { "x": 10, "y": 15 }, "scene": 3, "spoiler": true,
-      "stats": { "hp": 12, "str": 15, "dex": 8, "armor": 1, "attacks": "lashing tongue d8 / acid spew d10 (blast)", "weakness": "vacuum (instant)" },
-      "desc": "Campy googly-eyed maternal horror the size of a forklift. Not, in her view, the villain. Positions to keep the party between herself and any airlock." },
-    { "id": "nest-webbing", "name": "Nest Webbing & Eggs", "kind": "alien_growth", "deck": "deck-d", "room": "cargo-hold", "pos": { "x": 6, "y": 9 }, "scene": 3, "spoiler": true,
-      "desc": "Translucent webbing and egg clusters nested into every appliance and vent. The source of the whole infection spine." },
-    { "id": "egg-clusters-d", "name": "Egg Clusters (hold)", "kind": "alien_growth", "deck": "deck-d", "room": "cargo-hold", "pos": { "x": 15, "y": 22 }, "scene": 3, "spoiler": true,
-      "desc": "Warm clusters in the cold hold. One survives for the stinger if you want it." },
-    { "id": "cargo-airlock-controls", "name": "Cargo Airlock Controls", "kind": "plot_device", "deck": "deck-d", "room": "cargo-airlock", "pos": { "x": 10, "y": 32 }, "scene": 3, "spoiler": false,
-      "desc": "Cycle it with Brood Mama inside to win. K-7 can operate it from inside vacuum unharmed — its moment." }
+    {
+      "id": "gladys-core",
+      "name": "GLADYS",
+      "kind": "ship_ai",
+      "deck": "deck-a",
+      "room": "gladys-core",
+      "pos": {
+        "x": 10,
+        "y": 11
+      },
+      "scene": 0,
+      "spoiler": false,
+      "desc": "Government-issue ship AI. Warm, grandmotherly, catastrophically forgetful. Becomes SADYS if the infection spine reaches her at 40% O2.",
+      "map_label": "GLADYS"
+    },
+    {
+      "id": "infection-tendril-a",
+      "name": "Infection Tendril (at the core)",
+      "kind": "alien_growth",
+      "deck": "deck-a",
+      "room": "gladys-core",
+      "pos": {
+        "x": 8,
+        "y": 13
+      },
+      "scene": 2,
+      "spoiler": true,
+      "desc": "The top end of the infection spine. Only visible/relevant if SADYS fires. A single coral tendril creeping into GLADYS's rack.",
+      "map_label": "Tendril"
+    },
+    {
+      "id": "stasis-pods",
+      "name": "Stasis Pods",
+      "kind": "fixture",
+      "deck": "deck-a",
+      "room": "stasis-bay",
+      "pos": {
+        "x": 5,
+        "y": 20
+      },
+      "scene": 0,
+      "spoiler": false,
+      "desc": "Where the PCs wake. One pod was skipped — Grease's, if used.",
+      "map_label": "Stasis Pods"
+    },
+    {
+      "id": "holo-projector",
+      "name": "Holo-Projector / Power Point",
+      "kind": "fixture",
+      "deck": "deck-a",
+      "room": "holo-bay",
+      "pos": {
+        "x": 11,
+        "y": 32
+      },
+      "scene": 0,
+      "spoiler": false,
+      "desc": "Bartleby 'Feathers' recharges here after Hard Light.",
+      "map_label": "Holo Point"
+    },
+    {
+      "id": "mr-munch",
+      "name": "Mr. Munch",
+      "kind": "appliance_npc",
+      "deck": "deck-b",
+      "room": "mess-hall",
+      "pos": {
+        "x": 14,
+        "y": 20
+      },
+      "scene": 1,
+      "spoiler": false,
+      "desc": "Passive-aggressive snack machine; has rolled across the only door to the scrubber corridor. Solve by change/persuasion/STR.",
+      "map_label": "Mr. Munch"
+    },
+    {
+      "id": "coffee-machine",
+      "name": "The Weeping Coffee Machine",
+      "kind": "appliance_npc",
+      "deck": "deck-b",
+      "room": "mess-hall",
+      "pos": {
+        "x": 3,
+        "y": 10
+      },
+      "scene": 1,
+      "spoiler": false,
+      "desc": "Inconsolable. Comfort it and it gives the clue: it saw 'the wet thing' drag something shiny down the crawlspace. (Crown & Whisker's kin.)",
+      "map_label": "Coffee Machine"
+    },
+    {
+      "id": "infected-dispenser",
+      "name": "Infected Vending Machine",
+      "kind": "enemy",
+      "deck": "deck-b",
+      "room": "mess-hall",
+      "pos": {
+        "x": 12,
+        "y": 17
+      },
+      "scene": 1,
+      "spoiler": false,
+      "stats": {
+        "hp": 4,
+        "str": 12,
+        "dex": 5,
+        "armor": 2,
+        "attacks": "hurled cans d6 / electrified grab d8"
+      },
+      "desc": "Crusted with pulsing alien growth. First fight — quick and silly.",
+      "map_label": "Infected Disp."
+    },
+    {
+      "id": "scrubber-console",
+      "name": "Scrubber Console",
+      "kind": "fixture",
+      "deck": "deck-c",
+      "room": "scrubber-control",
+      "pos": {
+        "x": 5,
+        "y": 6
+      },
+      "scene": 2,
+      "spoiler": false,
+      "desc": "Flashing FAULT. The objective panel.",
+      "map_label": "Console"
+    },
+    {
+      "id": "scrubber-intake",
+      "name": "Scrubber Intake (egg-clogged)",
+      "kind": "obstacle",
+      "deck": "deck-c",
+      "room": "crawlspace",
+      "pos": {
+        "x": 6,
+        "y": 14
+      },
+      "scene": 2,
+      "spoiler": false,
+      "desc": "Choked with alien egg-sac gunk. Clearing it (DEX/STR save; K-7 auto) slows the O2 drop — and reveals the eggs.",
+      "map_label": "Intake (clogged)"
+    },
+    {
+      "id": "egg-cluster-c",
+      "name": "Egg Cluster (crawlspace)",
+      "kind": "alien_growth",
+      "deck": "deck-c",
+      "room": "crawlspace",
+      "pos": {
+        "x": 9,
+        "y": 18
+      },
+      "scene": 2,
+      "spoiler": true,
+      "desc": "The scare. Dozens of leathery glowing eggs in the warm machinery; one hatches.",
+      "map_label": "Eggs"
+    },
+    {
+      "id": "scuttler",
+      "name": "Scuttler (juvenile alien)",
+      "kind": "enemy",
+      "deck": "deck-c",
+      "room": "crawlspace",
+      "pos": {
+        "x": 11,
+        "y": 20
+      },
+      "scene": 2,
+      "spoiler": true,
+      "stats": {
+        "hp": 3,
+        "str": 6,
+        "dex": 14,
+        "armor": 0,
+        "attacks": "claws d6"
+      },
+      "desc": "Fast, screechy, more startling than dangerous. Chase-or-squish; the trail ends at the cargo hold.",
+      "map_label": "Scuttler"
+    },
+    {
+      "id": "faulty-airlock-sign",
+      "name": "'SEAL FAULTY — DO NOT CYCLE'",
+      "kind": "plot_device",
+      "deck": "deck-c",
+      "room": "maintenance-airlock",
+      "pos": {
+        "x": 17,
+        "y": 22
+      },
+      "scene": 2,
+      "spoiler": false,
+      "desc": "The planted solution. If the party doesn't note it, GLADYS mentions it offhandedly.",
+      "map_label": "DO NOT CYCLE"
+    },
+    {
+      "id": "salvaged-pod",
+      "name": "Salvaged Ascendance Escape Pod",
+      "kind": "object",
+      "deck": "deck-d",
+      "room": "salvaged-pod",
+      "pos": {
+        "x": 10,
+        "y": 16
+      },
+      "scene": 3,
+      "spoiler": true,
+      "desc": "Founder-class First Exodus lifeboat. Brood Mama came aboard inside it. The smoking gun behind Dusty's salvage authorization.",
+      "map_label": "Salvaged Pod"
+    },
+    {
+      "id": "brood-mama",
+      "name": "Brood Mama",
+      "kind": "boss",
+      "deck": "deck-d",
+      "room": "cargo-hold",
+      "pos": {
+        "x": 10,
+        "y": 15
+      },
+      "scene": 3,
+      "spoiler": true,
+      "stats": {
+        "hp": 12,
+        "str": 15,
+        "dex": 8,
+        "armor": 1,
+        "attacks": "lashing tongue d8 / acid spew d10 (blast)",
+        "weakness": "vacuum (instant)"
+      },
+      "desc": "Campy googly-eyed maternal horror the size of a forklift. Not, in her view, the villain. Positions to keep the party between herself and any airlock.",
+      "map_label": "Brood Mama"
+    },
+    {
+      "id": "nest-webbing",
+      "name": "Nest Webbing & Eggs",
+      "kind": "alien_growth",
+      "deck": "deck-d",
+      "room": "cargo-hold",
+      "pos": {
+        "x": 6,
+        "y": 9
+      },
+      "scene": 3,
+      "spoiler": true,
+      "desc": "Translucent webbing and egg clusters nested into every appliance and vent. The source of the whole infection spine.",
+      "map_label": "Nest"
+    },
+    {
+      "id": "egg-clusters-d",
+      "name": "Egg Clusters (hold)",
+      "kind": "alien_growth",
+      "deck": "deck-d",
+      "room": "cargo-hold",
+      "pos": {
+        "x": 15,
+        "y": 22
+      },
+      "scene": 3,
+      "spoiler": true,
+      "desc": "Warm clusters in the cold hold. One survives for the stinger if you want it.",
+      "map_label": "Eggs"
+    },
+    {
+      "id": "cargo-airlock-controls",
+      "name": "Cargo Airlock Controls",
+      "kind": "plot_device",
+      "deck": "deck-d",
+      "room": "cargo-airlock",
+      "pos": {
+        "x": 10,
+        "y": 32
+      },
+      "scene": 3,
+      "spoiler": false,
+      "desc": "Cycle it with Brood Mama inside to win. K-7 can operate it from inside vacuum unharmed — its moment.",
+      "map_label": "Airlock Ctrl"
+    }
   ],
-
   "scenes": [
-    { "n": 0, "title": "The Rude Awakening", "deck": "deck-a", "rooms": [ "stasis-bay", "bridge", "gladys-core" ], "entities": [ "gladys-core", "stasis-pods" ], "o2_pct": 80, "minutes": 10,
-      "beats": [ "Wake from stasis", "Meet GLADYS", "Get the objective: fix the air scrubbers (down past the mess hall, then the crawlspace)" ] },
-    { "n": 1, "title": "The Mess Hall Mutiny", "deck": "deck-b", "rooms": [ "mess-hall", "scrubber-corridor" ], "entities": [ "mr-munch", "coffee-machine", "infected-dispenser" ], "o2_pct": 60, "minutes": 25,
-      "beats": [ "Get past Mr. Munch", "Comfort the coffee machine for the clue", "Fight/avoid the infected dispenser", "Follow the slime trail down" ] },
-    { "n": 2, "title": "The Crawlspace", "deck": "deck-c", "rooms": [ "crawlspace", "scrubber-control", "maintenance-airlock" ], "entities": [ "scrubber-intake", "egg-cluster-c", "scuttler", "faulty-airlock-sign" ], "o2_pct": 50, "minutes": 25,
-      "beats": [ "Squeeze through the ducts", "Clear the egg-clogged intake (slows O2)", "The eggs reveal + a hatch", "Note the faulty maintenance airlock (the gun on the mantel)", "Trail leads down to the cargo hold" ] },
-    { "n": 3, "title": "The Nest", "deck": "deck-d", "rooms": [ "cargo-hold", "salvaged-pod", "cargo-airlock" ], "entities": [ "brood-mama", "salvaged-pod", "nest-webbing", "cargo-airlock-controls" ], "o2_pct": 40, "minutes": 25,
-      "beats": [ "Confront Brood Mama", "The airlock play (lure/shove + cycle; K-7 in vacuum) OR brawl", "Win: scrubbers roar back, air climbs to safe" ] }
+    {
+      "n": 0,
+      "title": "The Rude Awakening",
+      "deck": "deck-a",
+      "rooms": [
+        "stasis-bay",
+        "bridge",
+        "gladys-core"
+      ],
+      "entities": [
+        "gladys-core",
+        "stasis-pods"
+      ],
+      "o2_pct": 80,
+      "minutes": 10,
+      "beats": [
+        "Wake from stasis",
+        "Meet GLADYS",
+        "Get the objective: fix the air scrubbers (down past the mess hall, then the crawlspace)"
+      ]
+    },
+    {
+      "n": 1,
+      "title": "The Mess Hall Mutiny",
+      "deck": "deck-b",
+      "rooms": [
+        "mess-hall",
+        "scrubber-corridor"
+      ],
+      "entities": [
+        "mr-munch",
+        "coffee-machine",
+        "infected-dispenser"
+      ],
+      "o2_pct": 60,
+      "minutes": 25,
+      "beats": [
+        "Get past Mr. Munch",
+        "Comfort the coffee machine for the clue",
+        "Fight/avoid the infected dispenser",
+        "Follow the slime trail down"
+      ]
+    },
+    {
+      "n": 2,
+      "title": "The Crawlspace",
+      "deck": "deck-c",
+      "rooms": [
+        "crawlspace",
+        "scrubber-control",
+        "maintenance-airlock"
+      ],
+      "entities": [
+        "scrubber-intake",
+        "egg-cluster-c",
+        "scuttler",
+        "faulty-airlock-sign"
+      ],
+      "o2_pct": 50,
+      "minutes": 25,
+      "beats": [
+        "Squeeze through the ducts",
+        "Clear the egg-clogged intake (slows O2)",
+        "The eggs reveal + a hatch",
+        "Note the faulty maintenance airlock (the gun on the mantel)",
+        "Trail leads down to the cargo hold"
+      ]
+    },
+    {
+      "n": 3,
+      "title": "The Nest",
+      "deck": "deck-d",
+      "rooms": [
+        "cargo-hold",
+        "salvaged-pod",
+        "cargo-airlock"
+      ],
+      "entities": [
+        "brood-mama",
+        "salvaged-pod",
+        "nest-webbing",
+        "cargo-airlock-controls"
+      ],
+      "o2_pct": 40,
+      "minutes": 25,
+      "beats": [
+        "Confront Brood Mama",
+        "The airlock play (lure/shove + cycle; K-7 in vacuum) OR brawl",
+        "Win: scrubbers roar back, air climbs to safe"
+      ]
+    }
   ],
-
   "image_events": [
-    { "id": "scene0-wakeup", "scene": 0, "room": "stasis-bay", "spoiler": false, "show_to": "players",
-      "prompt": "Establishing shot: groggy skeleton crew tumbling out of venting stasis pods onto a cold grimy deck under flickering amber klaxon light, mist everywhere, a speaker grille glowing as a grandmotherly AI chimes. Comic morning-after disaster aboard a garbage barge." },
-    { "id": "gladys-screen", "scene": 0, "room": "gladys-core", "spoiler": false, "show_to": "players",
-      "prompt": "A kitschy CRT/monitor on a grimy bulkhead showing GLADYS's screensaver: a slowly rotating photo of a kettle she 'misses', warm amber glow, knitted doily on top of the terminal. Cozy and absurd." },
-    { "id": "mr-munch-blocks", "scene": 1, "room": "mess-hall", "spoiler": false, "show_to": "players",
-      "prompt": "A passive-aggressive snack vending machine has rolled itself across the only doorway out of a grimy mess hall, screen displaying 'PLEASE COMPLETE YOUR TRANSACTION', faint judgmental glow. Bolted tables and crumbs in the foreground. Deadpan comic standoff." },
-    { "id": "coffee-weeping", "scene": 1, "room": "mess-hall", "spoiler": false, "show_to": "players",
-      "prompt": "A sad, dented coffee machine on a greasy counter, a single drip like a tear, a hand-written 'TRY THE DECAF :(' note taped to it. Theatrical, inconsolable, comic pathos." },
-    { "id": "dispenser-fight", "scene": 1, "room": "mess-hall", "spoiler": false, "show_to": "players",
-      "prompt": "A vending machine crusted with pulsing coral-red alien growth lurching to life, hurling cans and arcing electricity across a grimy mess hall, sparks and amber light. B-movie comic menace, low stakes." },
-    { "id": "eggs-reveal", "scene": 2, "room": "crawlspace", "spoiler": true, "show_to": "warden",
-      "prompt": "Headlamp reveal inside a hot cramped service duct: pulling away a clot of slime uncovers dozens of leathery, faintly-glowing alien eggs packed into the warm machinery in the dark. Claustrophobic dread, coral glow against greasy steel." },
-    { "id": "scuttler-hatch", "scene": 2, "room": "crawlspace", "spoiler": true, "show_to": "warden",
-      "prompt": "A single alien egg splitting open in the dark of a service duct, a fast screechy juvenile creature scrabbling out toward the camera, motion blur, headlamp light. Startling but small and silly." },
-    { "id": "nest-broodmama", "scene": 3, "room": "cargo-hold", "spoiler": true, "show_to": "warden",
-      "prompt": "Reveal of Brood Mama: a campy, googly-eyed maternal alien the size of a forklift draped over a gold-trimmed salvaged escape pod in a vast freezing webbed cargo hold, surrounded by glowing eggs, breath-fog, failing floodlights. B-movie horror played for warmth and comedy, not grimdark." },
-    { "id": "airlock-vent-win", "scene": 3, "room": "cargo-airlock", "spoiler": true, "show_to": "warden",
-      "prompt": "Brood Mama tumbling out a massive cargo airlock into the black of space as the vault door cycles, an unbothered service android at the controls inside the vacuum, debris and frost swirling. Triumphant, slightly absurd." },
-    { "id": "sadys-lights-sag", "scene": 2, "room": "gladys-core", "spoiler": true, "show_to": "warden",
-      "prompt": "The ship's mood curdles: corridors half-lit, a coral tendril creeping into a warm computer core, the kettle screensaver now grey and still, a door hissing open with a defeated slowness. Melancholy comic gloom, same grimy ship." },
-    { "id": "customs-loss", "scene": "loss", "room": "exterior", "spoiler": false, "show_to": "warden",
-      "prompt": "Exterior: the drifting garbage barge being tractored into a Crown Reclamation Checkpoint by a prim Bermudian customs vessel; a polite holographic banner reads 'WE DO HOPE THIS FINDS YOU WELL'. An underwriter in pressed Bermuda shorts and knee-high socks waits with a clipboard. Deadpan bureaucratic humiliation." },
-    { "id": "stinger-egg-crack", "scene": 4, "room": "mess-hall", "spoiler": true, "show_to": "warden",
-      "prompt": "Final stinger: a single overlooked alien egg behind the coffee machine giving one soft crack, the coffee machine looking thrilled to be a parent. Warm, comic, ominous." }
+    {
+      "id": "scene0-wakeup",
+      "scene": 0,
+      "room": "stasis-bay",
+      "spoiler": false,
+      "show_to": "players",
+      "prompt": "Establishing shot: groggy skeleton crew tumbling out of venting stasis pods onto a cold grimy deck under flickering amber klaxon light, mist everywhere, a speaker grille glowing as a grandmotherly AI chimes. Comic morning-after disaster aboard a garbage barge."
+    },
+    {
+      "id": "gladys-screen",
+      "scene": 0,
+      "room": "gladys-core",
+      "spoiler": false,
+      "show_to": "players",
+      "prompt": "A kitschy CRT/monitor on a grimy bulkhead showing GLADYS's screensaver: a slowly rotating photo of a kettle she 'misses', warm amber glow, knitted doily on top of the terminal. Cozy and absurd."
+    },
+    {
+      "id": "mr-munch-blocks",
+      "scene": 1,
+      "room": "mess-hall",
+      "spoiler": false,
+      "show_to": "players",
+      "prompt": "A passive-aggressive snack vending machine has rolled itself across the only doorway out of a grimy mess hall, screen displaying 'PLEASE COMPLETE YOUR TRANSACTION', faint judgmental glow. Bolted tables and crumbs in the foreground. Deadpan comic standoff."
+    },
+    {
+      "id": "coffee-weeping",
+      "scene": 1,
+      "room": "mess-hall",
+      "spoiler": false,
+      "show_to": "players",
+      "prompt": "A sad, dented coffee machine on a greasy counter, a single drip like a tear, a hand-written 'TRY THE DECAF :(' note taped to it. Theatrical, inconsolable, comic pathos."
+    },
+    {
+      "id": "dispenser-fight",
+      "scene": 1,
+      "room": "mess-hall",
+      "spoiler": false,
+      "show_to": "players",
+      "prompt": "A vending machine crusted with pulsing coral-red alien growth lurching to life, hurling cans and arcing electricity across a grimy mess hall, sparks and amber light. B-movie comic menace, low stakes."
+    },
+    {
+      "id": "eggs-reveal",
+      "scene": 2,
+      "room": "crawlspace",
+      "spoiler": true,
+      "show_to": "warden",
+      "prompt": "Headlamp reveal inside a hot cramped service duct: pulling away a clot of slime uncovers dozens of leathery, faintly-glowing alien eggs packed into the warm machinery in the dark. Claustrophobic dread, coral glow against greasy steel."
+    },
+    {
+      "id": "scuttler-hatch",
+      "scene": 2,
+      "room": "crawlspace",
+      "spoiler": true,
+      "show_to": "warden",
+      "prompt": "A single alien egg splitting open in the dark of a service duct, a fast screechy juvenile creature scrabbling out toward the camera, motion blur, headlamp light. Startling but small and silly."
+    },
+    {
+      "id": "nest-broodmama",
+      "scene": 3,
+      "room": "cargo-hold",
+      "spoiler": true,
+      "show_to": "warden",
+      "prompt": "Reveal of Brood Mama: a campy, googly-eyed maternal alien the size of a forklift draped over a gold-trimmed salvaged escape pod in a vast freezing webbed cargo hold, surrounded by glowing eggs, breath-fog, failing floodlights. B-movie horror played for warmth and comedy, not grimdark."
+    },
+    {
+      "id": "airlock-vent-win",
+      "scene": 3,
+      "room": "cargo-airlock",
+      "spoiler": true,
+      "show_to": "warden",
+      "prompt": "Brood Mama tumbling out a massive cargo airlock into the black of space as the vault door cycles, an unbothered service android at the controls inside the vacuum, debris and frost swirling. Triumphant, slightly absurd."
+    },
+    {
+      "id": "sadys-lights-sag",
+      "scene": 2,
+      "room": "gladys-core",
+      "spoiler": true,
+      "show_to": "warden",
+      "prompt": "The ship's mood curdles: corridors half-lit, a coral tendril creeping into a warm computer core, the kettle screensaver now grey and still, a door hissing open with a defeated slowness. Melancholy comic gloom, same grimy ship."
+    },
+    {
+      "id": "customs-loss",
+      "scene": "loss",
+      "room": "exterior",
+      "spoiler": false,
+      "show_to": "warden",
+      "prompt": "Exterior: the drifting garbage barge being tractored into a Crown Reclamation Checkpoint by a prim Bermudian customs vessel; a polite holographic banner reads 'WE DO HOPE THIS FINDS YOU WELL'. An underwriter in pressed Bermuda shorts and knee-high socks waits with a clipboard. Deadpan bureaucratic humiliation."
+    },
+    {
+      "id": "stinger-egg-crack",
+      "scene": 4,
+      "room": "mess-hall",
+      "spoiler": true,
+      "show_to": "warden",
+      "prompt": "Final stinger: a single overlooked alien egg behind the coffee machine giving one soft crack, the coffee machine looking thrilled to be a parent. Warm, comic, ominous."
+    }
   ]
 }

@@ -107,6 +107,9 @@ function kindColor(kind){
 }
 // is a room hidden-as-unexplored for players?
 const roomHidden = r => (mode==="player" && r.spoiler);
+// short, mode-aware display labels (concise map_label, paren-stripped for players)
+const roomLabel = r => { const L=r.map_label||r.name; return mode==="player"?stripParen(L):L; };
+const entLabel  = e => { const L=e.map_label||e.name; return mode==="player"?stripParen(L):L; };
 
 /* ---------- per-deck plan ---------- */
 const S = 14, PAD = 30;   // px per grid unit, padding
@@ -142,10 +145,10 @@ function deckSVG(deck){
     const cls = hidden ? "room unexplored"
       : "room scene" + (r.type==="duct_network"?" duct":"") + ((mode==="warden"&&r.spoiler)?" spoiler":"");
     out += `<rect class="${cls}" x="${x}" y="${y}" width="${w}" height="${h}" rx="6"/>`;
-    // label (2-line wrap if long vs room width)
-    const name = hidden ? "Unexplored" : (mode==="player" ? stripParen(r.name) : r.name);
+    // label — single line, fit-to-room in a post-render pass
+    const name = hidden ? "Unexplored" : roomLabel(r);
     const lblCls = hidden ? "lbl un" : ((mode==="warden"&&r.spoiler) ? "lbl sp" : "lbl");
-    out += wrapLabel(name, x+6, y+16, w-10, lblCls);
+    out += `<text class="${lblCls} fit" data-maxw="${Math.max(20,(w-12)).toFixed(0)}" x="${x+6}" y="${y+16}">${esc(name)}</text>`;
   });
 
   // entities
@@ -153,26 +156,46 @@ function deckSVG(deck){
     if(mode==="player" && e.spoiler) return;
     const home = roomById[e.room];
     if(home && roomHidden(home)) return;     // don't reveal items in unexplored rooms
-    const cx=PX(e.pos), cy=PY(e.pos);
-    const dn = mode==="player" ? stripParen(e.name) : e.name;
-    out += `<g class="ent"><circle cx="${cx}" cy="${cy}" r="5" fill="${kindColor(e.kind)}"/>`;
-    out += `<text class="ent-lbl" x="${cx+8}" y="${cy+3}" fill="${kindColor(e.kind)}">${esc(shortName(dn))}</text></g>`;
+    const cx=PX(e.pos), cy=PY(e.pos), col=kindColor(e.kind);
+    out += `<g class="ent"><circle cx="${cx}" cy="${cy}" r="5" fill="${col}"/>`;
+    out += `<text class="ent-lbl entfit" data-cx="${cx.toFixed(0)}" data-minx="6" data-maxx="${(W-6).toFixed(0)}" x="${cx+8}" y="${cy+3}" fill="${col}">${esc(entLabel(e))}</text></g>`;
   });
 
   out += `</svg>`;
   return out;
 }
 
-function shortName(n){ return n.length>22 ? n.slice(0,21)+"…" : n; }
-function wrapLabel(text, x, y, maxW, cls){
-  const approx = text.length*6.2;           // rough px width at 12px
-  if(approx <= maxW || text.indexOf(" ")<0) return `<text class="${cls}" x="${x}" y="${y}">${esc(text)}</text>`;
-  // split near middle on a space
-  const mid = Math.floor(text.length/2);
-  let cut = text.lastIndexOf(" ", mid); if(cut<3) cut = text.indexOf(" ", mid);
-  const a = text.slice(0,cut), b = text.slice(cut+1);
-  return `<text class="${cls}" x="${x}" y="${y}">${esc(a)}</text>`
-       + `<text class="${cls}" x="${x}" y="${y+13}">${esc(b)}</text>`;
+// Post-render measurement pass: keep every label inside its bounds.
+function fitLabels(){
+  const root=document.getElementById("content");
+  if(!root || !root.querySelectorAll) return;   // no-op outside a browser
+  const win = window;
+  const startFS = t => parseFloat(win.getComputedStyle(t).fontSize) || 12;
+  const ellipsize = (t, max) => { let s=t.textContent; while(s.length>1 && t.getComputedTextLength()>max){ s=s.slice(0,-1).replace(/…$/,""); t.textContent=s+"…"; } };
+  // room / deck labels: shrink to floor, then ellipsize, to fit data-maxw
+  root.querySelectorAll("text.fit").forEach(t=>{
+    if(typeof t.getComputedTextLength!=="function") return;
+    const maxw=parseFloat(t.getAttribute("data-maxw")); if(!maxw) return;
+    let fs=startFS(t); const floor=Math.max(7, fs-4);
+    while(t.getComputedTextLength()>maxw && fs>floor){ fs-=0.5; t.style.fontSize=fs+"px"; }
+    if(t.getComputedTextLength()>maxw) ellipsize(t, maxw);
+  });
+  // entity labels: flip to the marker's left if they'd run off the right edge, then fit
+  root.querySelectorAll("text.entfit").forEach(t=>{
+    if(typeof t.getComputedTextLength!=="function") return;
+    const cx=parseFloat(t.getAttribute("data-cx")), minx=parseFloat(t.getAttribute("data-minx")), maxx=parseFloat(t.getAttribute("data-maxx"));
+    let fs=startFS(t); const floor=8;
+    let avail;
+    if(cx+8+t.getComputedTextLength() > maxx){           // would overflow right -> place left
+      t.setAttribute("text-anchor","end");
+      t.setAttribute("x", (cx-8).toFixed(0));
+      avail=(cx-8)-minx;
+    } else {
+      avail=maxx-(cx+8);
+    }
+    while(t.getComputedTextLength()>avail && fs>floor){ fs-=0.5; t.style.fontSize=fs+"px"; }
+    if(t.getComputedTextLength()>avail) ellipsize(t, avail);
+  });
 }
 
 /* ---------- aside (scene notes from data) ---------- */
@@ -221,10 +244,11 @@ function overviewSVG(){
     const y=bandY(d.level), sc=sceneByDeck[d.id];
     const spoilerDeck = (mode==="warden" && d.scene===3);
     out += `<rect class="room ${spoilerDeck?'spoiler':'scene'}" x="${x0}" y="${y+8}" width="${x1-x0}" height="${bandH-20}" rx="8"/>`;
-    out += `<text class="lbl ${spoilerDeck?'sp':''}" x="${x0+16}" y="${y+32}">Deck ${d.id.slice(-1).toUpperCase()} · ${esc(d.name)}</text>`;
+    const mw = x1-x0-32;
+    out += `<text class="lbl ${spoilerDeck?'sp':''} fit" data-maxw="${mw}" x="${x0+16}" y="${y+32}">Deck ${d.id.slice(-1).toUpperCase()} · ${esc(d.name)}</text>`;
     let sub = sc ? `O₂ ${sc.o2_pct}%` : "";
     if(mode==="warden" && sc) sub = `Scene ${sc.n} · ${esc(sc.title)} · O₂ ${sc.o2_pct}% · ~${sc.minutes} min`;
-    out += `<text class="sub" x="${x0+16}" y="${y+50}">${sub}</text>`;
+    out += `<text class="sub fit" data-maxw="${mw}" x="${x0+16}" y="${y+50}">${sub}</text>`;
   });
 
   // vertical connectors
@@ -236,8 +260,7 @@ function overviewSVG(){
     const dash  = c.kind==="ladder_lift" ? "" : `stroke-dasharray="6 5"`;
     out += `<line class="conn" x1="${X}" y1="${top}" x2="${X}" y2="${bot}" stroke="${color}" ${dash}/>`;
     out += `<circle cx="${X}" cy="${top}" r="3" fill="${color}"/><circle cx="${X}" cy="${bot}" r="3" fill="${color}"/>`;
-    const lx = X<x0 ? X-6 : X>x1 ? X+6 : X+6, anchor = X<x0?"end":"start";
-    out += `<text class="conn-lbl" x="${lx}" y="${(top+bot)/2}" fill="${color}" text-anchor="${anchor}" transform="rotate(-90 ${lx} ${(top+bot)/2})">${esc(c.name)}</text>`;
+    out += `<text class="conn-lbl" x="${X}" y="${top-7}" fill="${color}" text-anchor="middle">${esc(c.map_label||c.name)}</text>`;
   });
   out += `</svg>`;
   return out;
@@ -273,6 +296,7 @@ function render(){
     html += panel(`Deck ${d.id.slice(-1).toUpperCase()} · ${tag}`, deckSVG(d), deckAside(d));
   });
   document.getElementById("content").innerHTML = html;
+  try { fitLabels(); } catch(e) { /* measurement is best-effort */ }
 }
 function setMode(m){
   mode = m;
