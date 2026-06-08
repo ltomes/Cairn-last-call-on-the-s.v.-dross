@@ -25,6 +25,9 @@
   .deck .ent-lbl{ font:600 10px var(--sans,sans-serif); }
   .deck .conn{ fill:none; stroke-width:3; }
   .deck .conn-lbl{ font:600 10px var(--mono,monospace); letter-spacing:.04em; }
+  .deck .wf{ fill:none; stroke-linejoin:round; stroke-linecap:round; opacity:.9; }
+  .deck .wf-node{ stroke:var(--bg); stroke-width:1; }
+  .deck .wf-lbl{ font:600 10px var(--mono,monospace); letter-spacing:.03em; }
   .map-aside{ font-size:13.5px; }
   .map-aside h4{ margin:0 0 4px; color:var(--teal); font-size:12px; text-transform:uppercase; letter-spacing:.1em; }
   .map-aside .o2{ font-family:var(--mono); color:var(--amber); font-size:12px; margin:0 0 8px; }
@@ -135,6 +138,9 @@ function deckSVG(deck){
   let out = `<svg class="deck" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(deck.name)} deck plan">`;
   // hull + axes
   out += `<rect class="wall" x="${PAD-8}" y="${PAD-8}" width="${W-2*PAD+16}" height="${H-2*PAD+16}" rx="10"/>`;
+  // ship hull outline for this deck (blunt bow -> spine -> aft bulb), if present
+  if(deck.hull){ const hp = deck.hull.map(p=>`${(PAD+p[1]*S).toFixed(1)},${(PAD+p[0]*S).toFixed(1)}`).join(" ");
+    out += `<polygon class="hull" points="${hp}" fill="none" stroke="#6fb6ac" stroke-width="2.5" opacity="0.8"/>`; }
   out += `<text class="axis" x="${PAD-12}" y="${H/2}" transform="rotate(-90 ${PAD-12} ${H/2})" text-anchor="middle">FORE</text>`;
   out += `<text class="axis" x="${W-PAD+18}" y="${H/2}" transform="rotate(90 ${W-PAD+18} ${H/2})" text-anchor="middle">AFT</text>`;
 
@@ -144,7 +150,10 @@ function deckSVG(deck){
     const t = roomById[d.to]; if(!t) return;                 // cross-deck -> shown via connectors
     if(roomHidden(r) || roomHidden(t)) return;
     const key = [r.id,d.to].sort().join("|"); if(seen[key]) return; seen[key]=1;
-    const a = center(r), b = center(t);
+    // draw the door at the THRESHOLD (facing edges), not center-to-center across the void
+    const bb = x => ({x0:RX(x.rect),y0:RY(x.rect),x1:RX(x.rect)+RW(x.rect),y1:RY(x.rect)+RH(x.rect)});
+    const clamp = (p,b) => ({x:Math.max(b.x0,Math.min(b.x1,p.x)), y:Math.max(b.y0,Math.min(b.y1,p.y))});
+    const a = clamp(center(t), bb(r)), b = clamp(center(r), bb(t));
     out += `<line class="door ${d.kind==='duct'?'duct':''}" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}"/>`;
   }));
 
@@ -159,6 +168,27 @@ function deckSVG(deck){
     const name = hidden ? "Unexplored" : roomLabel(r);
     const lblCls = hidden ? "lbl un" : ((mode==="warden"&&r.spoiler) ? "lbl sp" : "lbl");
     out += `<text class="${lblCls} fit" data-maxw="${Math.max(20,(w-12)).toFixed(0)}" x="${x+6}" y="${y+16}">${esc(name)}</text>`;
+  });
+
+  // wayfinding routes (deck-coloured floor guides toward the way DOWN; solid=primary
+  // ladderway, dashed=secondary crawlspace). Same grid->svg transform as entities.
+  const WP = p => ({ x: PAD + p[1]*S, y: PAD + p[0]*S });
+  ((SHIP.wayfinding && SHIP.wayfinding.routes) || []).filter(rt=>rt.deck===deck.id).forEach(rt=>{
+    if(mode==="player" && (rt.spoiler || rt.reveal==="warden")) return;
+    const col = ((SHIP.wayfinding.deck_colors)||{})[deck.id] || "var(--teal)";
+    const pts = (rt.path||[]).map(WP);
+    if(pts.length<2) return;
+    const dash = rt.role==="secondary" ? ` stroke-dasharray="7 5"` : "";
+    const dAttr = "M" + pts.map(p=>`${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(" L");
+    out += `<path class="wf ${rt.role}" data-route="${esc(rt.id)}" data-reveal="${esc(rt.reveal||'always')}" d="${dAttr}" fill="none" stroke="${col}" stroke-width="3"${dash}/>`;
+    for(let i=0;i<pts.length-1;i++){            // direction chevrons toward the destination
+      const a=pts[i], b=pts[i+1], mx=(a.x+b.x)/2, my=(a.y+b.y)/2, ang=Math.atan2(b.y-a.y,b.x-a.x), s=6;
+      const tri=[[mx+s*Math.cos(ang),my+s*Math.sin(ang)],[mx+s*Math.cos(ang+2.6),my+s*Math.sin(ang+2.6)],[mx+s*Math.cos(ang-2.6),my+s*Math.sin(ang-2.6)]];
+      out += `<path class="wf-node" d="M${tri.map(t=>t[0].toFixed(1)+' '+t[1].toFixed(1)).join(' L')} Z" fill="${col}"/>`;
+    }
+    const end=pts[pts.length-1];                // terminal descend/exit marker + label
+    out += `<circle class="wf-node" cx="${end.x.toFixed(1)}" cy="${end.y.toFixed(1)}" r="6" fill="${col}"/>`;
+    out += `<text class="wf-lbl" x="${end.x.toFixed(1)}" y="${(end.y-10).toFixed(1)}" text-anchor="middle" fill="${col}">${esc(rt.label||"")}</text>`;
   });
 
   // entities

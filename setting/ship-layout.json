@@ -66,36 +66,49 @@
           "name": "Bridge",
           "type": "command",
           "rect": {
-            "x": 5,
-            "y": 2,
-            "w": 10,
-            "h": 6
+            "x": 7,
+            "y": 1,
+            "w": 5,
+            "h": 4
           },
           "doors": [
             {
               "to": "commons-a",
+              "kind": "door"
+            },
+            {
+              "to": "corr-a",
               "kind": "door"
             }
           ],
           "lighting": "Forward viewport black with stars; console glow.",
           "mood": "Unmanned, autopilot blinking.",
           "image_prompt": "the cramped forward bridge of the garbage barge S.V. Dross: a blunt hammerhead cockpit with a scuffed viewport onto starfield, mismatched analog consoles, a chipped captain's chair with a cushion, hand-labeled switches, a mug left on the dash. Unmanned, autopilot lights blinking amber.",
-          "map_label": "Bridge"
+          "map_label": "Bridge",
+          "entities": [
+            "bridge-consoles",
+            "captains-chair",
+            "bridge-viewport"
+          ]
         },
         {
           "id": "gladys-core",
           "name": "GLADYS Personality Core",
           "type": "computer",
           "rect": {
-            "x": 7,
-            "y": 9,
-            "w": 6,
-            "h": 5
+            "x": 12,
+            "y": 2,
+            "w": 2,
+            "h": 2
           },
           "doors": [
             {
               "to": "commons-a",
               "kind": "hatch"
+            },
+            {
+              "to": "corr-a",
+              "kind": "door"
             }
           ],
           "entities": [
@@ -113,18 +126,23 @@
           "type": "quarters",
           "rect": {
             "x": 1,
-            "y": 16,
-            "w": 8,
-            "h": 9
+            "y": 7,
+            "w": 7,
+            "h": 7
           },
           "doors": [
             {
               "to": "commons-a",
               "kind": "door"
+            },
+            {
+              "to": "corr-a",
+              "kind": "door"
             }
           ],
           "entities": [
-            "stasis-pods"
+            "stasis-pods",
+            "stasis-bench"
           ],
           "lighting": "Frosted pod glass underlit, amber klaxon.",
           "mood": "The waking room — Scene 0 starts here.",
@@ -136,14 +154,18 @@
           "name": "Crew Quarters",
           "type": "quarters",
           "rect": {
-            "x": 12,
-            "y": 16,
-            "w": 7,
-            "h": 9
+            "x": 10,
+            "y": 7,
+            "w": 8,
+            "h": 7
           },
           "doors": [
             {
               "to": "commons-a",
+              "kind": "door"
+            },
+            {
+              "to": "corr-a",
               "kind": "door"
             }
           ],
@@ -156,9 +178,9 @@
           "name": "Habitation Corridor",
           "type": "corridor",
           "rect": {
-            "x": 1,
-            "y": 26,
-            "w": 18,
+            "x": 2,
+            "y": 16,
+            "w": 16,
             "h": 3
           },
           "doors": [
@@ -169,11 +191,18 @@
             {
               "to": "ladderway",
               "kind": "ladder"
+            },
+            {
+              "to": "corr-a",
+              "kind": "door"
             }
           ],
           "lighting": "Strip lighting, half working.",
           "mood": "Spine of the deck.",
-          "map_label": "Corridor"
+          "map_label": "Corridor",
+          "entities": [
+            "ship-map"
+          ]
         },
         {
           "id": "holo-bay",
@@ -181,9 +210,9 @@
           "type": "utility",
           "rect": {
             "x": 8,
-            "y": 30,
-            "w": 6,
-            "h": 5
+            "y": 19,
+            "w": 4,
+            "h": 4
           },
           "doors": [
             {
@@ -192,13 +221,83 @@
             }
           ],
           "entities": [
-            "holo-projector"
+            "holo-projector",
+            "bartleby-hologram"
           ],
           "lighting": "Cool projector flicker.",
           "mood": "Bartleby's recharge point (the holo power point).",
           "image_prompt": "a dingy projector alcove with a humming holo-emitter pylon and a worn 'recharge' pad ring on the floor, scuffed warning chevrons, a flickering light-projection of a prim deceased crewman in a blazer standing on it. Comic, slightly sad.",
           "map_label": "Holo Bay"
+        },
+        {
+          "id": "corr-a",
+          "name": "Forward Spine Corridor",
+          "type": "corridor",
+          "rect": {
+            "x": 8,
+            "y": 4,
+            "w": 2,
+            "h": 13
+          },
+          "doors": [
+            {
+              "to": "bridge",
+              "kind": "door"
+            },
+            {
+              "to": "gladys-core",
+              "kind": "door"
+            },
+            {
+              "to": "stasis-bay",
+              "kind": "door"
+            },
+            {
+              "to": "crew-quarters",
+              "kind": "door"
+            },
+            {
+              "to": "commons-a",
+              "kind": "door"
+            }
+          ],
+          "lighting": "Flickering strip light and a hand-stencilled deck letter.",
+          "map_label": "Forward corr."
         }
+      ],
+      "hull": [
+        [
+          3,
+          0
+        ],
+        [
+          16,
+          0
+        ],
+        [
+          19,
+          4
+        ],
+        [
+          19,
+          22
+        ],
+        [
+          16,
+          24
+        ],
+        [
+          3,
+          24
+        ],
+        [
+          0,
+          20
+        ],
+        [
+          0,
+          4
+        ]
       ]
     },
     {
@@ -226,9 +325,9 @@
           "type": "commons",
           "rect": {
             "x": 2,
-            "y": 4,
-            "w": 13,
-            "h": 16
+            "y": 3,
+            "w": 9,
+            "h": 9
           },
           "doors": [
             {
@@ -239,12 +338,18 @@
             {
               "to": "ladderway",
               "kind": "ladder"
+            },
+            {
+              "to": "corr-b",
+              "kind": "door"
             }
           ],
           "entities": [
             "mr-munch",
             "coffee-machine",
-            "infected-dispenser"
+            "infected-dispenser",
+            "vending-wall",
+            "mess-tables"
           ],
           "lighting": "Dim greasy strip light, vending-machine glow.",
           "mood": "The mutiny room.",
@@ -256,10 +361,10 @@
           "name": "Dry Store",
           "type": "utility",
           "rect": {
-            "x": 15,
-            "y": 4,
+            "x": 12,
+            "y": 3,
             "w": 4,
-            "h": 7
+            "h": 5
           },
           "doors": [
             {
@@ -276,13 +381,17 @@
           "type": "commons",
           "rect": {
             "x": 2,
-            "y": 22,
-            "w": 7,
-            "h": 6
+            "y": 14,
+            "w": 5,
+            "h": 5
           },
           "doors": [
             {
               "to": "mess-hall",
+              "kind": "door"
+            },
+            {
+              "to": "corr-b",
               "kind": "door"
             }
           ],
@@ -294,22 +403,91 @@
           "name": "Scrubber Corridor (to crawlspace)",
           "type": "corridor",
           "rect": {
-            "x": 10,
-            "y": 22,
-            "w": 8,
-            "h": 8
+            "x": 9,
+            "y": 13,
+            "w": 3,
+            "h": 9
           },
           "doors": [
             {
               "to": "crawlspace",
               "kind": "stair"
+            },
+            {
+              "to": "corr-b",
+              "kind": "door"
             }
           ],
           "lighting": "Single caged bulb.",
           "mood": "The way down. Slime trail leads here.",
           "image_prompt": "a narrow grimy service corridor leading aft and down off a ship mess hall, a single caged bulb, a 'SCRUBBER CONTROL — AUTHORIZED CREW' stencil, a faint glistening slime trail on the floor leading toward a hatch in the deck. Ominous but mundane.",
-          "map_label": "To Scrubbers"
+          "map_label": "To Scrubbers",
+          "entities": [
+            "slime-trail",
+            "scrubber-stencil"
+          ]
+        },
+        {
+          "id": "corr-b",
+          "name": "Mess Corridor",
+          "type": "corridor",
+          "rect": {
+            "x": 7,
+            "y": 11,
+            "w": 2,
+            "h": 4
+          },
+          "doors": [
+            {
+              "to": "mess-hall",
+              "kind": "door"
+            },
+            {
+              "to": "rec-nook",
+              "kind": "door"
+            },
+            {
+              "to": "scrubber-corridor",
+              "kind": "door"
+            }
+          ],
+          "lighting": "Flickering strip light and a hand-stencilled deck letter.",
+          "map_label": "Mess corr."
         }
+      ],
+      "hull": [
+        [
+          2,
+          0
+        ],
+        [
+          16,
+          0
+        ],
+        [
+          18,
+          3
+        ],
+        [
+          18,
+          21
+        ],
+        [
+          15,
+          24
+        ],
+        [
+          3,
+          24
+        ],
+        [
+          0,
+          21
+        ],
+        [
+          0,
+          3
+        ]
       ]
     },
     {
@@ -337,18 +515,23 @@
           "type": "machinery",
           "rect": {
             "x": 2,
-            "y": 3,
-            "w": 6,
-            "h": 6
+            "y": 2,
+            "w": 4,
+            "h": 4
           },
           "doors": [
             {
               "to": "crawlspace",
               "kind": "hatch"
+            },
+            {
+              "to": "corr-c",
+              "kind": "door"
             }
           ],
           "entities": [
-            "scrubber-console"
+            "scrubber-console",
+            "scrubber-fault-panel"
           ],
           "lighting": "Red 'FAULT' panel glow.",
           "mood": "The objective.",
@@ -360,15 +543,19 @@
           "name": "Lift-Reactor Plant",
           "type": "machinery",
           "rect": {
-            "x": 12,
-            "y": 3,
-            "w": 6,
-            "h": 6
+            "x": 13,
+            "y": 2,
+            "w": 5,
+            "h": 5
           },
           "doors": [
             {
               "to": "crawlspace",
               "kind": "hatch"
+            },
+            {
+              "to": "corr-c",
+              "kind": "door"
             }
           ],
           "mood": "The 'lift' (reclaimite) reactor; warm hum, do-not-touch energy.",
@@ -379,10 +566,10 @@
           "name": "Service Crawlspace (duct network)",
           "type": "duct_network",
           "rect": {
-            "x": 2,
-            "y": 10,
-            "w": 16,
-            "h": 18
+            "x": 8,
+            "y": 6,
+            "w": 2,
+            "h": 16
           },
           "doors": [
             {
@@ -396,6 +583,10 @@
             {
               "to": "cargo-hold",
               "kind": "duct"
+            },
+            {
+              "to": "corr-c",
+              "kind": "door"
             }
           ],
           "entities": [
@@ -413,10 +604,10 @@
           "name": "Maintenance Airlock (FAULTY)",
           "type": "airlock",
           "rect": {
-            "x": 16,
-            "y": 20,
+            "x": 15,
+            "y": 16,
             "w": 3,
-            "h": 5
+            "h": 3
           },
           "doors": [
             {
@@ -438,9 +629,9 @@
           "type": "machinery",
           "rect": {
             "x": 2,
-            "y": 30,
-            "w": 6,
-            "h": 6
+            "y": 22,
+            "w": 4,
+            "h": 4
           },
           "doors": [
             {
@@ -450,7 +641,68 @@
           ],
           "mood": "Gurgling tanks, a smell best not described.",
           "map_label": "Water Recl."
+        },
+        {
+          "id": "corr-c",
+          "name": "Service Corridor",
+          "type": "corridor",
+          "rect": {
+            "x": 6,
+            "y": 4,
+            "w": 2,
+            "h": 4
+          },
+          "doors": [
+            {
+              "to": "scrubber-control",
+              "kind": "door"
+            },
+            {
+              "to": "power-plant",
+              "kind": "door"
+            },
+            {
+              "to": "crawlspace",
+              "kind": "door"
+            }
+          ],
+          "lighting": "Flickering strip light and a hand-stencilled deck letter.",
+          "map_label": "Service corr."
         }
+      ],
+      "hull": [
+        [
+          2,
+          0
+        ],
+        [
+          18,
+          0
+        ],
+        [
+          20,
+          3
+        ],
+        [
+          20,
+          25
+        ],
+        [
+          17,
+          28
+        ],
+        [
+          3,
+          28
+        ],
+        [
+          0,
+          25
+        ],
+        [
+          0,
+          3
+        ]
       ]
     },
     {
@@ -478,9 +730,9 @@
           "type": "cargo",
           "rect": {
             "x": 1,
-            "y": 3,
-            "w": 18,
-            "h": 28
+            "y": 2,
+            "w": 19,
+            "h": 24
           },
           "doors": [
             {
@@ -494,6 +746,10 @@
             {
               "to": "ladderway",
               "kind": "ladder"
+            },
+            {
+              "to": "corr-d",
+              "kind": "door"
             }
           ],
           "entities": [
@@ -513,10 +769,10 @@
           "name": "Salvaged Ascendance Escape Pod",
           "type": "object",
           "rect": {
-            "x": 7,
-            "y": 13,
-            "w": 6,
-            "h": 6
+            "x": 8,
+            "y": 11,
+            "w": 5,
+            "h": 5
           },
           "doors": [],
           "entities": [
@@ -532,19 +788,24 @@
           "name": "Main Cargo Airlock",
           "type": "airlock",
           "rect": {
-            "x": 7,
-            "y": 31,
-            "w": 6,
+            "x": 8,
+            "y": 27,
+            "w": 5,
             "h": 4
           },
           "doors": [
             {
               "to": "cargo-hold",
               "kind": "door"
+            },
+            {
+              "to": "corr-d",
+              "kind": "door"
             }
           ],
           "entities": [
-            "cargo-airlock-controls"
+            "cargo-airlock-controls",
+            "cargo-vault-door"
           ],
           "lighting": "Teal status ring.",
           "mood": "The vacuum solution. Big enough for a forklift-sized horror.",
@@ -557,19 +818,84 @@
           "type": "machinery",
           "rect": {
             "x": 1,
-            "y": 34,
-            "w": 18,
+            "y": 32,
+            "w": 19,
             "h": 4
           },
           "doors": [
             {
               "to": "cargo-hold",
               "kind": "hatch"
+            },
+            {
+              "to": "corr-d",
+              "kind": "door"
             }
           ],
           "mood": "The garbage compactor/intake at the stern. Toothy, dormant, flavor (and a tempting hazard).",
           "map_label": "Reclam. Maw"
+        },
+        {
+          "id": "corr-d",
+          "name": "Hold Gangway",
+          "type": "corridor",
+          "rect": {
+            "x": 9,
+            "y": 25,
+            "w": 4,
+            "h": 3
+          },
+          "doors": [
+            {
+              "to": "cargo-hold",
+              "kind": "door"
+            },
+            {
+              "to": "cargo-airlock",
+              "kind": "door"
+            },
+            {
+              "to": "reclamation-maw",
+              "kind": "door"
+            }
+          ],
+          "lighting": "Flickering strip light and a hand-stencilled deck letter.",
+          "map_label": "Hold corr."
         }
+      ],
+      "hull": [
+        [
+          1,
+          0
+        ],
+        [
+          19,
+          0
+        ],
+        [
+          21,
+          4
+        ],
+        [
+          21,
+          33
+        ],
+        [
+          18,
+          37
+        ],
+        [
+          2,
+          37
+        ],
+        [
+          0,
+          33
+        ],
+        [
+          0,
+          4
+        ]
       ]
     }
   ],
@@ -646,13 +972,15 @@
       "deck": "deck-a",
       "room": "gladys-core",
       "pos": {
-        "x": 10,
-        "y": 11
+        "x": 13,
+        "y": 2.8
       },
       "scene": 0,
       "spoiler": false,
       "desc": "Government-issue ship AI. Warm, grandmotherly, catastrophically forgetful. Becomes SADYS if the infection spine reaches her at 40% O2.",
-      "map_label": "GLADYS"
+      "map_label": "GLADYS",
+      "reveal": "on_enter",
+      "place": "fixture"
     },
     {
       "id": "infection-tendril-a",
@@ -661,13 +989,15 @@
       "deck": "deck-a",
       "room": "gladys-core",
       "pos": {
-        "x": 8,
-        "y": 13
+        "x": 12.33,
+        "y": 3.6
       },
       "scene": 2,
       "spoiler": true,
       "desc": "The top end of the infection spine. Only visible/relevant if SADYS fires. A single coral tendril creeping into GLADYS's rack.",
-      "map_label": "Tendril"
+      "map_label": "Tendril",
+      "reveal": "warden",
+      "place": "wall"
     },
     {
       "id": "stasis-pods",
@@ -676,13 +1006,15 @@
       "deck": "deck-a",
       "room": "stasis-bay",
       "pos": {
-        "x": 5,
-        "y": 20
+        "x": 4.5,
+        "y": 10.11
       },
       "scene": 0,
       "spoiler": false,
       "desc": "Where the PCs wake. One pod was skipped — Grease's, if used.",
-      "map_label": "Stasis Pods"
+      "map_label": "Stasis Pods",
+      "reveal": "always",
+      "place": "floor"
     },
     {
       "id": "holo-projector",
@@ -691,13 +1023,15 @@
       "deck": "deck-a",
       "room": "holo-bay",
       "pos": {
-        "x": 11,
-        "y": 32
+        "x": 10,
+        "y": 20.6
       },
       "scene": 0,
       "spoiler": false,
       "desc": "Bartleby 'Feathers' recharges here after Hard Light.",
-      "map_label": "Holo Point"
+      "map_label": "Holo Point",
+      "reveal": "always",
+      "place": "floor"
     },
     {
       "id": "mr-munch",
@@ -706,13 +1040,15 @@
       "deck": "deck-b",
       "room": "mess-hall",
       "pos": {
-        "x": 14,
-        "y": 20
+        "x": 10.31,
+        "y": 12
       },
       "scene": 1,
       "spoiler": false,
       "desc": "Passive-aggressive snack machine; has rolled across the only door to the scrubber corridor. Solve by change/persuasion/STR.",
-      "map_label": "Mr. Munch"
+      "map_label": "Mr. Munch",
+      "reveal": "on_enter",
+      "place": "appliance"
     },
     {
       "id": "coffee-machine",
@@ -721,13 +1057,15 @@
       "deck": "deck-b",
       "room": "mess-hall",
       "pos": {
-        "x": 3,
-        "y": 10
+        "x": 2.69,
+        "y": 6.38
       },
       "scene": 1,
       "spoiler": false,
       "desc": "Inconsolable. Comfort it and it gives the clue: it saw 'the wet thing' drag something shiny down the crawlspace. (Crown & Whisker's kin.)",
-      "map_label": "Coffee Machine"
+      "map_label": "Coffee Machine",
+      "reveal": "on_enter",
+      "place": "appliance"
     },
     {
       "id": "infected-dispenser",
@@ -736,8 +1074,8 @@
       "deck": "deck-b",
       "room": "mess-hall",
       "pos": {
-        "x": 12,
-        "y": 17
+        "x": 8.92,
+        "y": 10.31
       },
       "scene": 1,
       "spoiler": false,
@@ -749,7 +1087,13 @@
         "attacks": "hurled cans d6 / electrified grab d8"
       },
       "desc": "Crusted with pulsing alien growth. First fight — quick and silly.",
-      "map_label": "Infected Disp."
+      "map_label": "Infected Disp.",
+      "reveal": "on_trigger",
+      "place": "appliance",
+      "states": {
+        "pre": "a dormant grimy vending machine in the corner",
+        "post": "crusted with pulsing coral-red alien growth, lurching to life, hurling cans and arcing electricity"
+      }
     },
     {
       "id": "scrubber-console",
@@ -758,13 +1102,15 @@
       "deck": "deck-c",
       "room": "scrubber-control",
       "pos": {
-        "x": 5,
-        "y": 6
+        "x": 4,
+        "y": 4
       },
       "scene": 2,
       "spoiler": false,
       "desc": "Flashing FAULT. The objective panel.",
-      "map_label": "Console"
+      "map_label": "Console",
+      "reveal": "always",
+      "place": "wall"
     },
     {
       "id": "scrubber-intake",
@@ -773,13 +1119,15 @@
       "deck": "deck-c",
       "room": "crawlspace",
       "pos": {
-        "x": 6,
-        "y": 14
+        "x": 8.5,
+        "y": 9.56
       },
       "scene": 2,
       "spoiler": false,
       "desc": "Choked with alien egg-sac gunk. Clearing it (DEX/STR save; K-7 auto) slows the O2 drop — and reveals the eggs.",
-      "map_label": "Intake (clogged)"
+      "map_label": "Intake (clogged)",
+      "reveal": "always",
+      "place": "wall"
     },
     {
       "id": "egg-cluster-c",
@@ -788,13 +1136,15 @@
       "deck": "deck-c",
       "room": "crawlspace",
       "pos": {
-        "x": 9,
-        "y": 18
+        "x": 8.88,
+        "y": 13.11
       },
       "scene": 2,
       "spoiler": true,
       "desc": "The scare. Dozens of leathery glowing eggs in the warm machinery; one hatches.",
-      "map_label": "Eggs"
+      "map_label": "Eggs",
+      "reveal": "warden",
+      "place": "floor"
     },
     {
       "id": "scuttler",
@@ -803,8 +1153,8 @@
       "deck": "deck-c",
       "room": "crawlspace",
       "pos": {
-        "x": 11,
-        "y": 20
+        "x": 9.12,
+        "y": 14.89
       },
       "scene": 2,
       "spoiler": true,
@@ -816,7 +1166,13 @@
         "attacks": "claws d6"
       },
       "desc": "Fast, screechy, more startling than dangerous. Chase-or-squish; the trail ends at the cargo hold.",
-      "map_label": "Scuttler"
+      "map_label": "Scuttler",
+      "reveal": "warden",
+      "place": "appliance",
+      "states": {
+        "pre": "a single leathery alien egg, faintly glowing, twitching",
+        "post": "a fast screechy juvenile scuttler scrabbling out of the cracked egg toward the camera"
+      }
     },
     {
       "id": "faulty-airlock-sign",
@@ -825,13 +1181,15 @@
       "deck": "deck-c",
       "room": "maintenance-airlock",
       "pos": {
-        "x": 17,
-        "y": 22
+        "x": 16,
+        "y": 17.2
       },
       "scene": 2,
       "spoiler": false,
       "desc": "The planted solution. If the party doesn't note it, GLADYS mentions it offhandedly.",
-      "map_label": "DO NOT CYCLE"
+      "map_label": "DO NOT CYCLE",
+      "reveal": "always",
+      "place": "wall"
     },
     {
       "id": "salvaged-pod",
@@ -840,13 +1198,15 @@
       "deck": "deck-d",
       "room": "salvaged-pod",
       "pos": {
-        "x": 10,
-        "y": 16
+        "x": 10.5,
+        "y": 13.5
       },
       "scene": 3,
       "spoiler": true,
       "desc": "Founder-class First Exodus lifeboat. Brood Mama came aboard inside it. The smoking gun behind Dusty's salvage authorization.",
-      "map_label": "Salvaged Pod"
+      "map_label": "Salvaged Pod",
+      "reveal": "warden",
+      "place": "floor"
     },
     {
       "id": "brood-mama",
@@ -855,8 +1215,8 @@
       "deck": "deck-d",
       "room": "cargo-hold",
       "pos": {
-        "x": 10,
-        "y": 15
+        "x": 10.5,
+        "y": 12.29
       },
       "scene": 3,
       "spoiler": true,
@@ -869,7 +1229,9 @@
         "weakness": "vacuum (instant)"
       },
       "desc": "Campy googly-eyed maternal horror the size of a forklift. Not, in her view, the villain. Positions to keep the party between herself and any airlock.",
-      "map_label": "Brood Mama"
+      "map_label": "Brood Mama",
+      "reveal": "warden",
+      "place": "floor"
     },
     {
       "id": "nest-webbing",
@@ -878,13 +1240,15 @@
       "deck": "deck-d",
       "room": "cargo-hold",
       "pos": {
-        "x": 6,
-        "y": 9
+        "x": 6.28,
+        "y": 7.14
       },
       "scene": 3,
       "spoiler": true,
       "desc": "Translucent webbing and egg clusters nested into every appliance and vent. The source of the whole infection spine.",
-      "map_label": "Nest"
+      "map_label": "Nest",
+      "reveal": "warden",
+      "place": "wall"
     },
     {
       "id": "egg-clusters-d",
@@ -893,13 +1257,15 @@
       "deck": "deck-d",
       "room": "cargo-hold",
       "pos": {
-        "x": 15,
-        "y": 22
+        "x": 15.78,
+        "y": 18.29
       },
       "scene": 3,
       "spoiler": true,
       "desc": "Warm clusters in the cold hold. One survives for the stinger if you want it.",
-      "map_label": "Eggs"
+      "map_label": "Eggs",
+      "reveal": "warden",
+      "place": "floor"
     },
     {
       "id": "cargo-airlock-controls",
@@ -908,13 +1274,207 @@
       "deck": "deck-d",
       "room": "cargo-airlock",
       "pos": {
-        "x": 10,
-        "y": 32
+        "x": 10.5,
+        "y": 28
       },
       "scene": 3,
       "spoiler": false,
       "desc": "Cycle it with Brood Mama inside to win. K-7 can operate it from inside vacuum unharmed — its moment.",
-      "map_label": "Airlock Ctrl"
+      "map_label": "Airlock Ctrl",
+      "reveal": "always",
+      "place": "wall"
+    },
+    {
+      "id": "bridge-consoles",
+      "name": "Flight Consoles",
+      "kind": "fixture",
+      "deck": "deck-a",
+      "room": "bridge",
+      "pos": {
+        "x": 8,
+        "y": 1.67
+      },
+      "spoiler": false,
+      "place": "wall",
+      "reveal": "always",
+      "desc": "Mismatched analog flight consoles, hand-labeled switches, autopilot blinking amber.",
+      "map_label": "Consoles"
+    },
+    {
+      "id": "captains-chair",
+      "name": "Captain's Chair",
+      "kind": "fixture",
+      "deck": "deck-a",
+      "room": "bridge",
+      "pos": {
+        "x": 9.5,
+        "y": 3
+      },
+      "spoiler": false,
+      "place": "floor",
+      "reveal": "always",
+      "desc": "Chipped captain's chair with a sad cushion; a mug left on the dash.",
+      "map_label": "Captain's chair"
+    },
+    {
+      "id": "bridge-viewport",
+      "name": "Forward Viewport",
+      "kind": "fixture",
+      "deck": "deck-a",
+      "room": "bridge",
+      "pos": {
+        "x": 11,
+        "y": 2.33
+      },
+      "spoiler": false,
+      "place": "wall",
+      "reveal": "always",
+      "desc": "Scuffed blunt-hammerhead viewport onto the starfield.",
+      "map_label": "Viewport"
+    },
+    {
+      "id": "stasis-bench",
+      "name": "Uniform Bench",
+      "kind": "fixture",
+      "deck": "deck-a",
+      "room": "stasis-bay",
+      "pos": {
+        "x": 2.75,
+        "y": 11.67
+      },
+      "spoiler": false,
+      "place": "floor",
+      "reveal": "always",
+      "desc": "Bench of folded regulation Bermuda-shorts uniforms beside the venting pods.",
+      "map_label": "Uniform bench"
+    },
+    {
+      "id": "bartleby-hologram",
+      "name": "Bartleby 'Feathers'",
+      "kind": "appliance_npc",
+      "deck": "deck-a",
+      "room": "holo-bay",
+      "pos": {
+        "x": 10,
+        "y": 21.4
+      },
+      "spoiler": false,
+      "place": "floor",
+      "reveal": "on_enter",
+      "desc": "Flickering light-projection of a prim, deceased crewman in a blazer. Helpful, fussy.",
+      "map_label": "Bartleby"
+    },
+    {
+      "id": "vending-wall",
+      "name": "Vending Wall",
+      "kind": "fixture",
+      "deck": "deck-b",
+      "room": "mess-hall",
+      "pos": {
+        "x": 3.38,
+        "y": 4.69
+      },
+      "spoiler": false,
+      "place": "wall",
+      "reveal": "always",
+      "desc": "A wall of dented, glowing vending machines and a sad coffee station.",
+      "map_label": "Vending wall"
+    },
+    {
+      "id": "mess-tables",
+      "name": "Mess Tables",
+      "kind": "fixture",
+      "deck": "deck-b",
+      "room": "mess-hall",
+      "pos": {
+        "x": 6.15,
+        "y": 8.62
+      },
+      "spoiler": false,
+      "place": "floor",
+      "reveal": "always",
+      "desc": "Bolted-down tables with chipped laminate; a 'PLEASE BUS YOUR OWN TRAY' sign.",
+      "map_label": "Mess tables"
+    },
+    {
+      "id": "slime-trail",
+      "name": "Slime Trail",
+      "kind": "alien_growth",
+      "deck": "deck-b",
+      "room": "scrubber-corridor",
+      "pos": {
+        "x": 10,
+        "y": 15.25
+      },
+      "spoiler": false,
+      "place": "floor",
+      "reveal": "on_enter",
+      "desc": "A faint glistening slime trail on the floor leading aft toward the scrubbers.",
+      "map_label": "Slime trail"
+    },
+    {
+      "id": "scrubber-stencil",
+      "name": "Scrubber Stencil",
+      "kind": "fixture",
+      "deck": "deck-b",
+      "room": "scrubber-corridor",
+      "pos": {
+        "x": 9.25,
+        "y": 14.12
+      },
+      "spoiler": false,
+      "place": "wall",
+      "reveal": "always",
+      "desc": "'SCRUBBER CONTROL - AUTHORIZED CREW' stencil over a caged bulb.",
+      "map_label": "Stencil"
+    },
+    {
+      "id": "scrubber-fault-panel",
+      "name": "Scrubber Fault Panel",
+      "kind": "plot_device",
+      "deck": "deck-c",
+      "room": "scrubber-control",
+      "pos": {
+        "x": 2.67,
+        "y": 3.33
+      },
+      "spoiler": false,
+      "place": "wall",
+      "reveal": "always",
+      "desc": "Flashing red 'SCRUBBER FAULT' panel; gauges pinned in the red; dripping condensation.",
+      "map_label": "Fault panel"
+    },
+    {
+      "id": "cargo-vault-door",
+      "name": "Cargo Vault Door",
+      "kind": "fixture",
+      "deck": "deck-d",
+      "room": "cargo-airlock",
+      "pos": {
+        "x": 9.67,
+        "y": 28
+      },
+      "spoiler": false,
+      "place": "wall",
+      "reveal": "always",
+      "desc": "Massive round vault door with a teal status ring and a heavy cycle lever.",
+      "map_label": "Vault door"
+    },
+    {
+      "id": "ship-map",
+      "name": "Deck Schematic",
+      "kind": "plot_device",
+      "deck": "deck-a",
+      "room": "commons-a",
+      "pos": {
+        "x": 10,
+        "y": 17
+      },
+      "spoiler": false,
+      "place": "wall",
+      "reveal": "always",
+      "desc": "A grimy framed deck schematic bolted to the bulkhead. Reading it reveals the ship layout (androids know it already).",
+      "map_label": "Deck schematic"
     }
   ],
   "scenes": [
@@ -1107,5 +1667,307 @@
       "show_to": "warden",
       "prompt": "Final stinger: a single overlooked alien egg behind the coffee machine giving one soft crack, the coffee machine looking thrilled to be a parent. Warm, comic, ominous."
     }
-  ]
+  ],
+  "wayfinding": {
+    "_use": "Per deck: a PRIMARY route (normal ladderway descent, solid) and where present a SECONDARY route (service-crawlspace dive, dashed), same deck colour. Paths step through room centres and the doorway between consecutive rooms. The line width is a real physical dimension so the top-down map (true scale) and the perspective flavour images agree.",
+    "reference": "OSHA 4in aisle marking (29 CFR 1910.176); FAA taxiway centreline 6-12in; Dead Space 'Locator' floor line; leveldesignbook.com leading-lines.",
+    "design_language": "solid = primary (normal/ladderway); dashed = secondary (crawlspace dive); deck-coloured; direction chevrons toward the destination; a terminal descend/exit marker at the connector.",
+    "line_width_m": 0.1,
+    "grid_m_per_unit": 2,
+    "style": "matte_painted_grimy",
+    "deck_colors": {
+      "deck-a": "#f2b441",
+      "deck-b": "#4fd1c5",
+      "deck-c": "#a78bfa",
+      "deck-d": "#ff7a6b"
+    },
+    "routes": [
+      {
+        "id": "wf-a",
+        "deck": "deck-a",
+        "role": "primary",
+        "kind": "ladder",
+        "to": "ladderway",
+        "label": "ladderway -> Deck B",
+        "reveal": "always",
+        "spoiler": false,
+        "path": [
+          [
+            4,
+            10
+          ],
+          [
+            7.25,
+            10
+          ],
+          [
+            9.75,
+            12.5
+          ],
+          [
+            9.75,
+            16
+          ],
+          [
+            16.25,
+            16.25
+          ],
+          [
+            17,
+            17
+          ]
+        ],
+        "rooms": [
+          "stasis-bay",
+          "corr-a",
+          "commons-a"
+        ],
+        "entry": [
+          3.5,
+          10
+        ],
+        "exit": [
+          17,
+          17
+        ]
+      },
+      {
+        "id": "wf-b-ladder",
+        "deck": "deck-b",
+        "role": "primary",
+        "kind": "ladder",
+        "to": "ladderway",
+        "label": "ladderway -> Deck C",
+        "reveal": "always",
+        "spoiler": false,
+        "path": [
+          [
+            5,
+            9.5
+          ],
+          [
+            9.25,
+            9.5
+          ],
+          [
+            10.75,
+            8
+          ],
+          [
+            10.75,
+            4.75
+          ],
+          [
+            10,
+            4
+          ]
+        ],
+        "rooms": [
+          "mess-hall"
+        ],
+        "entry": [
+          5,
+          8
+        ],
+        "exit": [
+          10,
+          4
+        ]
+      },
+      {
+        "id": "wf-b-crawl",
+        "deck": "deck-b",
+        "role": "secondary",
+        "kind": "crawl",
+        "to": "crawlspace-run",
+        "label": "crawlspace dive -> Deck C",
+        "reveal": "always",
+        "spoiler": false,
+        "path": [
+          [
+            5,
+            5
+          ],
+          [
+            9.25,
+            5
+          ],
+          [
+            10.75,
+            6.5
+          ],
+          [
+            10.75,
+            10.75
+          ],
+          [
+            9.75,
+            11.75
+          ],
+          [
+            9,
+            11.75
+          ],
+          [
+            8.75,
+            14
+          ],
+          [
+            9.25,
+            18.5
+          ],
+          [
+            10,
+            19.25
+          ],
+          [
+            10,
+            21
+          ]
+        ],
+        "rooms": [
+          "mess-hall",
+          "corr-b",
+          "scrubber-corridor"
+        ],
+        "entry": [
+          5,
+          5
+        ],
+        "exit": [
+          10,
+          21
+        ]
+      },
+      {
+        "id": "wf-c",
+        "deck": "deck-c",
+        "role": "primary",
+        "kind": "crawl",
+        "to": "crawlspace-run",
+        "label": "crawlspace -> Deck D",
+        "reveal": "always",
+        "spoiler": false,
+        "path": [
+          [
+            4,
+            4
+          ],
+          [
+            4.75,
+            4.75
+          ],
+          [
+            6,
+            4.75
+          ],
+          [
+            8.75,
+            7.5
+          ],
+          [
+            9.25,
+            12.25
+          ],
+          [
+            8.25,
+            13.25
+          ],
+          [
+            8.25,
+            20.25
+          ],
+          [
+            9,
+            21
+          ]
+        ],
+        "rooms": [
+          "scrubber-control",
+          "corr-c",
+          "crawlspace"
+        ],
+        "entry": [
+          4,
+          3
+        ],
+        "exit": [
+          9,
+          21
+        ]
+      },
+      {
+        "id": "wf-d",
+        "deck": "deck-d",
+        "role": "primary",
+        "kind": "airlock",
+        "to": "cargo-airlock",
+        "label": "cargo airlock (vent / way out)",
+        "reveal": "warden",
+        "spoiler": true,
+        "path": [
+          [
+            10,
+            5
+          ],
+          [
+            2.75,
+            5
+          ],
+          [
+            1.25,
+            6.5
+          ],
+          [
+            1.25,
+            24.5
+          ],
+          [
+            2.5,
+            25.75
+          ],
+          [
+            9,
+            25.75
+          ],
+          [
+            9.75,
+            26.5
+          ],
+          [
+            10.25,
+            29
+          ]
+        ],
+        "rooms": [
+          "cargo-hold",
+          "corr-d",
+          "cargo-airlock"
+        ],
+        "entry": [
+          10,
+          5
+        ],
+        "exit": [
+          10,
+          29
+        ]
+      }
+    ]
+  },
+  "knowledge": {
+    "_use": "How the deck layout / item placements become known to the table. Frontend (maps.html) gates by these; flavour images assume the exciting triggers have fired.",
+    "layout_known_by": [
+      "android_default",
+      "found_map"
+    ],
+    "android_default": "K-7 'Kay' (and any android PC) knows the full deck layout from the start.",
+    "found_map": "Reading the 'ship-map' Deck Schematic (commons-a) reveals the layout to everyone.",
+    "reveal_states": {
+      "always": "shown once the deck is known",
+      "on_enter": "revealed when a character enters the room",
+      "on_trigger:<event>": "revealed when the named image_event fires",
+      "warden": "Warden-only (spoiler)"
+    }
+  }
 }

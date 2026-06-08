@@ -1,0 +1,372 @@
+{
+  "_doc": "Flavour set-dressing + keep-clear zones per room. Three consumers: (a) maps.html draws light furniture + work-zone hints (Warden), (b) the waypoint router routes the wayfinding line AROUND floor obstacles + work_zones, hugging one side at the design-code clearances, (c) SD image generation uses dressing.desc as flavour and pos/place for the depth pipeline. Floor items have a footprint (obstacle); wall/ceiling items are flavour only. work_zones with equipment:true use the 0.9m NEC clearance, else the 0.35m wall offset. Tone is grimy sci-fi sitcom x deadpan cosmic bureaucracy (Red Dwarf / Douglas Adams / Alien-as-comedy): descs are fun bits + easter-egg stories. Merged into docs/assets/ship.js at regen.",
+  "wall_clearance_m": 0.6,
+  "grid_m_per_unit": 2.0,
+  "design_code": {
+    "_source": "OSHA 1910.36(g) means-of-egress + NEC 110.26 / OSHA 1910.303 working space. Used as a layout/routing GRAMMAR (consistent rules to design + route around), not for realism.",
+    "aisle_min_clear_m": 0.71,
+    "wall_offset_m": 0.35,
+    "equipment_clearance_m": 0.9,
+    "marking_width_m": 0.1,
+    "ceiling_height_m": 2.3,
+    "headroom_min_m": 2.0
+  },
+  "rooms": {
+    "stasis-bay": {
+      "purpose": "Where the crew thaws out (Scene 0). Pods line the port wall; the route leads out toward the commons + ladderway.",
+      "hug": "starboard",
+      "work_zones": [
+        {
+          "id": "pod-row",
+          "rect": [
+            1,
+            7,
+            2.63,
+            7
+          ],
+          "desc": "row of stasis pods venting cold mist; one pod's occupant is just a uniform, a clipboard, and a note reading 'BACK IN 5'"
+        }
+      ],
+      "dressing": [
+        {
+          "id": "sb-cabling",
+          "kind": "clutter",
+          "place": "floor",
+          "pos": [
+            5.37,
+            11.67
+          ],
+          "footprint": [
+            0.62,
+            0.78
+          ],
+          "desc": "a tipped IV stand and monitoring cables labelled DO NOT UNPLUG, all unplugged"
+        },
+        {
+          "id": "sb-lockers",
+          "kind": "flavor",
+          "place": "wall",
+          "pos": [
+            7.13,
+            8.56
+          ],
+          "desc": "dented crew lockers; one still holds a dead man's spare Bermuda shorts and a half-finished complaint to the Authority"
+        }
+      ]
+    },
+    "commons-a": {
+      "purpose": "Wide habitation corridor / commons spanning the deck; the forward-starboard ladderway down to Deck B is off this room.",
+      "hug": "fore",
+      "work_zones": [
+        {
+          "id": "rec-bolt-down",
+          "rect": [
+            3.78,
+            17.0,
+            4.44,
+            2.0
+          ],
+          "desc": "a bolted-down rec table mid-eternal card game; the pot is buttons, IOUs, and one tooth"
+        }
+      ],
+      "dressing": [
+        {
+          "id": "ca-vending",
+          "kind": "flavor",
+          "place": "wall",
+          "pos": [
+            12.67,
+            18.0
+          ],
+          "desc": "vending machines: one sells only 'Bermuda-brand Nutrient Regret', one accepts a currency two regimes dead, one is just GLADYS saying hello"
+        },
+        {
+          "id": "ca-mop",
+          "kind": "clutter",
+          "place": "floor",
+          "pos": [
+            9.11,
+            18.0
+          ],
+          "footprint": [
+            0.89,
+            1.0
+          ],
+          "desc": "a mop bucket and a WET FLOOR cone guarding a stain the maintenance log has dated to the year 2387"
+        }
+      ]
+    },
+    "mess-hall": {
+      "purpose": "The mutiny room: galley + commons where the crew congregates and Mr. Munch stages his blockade.",
+      "hug": "starboard",
+      "work_zones": [
+        {
+          "id": "galley-counter",
+          "rect": [
+            2,
+            3,
+            2.08,
+            7.31
+          ],
+          "equipment": true,
+          "desc": "galley counter + appliances down the port wall; the toaster has filed three formal grievances"
+        },
+        {
+          "id": "table-cluster",
+          "rect": [
+            4.77,
+            5.81,
+            3.46,
+            3.38
+          ],
+          "desc": "bolted mess tables, sticky with history; the route goes around, because no one survives the middle one"
+        }
+      ],
+      "dressing": [
+        {
+          "id": "md-trays",
+          "kind": "clutter",
+          "place": "floor",
+          "pos": [
+            5.46,
+            8.06
+          ],
+          "footprint": [
+            1.38,
+            0.56
+          ],
+          "desc": "stacked trays and a tipped condiment caddy; the ketchup has, per the chef, 'developed opinions'"
+        },
+        {
+          "id": "md-bins",
+          "kind": "clutter",
+          "place": "floor",
+          "pos": [
+            9.62,
+            10.88
+          ],
+          "footprint": [
+            0.69,
+            0.56
+          ],
+          "desc": "recycling bins sorted into LANDFILL, ALSO LANDFILL, and a third labelled simply HOPE"
+        },
+        {
+          "id": "md-noticeboard",
+          "kind": "flavor",
+          "place": "wall",
+          "pos": [
+            2.69,
+            3.56
+          ],
+          "desc": "cork board of aggressively polite memos ('We do hope this finds you well') under a stale 'Employee of the Month: GLADYS' and a chore rota signed entirely 'Not It'"
+        },
+        {
+          "id": "md-ducting",
+          "kind": "flavor",
+          "place": "ceiling",
+          "pos": [
+            6.85,
+            5.25
+          ],
+          "desc": "low ducting and a dead fluorescent tube; the duct tape is, structurally, load-bearing"
+        }
+      ]
+    },
+    "scrubber-corridor": {
+      "purpose": "Narrow service run aft off the mess; the crawlspace dive drops from here. The slime trail starts here.",
+      "hug": "port",
+      "work_zones": [
+        {
+          "id": "filter-rack",
+          "rect": [
+            11,
+            14,
+            0.6,
+            7
+          ],
+          "equipment": false,
+          "desc": "wall of filters and valves; a sticky note reads 'IF GURGLING, IT IS FINE. IF SCREAMING, ALSO FINE.'"
+        }
+      ],
+      "dressing": [
+        {
+          "id": "sc-toolbox",
+          "kind": "clutter",
+          "place": "floor",
+          "pos": [
+            9.5,
+            19.75
+          ],
+          "footprint": [
+            0.25,
+            1.12
+          ],
+          "desc": "an open toolbox missing the one tool you need, and a coiled hose hand-labelled 'NOT A SNAKE (probably)'"
+        },
+        {
+          "id": "sc-cagelight",
+          "kind": "flavor",
+          "place": "ceiling",
+          "pos": [
+            9.5,
+            15.25
+          ],
+          "desc": "a single caged bulb flickering in what is almost certainly Morse for a swear word"
+        }
+      ]
+    },
+    "scrubber-control": {
+      "purpose": "Cramped control room for the choking scrubbers; the central crawlspace drops from beside it down toward the hold.",
+      "hug": "port",
+      "work_zones": [
+        {
+          "id": "scrubber-panels",
+          "rect": [
+            2,
+            2,
+            4,
+            1.33
+          ],
+          "equipment": true,
+          "desc": "pipework, filters and the SCRUBBER FAULT console, every gauge in the red and one taped over with a smiley face"
+        }
+      ],
+      "dressing": [
+        {
+          "id": "scc-drip",
+          "kind": "flavor",
+          "place": "ceiling",
+          "pos": [
+            4.0,
+            4.0
+          ],
+          "desc": "dripping condensation and a clipboard whose top sheet reads 'SCRUBBER STATUS: fine, honestly, stop asking'"
+        }
+      ]
+    },
+    "crawlspace": {
+      "purpose": "Hot duct network the party squeezes through (Scene 2). The clogged scrubber intake and the first eggs are here; the duct continues down into the cargo hold.",
+      "hug": "port",
+      "work_zones": [
+        {
+          "id": "intake-bulk",
+          "rect": [
+            8.38,
+            7.78,
+            0.5,
+            4.44
+          ],
+          "desc": "the clogged scrubber intake, packed with something the manual definitely does not cover"
+        }
+      ],
+      "dressing": [
+        {
+          "id": "cw-pipes",
+          "kind": "flavor",
+          "place": "ceiling",
+          "pos": [
+            9.0,
+            9.56
+          ],
+          "desc": "ribbed tunnels, dripping pipes, and a decades-old graffito: 'GLADYS WAS HERE :)'"
+        },
+        {
+          "id": "cw-grate",
+          "kind": "clutter",
+          "place": "floor",
+          "pos": [
+            9.38,
+            16.67
+          ],
+          "footprint": [
+            0.12,
+            0.89
+          ],
+          "desc": "a pried-up grate and a dropped headlamp still filming; the last frame is just a very surprised eye"
+        }
+      ]
+    },
+    "cargo-hold": {
+      "purpose": "Vast freezing reclamation hold — the nest. The route runs aft along the deck to the cargo airlock used to vent Brood Mama.",
+      "hug": "port",
+      "work_zones": [
+        {
+          "id": "container-stacks",
+          "rect": [
+            11.56,
+            4.57,
+            7.38,
+            12.0
+          ],
+          "desc": "webbed cargo containers down the starboard side, stencilled 'FRAGILE', 'THIS WAY UP', and 'DO NOT REANIMATE'"
+        },
+        {
+          "id": "pod-zone",
+          "rect": [
+            7.33,
+            10.57,
+            6.34,
+            5.14
+          ],
+          "desc": "the gaudy gold-trimmed escape pod the nest is draped over; the monogram has been lovingly scratched out"
+        }
+      ],
+      "dressing": [
+        {
+          "id": "ch-drums",
+          "kind": "clutter",
+          "place": "floor",
+          "pos": [
+            4.17,
+            20.0
+          ],
+          "footprint": [
+            2.11,
+            1.71
+          ],
+          "desc": "leaking reclamation drums stencilled 'CONTENTS: BEST NOT', and one suspiciously cosy nest of shredded packing foam"
+        },
+        {
+          "id": "ch-crane",
+          "kind": "flavor",
+          "place": "ceiling",
+          "pos": [
+            10.5,
+            8.0
+          ],
+          "desc": "a dead gantry crane, chains swaying, a hard-hat dangling from a hook labelled 'SAFETY (decommissioned)'"
+        }
+      ]
+    },
+    "cargo-airlock": {
+      "purpose": "The big aft cargo airlock — the way OUT and the kill-box for venting the nest.",
+      "hug": "port",
+      "work_zones": [
+        {
+          "id": "airlock-console",
+          "rect": [
+            8,
+            27,
+            1.67,
+            4
+          ],
+          "equipment": true,
+          "desc": "the cycle-lever console and status ring under a laminated sign: 'IN EVENT OF VACUUM, remain calm and update your timesheet'"
+        }
+      ],
+      "dressing": [
+        {
+          "id": "al-frost",
+          "kind": "flavor",
+          "place": "wall",
+          "pos": [
+            12.17,
+            28.0
+          ],
+          "desc": "hazard chevrons, frost, a heavy cycle lever, and a scratched tally of everything previously vented (mostly: 'paperwork')"
+        }
+      ]
+    }
+  }
+}
