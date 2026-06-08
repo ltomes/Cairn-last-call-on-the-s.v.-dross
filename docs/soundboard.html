@@ -36,7 +36,7 @@
     <p>Tap any line to have your device speak it in that character's voice. Handy for GLADYS's chimes mid-banter, or to let a depressed mainframe deliver its own bad news.</p>
     <p class="muted">This page contains plot spoilers — <b>SADYS</b>, <b>Brood Mama</b>, and the nest. Players shouldn't see it.</p>
     <p class="muted small">Uses your browser's built-in speech (no internet needed once loaded). Voice quality varies by device; pick voices below. Best on Chrome/Edge/Safari desktop or a modern phone.</p>
-    <button class="primary" onclick="enter()">I'm the Warden — open the soundboard</button>
+    <button class="primary" onclick="Warden.enable()">🔓 Enable Warden Mode</button>
   </div>
 
   <div id="app" style="display:none">
@@ -68,6 +68,7 @@
   </div>
 </div>
 
+<script src="assets/warden.js"></script>
 <script src="assets/npc-lines.js"></script>
 <script>
 "use strict";
@@ -79,15 +80,20 @@ let rateMul = 1, pitchMul = 1;
 
 try { chosen = JSON.parse(localStorage.getItem(VKEY)) || {}; } catch(e){ chosen = {}; }
 
-function enter(){
-  document.getElementById("gate").style.display="none";
-  document.getElementById("app").style.display="block";
-  if(!synth){ document.getElementById("novoice").style.display="block";
-    document.getElementById("novoice").textContent="This browser has no speech synthesis. Try Chrome, Edge, or Safari."; }
-  loadVoices(); render();
-  // nudge some browsers to populate voices
-  setTimeout(loadVoices, 250);
+function applyGate(){
+  const allowed = !!(window.Warden && window.Warden.on);
+  document.getElementById("gate").style.display = allowed ? "none" : "block";
+  document.getElementById("app").style.display  = allowed ? "block" : "none";
+  if(allowed && !applyGate._init){
+    applyGate._init = true;
+    if(!synth){ document.getElementById("novoice").style.display="block";
+      document.getElementById("novoice").textContent="This browser has no speech synthesis. Try Chrome, Edge, or Safari."; }
+    loadVoices(); render();
+    setTimeout(loadVoices, 250);   // nudge browsers to populate voices
+  }
+  if(!allowed && synth) synth.cancel();
 }
+window.addEventListener("warden:change", applyGate);
 
 function loadVoices(){
   voices = synth ? synth.getVoices() : [];
@@ -166,6 +172,8 @@ const rate=document.getElementById("rate"), pitch=document.getElementById("pitch
 rate.addEventListener("input", e=>{ rateMul=parseFloat(e.target.value); document.getElementById("rateV").textContent=rateMul.toFixed(2); });
 pitch.addEventListener("input",e=>{ pitchMul=parseFloat(e.target.value); document.getElementById("pitchV").textContent=pitchMul.toFixed(2); });
 window.addEventListener("beforeunload", ()=>{ if(synth) synth.cancel(); });
+
+applyGate();   // gate on load (respects an already-on Warden session)
 </script>
 </body>
 </html>

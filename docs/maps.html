@@ -64,7 +64,17 @@
     <div class="eyebrow" id="eyebrow">S.V. Dross · Reclamation-class barge · rendered from the ship model</div>
     <h1>Deck Maps</h1>
     <p class="sub">Four decks, the route runs <b>down</b>: stasis → mess hall → crawlspace → cargo hold. Plans are generated from <code>setting/ship-layout.json</code>.</p>
-    <div class="row no-print" style="margin-top:10px; align-items:center; gap:14px">
+  </div>
+
+  <div id="wardenGate" class="gate no-print" hidden>
+    <div class="eyebrow" style="color:var(--coral)">Warden only · spoilers</div>
+    <h2 style="margin:6px 0">Deck maps are hidden</h2>
+    <p>These plans show the nest, Brood Mama, the infection spine, and the airlock play. Turn on <b>Warden Mode</b> for this session to view them.</p>
+    <button class="primary" onclick="Warden.enable()">🔓 Enable Warden Mode</button>
+  </div>
+
+  <div id="wardenApp" hidden>
+    <div class="row no-print" style="margin-bottom:14px; align-items:center; gap:14px">
       <div class="toggle" role="group" aria-label="View mode">
         <button id="mWarden" class="on" onclick="setMode('warden')">🔓 Warden view</button>
         <button id="mPlayer" onclick="setMode('player')">👥 Player view</button>
@@ -72,15 +82,14 @@
       <button onclick="document.body.classList.toggle('lite')">◐ Light / print</button>
       <button onclick="window.print()">🖨 Print</button>
     </div>
-    <div class="legend no-print">
+    <div class="legend no-print" style="margin-bottom:10px">
       <span><i class="dot" style="background:var(--teal)"></i>appliance / system</span>
       <span><i class="dot" style="background:var(--amber)"></i>fixture / plot device</span>
       <span><i class="dot" style="background:var(--coral)"></i>alien / hazard</span>
       <span>orientation: <b>fore</b> ◀ ▶ <b>aft</b></span>
     </div>
+    <div id="content"><p class="muted">Loading ship model…</p></div>
   </div>
-
-  <div id="content"><p class="muted">Loading ship model…</p></div>
 
   <div class="foot no-print">
     Part of <a href="index.html">Last Call on the S.V. Dross</a> · Schematic, not to scale · edit
@@ -88,6 +97,7 @@
   </div>
 </div>
 
+<script src="assets/warden.js"></script>
 <script src="assets/ship.js"></script>
 <script>
 "use strict";
@@ -331,7 +341,16 @@ function setMode(m){
     : "S.V. Dross · crew schematic · safe to show the table";
   render();
 }
-render();
+
+// Gate behind session Warden Mode: don't render the (spoiler) maps until enabled.
+function applyMapsGate(){
+  const allowed = !!(window.Warden && window.Warden.on);
+  document.getElementById("wardenGate").hidden = allowed;
+  document.getElementById("wardenApp").hidden = !allowed;
+  if(allowed && !applyMapsGate._init){ applyMapsGate._init = true; render(); }
+}
+window.addEventListener("warden:change", applyMapsGate);
+applyMapsGate();
 </script>
 </body>
 </html>

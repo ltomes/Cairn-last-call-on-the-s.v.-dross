@@ -178,6 +178,31 @@ hr.sep { border: none; border-top: 1px solid var(--line); margin: 16px 0; }
   padding: 18px;
 }
 
+/* ---- Warden Mode: session toggle + gating ---- */
+[hidden] { display: none !important; }
+
+.warden-ctl {
+  position: fixed; right: 14px; bottom: 14px; z-index: 60;
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--ink-dim);
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 999px; padding: 6px 8px 6px 13px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+.warden-ctl b { color: var(--ink); }
+.warden-ctl button { font-size: 12px; padding: 4px 10px; border-radius: 999px; }
+.wc-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ink-dim); display: inline-block; }
+.wc-dot.on { background: var(--good); box-shadow: 0 0 8px var(--good); }
+
+/* A locked placeholder shown where Warden content would be (off state) */
+.warden-locked {
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  padding: 18px; color: var(--ink-dim);
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+}
+.warden-locked .lock { font-size: 22px; }
+
 /* ============================================================
    PRINT — clean pregen card output
    ============================================================ */

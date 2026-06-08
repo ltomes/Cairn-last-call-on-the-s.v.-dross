@@ -23,6 +23,11 @@ funny first, soft stakes. Keep the voice.
   - `soundboard.html` — NPC voice soundboard (Warden), lines in `assets/npc-lines.js`
   - `maps.html` — Deck Maps, rendered from the ship model, Warden/Player toggle
   - `index.html` — hub
+  - **Warden Mode** (`assets/warden.js`) — a session toggle (default **off**).
+    While off, all spoiler tools/docs are blocked; the Warden enables it (with a
+    confirm) to reveal them. New spoiler content should be gated the same way:
+    mark elements `data-warden="only"` (hidden when off) / `data-warden="locked"`
+    (the enable hint), or for a whole page render nothing until `window.Warden.on`.
 - **Ship model** — `setting/ship-layout.json` (canonical spatial layout **and** the
   image-prompt library), human guide `setting/ship-layout.md`, web mirror
   `docs/assets/ship.js` (regenerate after editing the JSON — command in the guide).

@@ -30,7 +30,17 @@
   </div>
 
   <div class="section-title">For the Warden <span class="badge spoiler">spoilers</span></div>
-  <div class="grid cols-2">
+
+  <div class="warden-locked" data-warden="locked">
+    <span class="lock">🔒</span>
+    <div>
+      <b>Warden tools are hidden.</b>
+      <div class="small muted">The soundboard, deck maps, and run-doc contain spoilers (SADYS, Brood Mama, the nest). Turn on Warden Mode for this session to view them.</div>
+    </div>
+    <button class="primary" onclick="Warden.enable()">🔓 Enable Warden Mode</button>
+  </div>
+
+  <div class="grid cols-2" data-warden="only" hidden>
     <a class="tile warden" href="soundboard.html">
       <div class="ico">🔊</div>
       <h3>NPC Soundboard <span class="badge warden">Warden</span></h3>
@@ -47,10 +57,21 @@
   <div class="panel">
     <p class="small muted" style="margin-top:0">The full text lives in the repo as Markdown:</p>
     <ul class="small">
-      <li><a href="../adventure/last-call.md">adventure/last-call.md</a> — the Warden's run-doc (pitch, pacing, scenes, stat blocks, the SADYS subplot). <span class="badge warden">Warden</span></li>
-      <li><a href="../system/rules-and-hacks.md">system/rules-and-hacks.md</a> — Cairn 2e recap + this game's house rules.</li>
       <li><a href="../players/pregens.md">players/pregens.md</a> — printable pregen cards. <span class="badge player">Player-safe</span></li>
-      <li><a href="../setting/bermuda-reclamation.md">setting/bermuda-reclamation.md</a> — the setting primer / lore.</li>
+    </ul>
+    <div class="warden-locked" data-warden="locked" style="margin-top:8px">
+      <span class="lock">🔒</span>
+      <div>
+        <b>Warden documents are hidden.</b>
+        <div class="small muted">The run-doc, system reference, setting lore, and ship model all contain spoilers.</div>
+      </div>
+      <button class="primary" onclick="Warden.enable()">🔓 Enable Warden Mode</button>
+    </div>
+    <ul class="small" data-warden="only" hidden>
+      <li><a href="../adventure/last-call.md">adventure/last-call.md</a> — the Warden's run-doc (pitch, pacing, scenes, stat blocks, the SADYS subplot). <span class="badge warden">Warden</span></li>
+      <li><a href="../system/rules-and-hacks.md">system/rules-and-hacks.md</a> — Cairn 2e recap + house rules (mentions the SADYS subplot). <span class="badge warden">Warden</span></li>
+      <li><a href="../setting/bermuda-reclamation.md">setting/bermuda-reclamation.md</a> — setting primer / lore (the Ascendance &amp; Brood Mama easter eggs). <span class="badge warden">Warden</span></li>
+      <li><a href="../setting/ship-layout.md">setting/ship-layout.md</a> — ship model + image-prompt library. <span class="badge warden">Warden</span></li>
     </ul>
   </div>
 
@@ -61,5 +82,6 @@
     <br>“Recycling the galaxy, one regret at a time.”
   </div>
 </div>
+<script src="assets/warden.js"></script>
 </body>
 </html>
