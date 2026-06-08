@@ -66,4 +66,20 @@
 
 ## ✂— — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
-*Running with 3 players? The Warden will set one card aside — most likely K-7 or Rim.*
+### GRENN "GREASE" CANDLEWICK — Reclaim-Chemist, Apprentice
+*Signed on as an apprentice, then the crew nap-cycled and forgot to log him. Talks in a flat drone, gregarious in a way that makes people take a small step back. Young. Stained. Regarded as dangerous — mostly secondhand. It's the chemistry.*
+
+**STR 8 · DEX 10 · WIL 12 · HP 3 · Armor 3** *(patched hardsuit + welding visor + a blast-hatch you haul like a shield)*
+
+- A patched reclamation **hardsuit** (Armor 2, **bulky**), a welding **visor** (+1), and a torn-off **blast-hatch** you carry as a shield (+1) — **Armor 3** in all.
+- **Plasma cutter** (solid weapon, **d8**; also cuts through a bulkhead, slowly) · a **bolt-sling** — pneumatic nut-slinger (ranged, **d6**).
+- **Mag-jacks** (magnetic caltrops — scatter them on the deck plating to slow a chaser) · a cracked **hull-scope** (monocular) · a telescoping **inspection mirror**.
+- B$9 · a hand-torch · three foil ration packs (regrettable) · coveralls that were, you're fairly sure, once another color.
+- **Suited Up:** the small stuff — hurled cans, sparks, a stray sneeze of acid — just clatters off you. (That's the Armor 3.)
+- **Reclaim-Chemist (1/session):** brew a single one-use **gadget** from junk on hand. Tell the Warden what you're bodging together.
+- **Packrat (watch it):** you over-pack. If your inventory is ever truly **full**, you're so weighed down you're at **0 HP** until you drop something.
+- **Your secret:** They cycled the whole crew into stasis and never logged you — so the pods passed you by. You've been awake, alone, on a sleeping ship for longer than you'll admit. You're fine. You're **fine.** You would just very much like to be on the crew roster. Officially. In writing.
+
+## ✂— — — — — — — — — — — — — — — — — — — — — — — — — — — —
+
+*Running with 3 players? The Warden will set one card aside — most likely K-7 or Rim. Running with 5, or want a swap-in? **Grease** is the spare — a walking tank with a chemistry set.*

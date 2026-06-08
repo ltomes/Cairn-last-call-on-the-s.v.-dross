@@ -66,7 +66,7 @@ GLADYS announces O₂ at each scene break. It's atmosphere and momentum, not a k
 
 ## THE PREGENS
 
-Hand these out. Each maps to a classic crew archetype, has a distinct mechanical niche so no two players feel the same, and carries a personal hook into the plot. **For 3 players, drop K-7** (fold the repair beats into Dusty) **or drop Rim.**
+Hand these out. Each maps to a classic crew archetype, has a distinct mechanical niche so no two players feel the same, and carries a personal hook into the plot. **For 3 players, drop K-7** (fold the repair beats into Dusty) **or drop Rim.** **For a 5th player — or a swap-in — there's an optional pregen, GREASE, at the end of this section.**
 
 ---
 
@@ -112,6 +112,20 @@ Hand these out. Each maps to a classic crew archetype, has a distinct mechanical
 - **Vacuum-Rated:** Cold, vacuum, and lack of air do nothing to you. (Remember this in Scene 3.)
 - **Mostly Cannot Lie:** Protocol forbids it. You may attempt to "rephrase." It rarely works.
 - **Hook:** Your maintenance logs from three weeks ago are corrupted — *someone* wiped them. You'd like to file a report.
+
+---
+
+### GRENN "GREASE" CANDLEWICK — Reclaim-Chemist, Apprentice *(optional 5th / swap-in)*
+*The kid they forgot to wake. Signed on as an apprentice; the crew nap-cycled and never logged him. Flat droning voice, nervously gregarious, stained to the elbows, regarded as dangerous — mostly because his chemistry is. A reskin of a generated Cairn build, dropped into the Dross.*
+
+- **STR 8 · DEX 10 · WIL 12 · HP 3 · Armor 3** (patched hardsuit Armor 2 *bulky* + welding visor +1 + a blast-hatch carried as a shield +1)
+- **Plasma cutter** (**d8**; cuts bulkheads slowly); **bolt-sling** (ranged **d6**); **mag-jacks** (magnetic caltrops), a cracked **hull-scope**, a telescoping **inspection mirror**; B$9, hand-torch, 3 rations.
+- **Suited Up:** the small stuff (hurled cans, sparks, a sneeze of acid) clatters off him — that's the Armor 3.
+- **Reclaim-Chemist (1/session):** brew one single-use **gadget** from junk on hand (use the gadget table in `system/rules-and-hacks.md` or improvise with him).
+- **Packrat:** he over-packs; if his inventory is ever truly **full**, he's at **0 HP** until he drops something. A running gag and a real cost.
+- **Hook (player-safe):** the crew never logged him before the nap, so the pods skipped him; he's been awake and alone on a sleeping ship and is a little odd about it. He just wants on the roster. *Officially.*
+
+> **Warden balance note (you flagged this in, so here's the deal):** Grease's **Armor 3** makes him nearly immune to the appliances' d6 cans — lean into that as comedy (Mr. Munch's electrified grab and Brood Mama's d8/d10 acid blast still bite, and **HP 3 + the packrat gag keep him fragile underneath**). His **Suited Up bulk** means he's slow in the crawlspace — good reason to let the others scout (Rim) and squeeze (K-7). He doesn't step on anyone's niche: Dusty improvises, K-7 repairs/vacuum, Rim scouts, Felix smells trouble — Grease *tanks and brews*. If you'd rather not add an armor wall to the fights, run him as **Armor 2** (drop the hatch-shield) and nothing else changes.
 
 ---
 

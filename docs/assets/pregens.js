@@ -73,6 +73,31 @@ window.DROSS_PREGENS = [
       { name: "Mostly Cannot Lie", desc: "Protocol forbids it. You may attempt to “rephrase.” It rarely works." }
     ],
     secret: "Your maintenance logs from three weeks ago are corrupted — someone wiped them. You would very much like to file a report."
+  },
+  {
+    id: "grease",
+    name: "Grenn “Grease” Candlewick",
+    role: "Reclaim-Chemist, Apprentice — optional 5th / swap-in",
+    blurb: "Signed on as an apprentice, then the crew nap-cycled and forgot to log him. Talks in a flat drone, gregarious in a way that makes people take a small step back. Young. Stained. Regarded as dangerous — mostly secondhand. It’s the chemistry.",
+    str: 8, dex: 10, wil: 12, hp: 3, armor: 3,
+    armorNote: "hardsuit + visor + hatch-shield",
+    items: [
+      "Patched reclamation hardsuit (Armor 2, bulky)",
+      "Welding visor (+1 Armor)",
+      "A torn-off blast-hatch, carried as a shield (+1 Armor)",
+      "Plasma cutter — solid weapon (d8); cuts bulkheads, slowly",
+      "Bolt-sling — pneumatic nut-slinger (ranged, d6)",
+      "Mag-jacks (magnetic caltrops — scatter to slow a chaser)",
+      "A cracked hull-scope (monocular)",
+      "A telescoping inspection mirror",
+      "B$9, a hand-torch, three foil ration packs (regrettable)"
+    ],
+    abilities: [
+      { name: "Suited Up", desc: "The small stuff — hurled cans, sparks, a stray sneeze of acid — just clatters off you. (That’s the Armor 3.)" },
+      { name: "Reclaim-Chemist (1/session)", desc: "Brew a single one-use gadget from junk on hand. Tell the Warden what you’re bodging together." },
+      { name: "Packrat (watch it)", desc: "You over-pack. If your inventory is ever truly full, you’re so weighed down you’re at 0 HP until you drop something." }
+    ],
+    secret: "They cycled the whole crew into stasis and never logged you — so the pods passed you by. You’ve been awake, alone, on a sleeping ship for longer than you’ll admit. You’re fine. You’re fine. You would just very much like to be on the crew roster. Officially. In writing."
   }
 ];
 
