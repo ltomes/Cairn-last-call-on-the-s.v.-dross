@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crew Builder · S.V. Dross</title>
+<meta name="description" content="Pick a pregen, tweak the stats, print the card. Character builder for Last Call on the S.V. Dross (Cairn 2e).">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .builder { display:grid; grid-template-columns: 300px 1fr; gap:18px; align-items:start; }
+  @media (max-width: 860px){ .builder{ grid-template-columns:1fr; } }
+  .roster .pick { width:100%; text-align:left; margin-bottom:8px; display:flex; gap:10px; align-items:baseline; }
+  .roster .pick b{ font-size:14px; } .roster .pick span{ color:var(--ink-dim); font-size:12px; }
+  .stat-row{ display:grid; grid-template-columns: 64px 1fr; gap:10px; align-items:center; margin-bottom:8px; }
+  .stepper{ display:flex; align-items:center; gap:6px; }
+  .stepper input{ width:64px; text-align:center; font-family:var(--mono); font-size:16px; }
+  .stepper button{ width:34px; padding:6px 0; }
+  .listrow{ display:flex; gap:8px; margin-bottom:8px; }
+  .listrow input{ flex:1; }
+  .ability-edit{ border:1px solid var(--line); border-radius:8px; padding:10px; margin-bottom:8px; }
+  .ability-edit input{ margin-bottom:6px; }
+
+  /* Printable card */
+  .card{ border:2px solid var(--line); border-radius:12px; padding:18px 20px; background:var(--panel); }
+  .card .ctop{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; border-bottom:1px solid var(--line); padding-bottom:10px; margin-bottom:12px; }
+  .card h2{ margin:0; font-size:22px; line-height:1.1; }
+  .card .role{ color:var(--amber); font-size:13px; font-family:var(--mono); text-transform:uppercase; letter-spacing:.08em; }
+  .card .blurb{ color:var(--ink-dim); font-style:italic; font-size:13px; margin:4px 0 0; }
+  .stats{ display:flex; gap:8px; flex-wrap:wrap; }
+  .stat{ border:1px solid var(--line); border-radius:8px; padding:6px 10px; text-align:center; min-width:58px; }
+  .stat b{ display:block; font-family:var(--mono); font-size:20px; }
+  .stat small{ color:var(--ink-dim); font-size:10px; letter-spacing:.1em; text-transform:uppercase; }
+  .card h4{ margin:14px 0 6px; font-size:12px; text-transform:uppercase; letter-spacing:.12em; color:var(--teal); }
+  .card ul{ margin:0; padding-left:18px; } .card li{ margin:3px 0; font-size:14px; }
+  .card .abil{ margin:6px 0; font-size:14px; } .card .abil b{ color:var(--ink); }
+  .card .secret{ border-left:3px solid var(--coral); padding-left:10px; font-size:13.5px; color:var(--ink); }
+  .card .secret small{ display:block; color:var(--coral); font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; margin-bottom:2px; }
+
+  @media print {
+    .builder{ grid-template-columns:1fr; }
+    .card{ border-color:#222; background:#fff; }
+    .card .role{ color:#222; } .card h4{ color:#222; } .card .secret{ border-color:#222; }
+    .card .secret small{ color:#222; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumbs no-print"><a href="index.html">⟵ S.V. Dross hub</a> · Crew Builder</div>
+
+  <div class="masthead no-print">
+    <div class="eyebrow">Bermuda Reclamation Authority · Crew Records</div>
+    <h1>Crew Builder</h1>
+    <p class="sub">Pick one of the four pregens, tweak the name, stats, and kit, then print or save your card. <span class="badge player">Player-safe</span></p>
+  </div>
+
+  <div class="builder">
+    <!-- LEFT: roster + actions -->
+    <div class="panel roster no-print">
+      <div class="section-title" style="margin-top:0">Pregens</div>
+      <div id="pregenList"></div>
+
+      <div class="section-title">Or…</div>
+      <button class="ghost" style="width:100%; margin-bottom:8px" onclick="rollRecruit()">🎲 Roll a fresh recruit</button>
+      <button class="ghost" style="width:100%" onclick="loadBlank()">＋ Blank sheet</button>
+
+      <div class="section-title">Saved on this device</div>
+      <div id="savedList"><p class="muted small">Nothing saved yet.</p></div>
+
+      <hr class="sep">
+      <div class="row">
+        <button onclick="importJSON()" class="ghost small">Import JSON</button>
+        <input type="file" id="importFile" accept="application/json" style="display:none">
+      </div>
+      <p class="muted small" style="margin-top:10px">Saves live only in this browser. Export a card to share it.</p>
+    </div>
+
+    <!-- RIGHT: editor + live card -->
+    <div>
+      <div class="panel no-print" style="margin-bottom:16px">
+        <div class="row" style="justify-content:space-between">
+          <div class="section-title" style="margin:0">Edit</div>
+          <div class="row">
+            <button onclick="saveChar()" class="primary">💾 Save</button>
+            <button onclick="window.print()">🖨 Print card</button>
+            <button onclick="exportJSON()" class="ghost">⤓ Export</button>
+          </div>
+        </div>
+
+        <hr class="sep">
+
+        <label class="fld">Name</label>
+        <input type="text" id="f_name" oninput="bind('name',this.value)">
+        <div class="row" style="margin-top:10px">
+          <div style="flex:1; min-width:180px">
+            <label class="fld">Role</label>
+            <input type="text" id="f_role" oninput="bind('role',this.value)">
+          </div>
+        </div>
+        <label class="fld" style="margin-top:10px">Description</label>
+        <textarea id="f_blurb" oninput="bind('blurb',this.value)"></textarea>
+
+        <div class="section-title">Stats <span class="muted small" style="text-transform:none; letter-spacing:0; font-family:var(--sans); color:var(--ink-dim)">— Cairn rolls 3d6 per stat, 1d6 for HP</span></div>
+        <div id="statRows"></div>
+
+        <div class="section-title">Inventory</div>
+        <div id="itemList"></div>
+        <button class="ghost small" onclick="addItem()">＋ Add item</button>
+
+        <div class="section-title">Abilities</div>
+        <div id="abilityList"></div>
+        <button class="ghost small" onclick="addAbility()">＋ Add ability</button>
+
+        <div class="section-title">Secret / Hook</div>
+        <textarea id="f_secret" oninput="bind('secret',this.value)"></textarea>
+      </div>
+
+      <!-- LIVE / PRINTABLE CARD -->
+      <div class="card print-card" id="card"></div>
+    </div>
+  </div>
+
+  <div class="foot no-print">
+    Part of <a href="index.html">Last Call on the S.V. Dross</a> · Built on
+    <a href="https://cairnrpg.com" target="_blank" rel="noopener">Cairn 2e</a> by Yochai Gal · CC BY-SA 4.0
+  </div>
+</div>
+
+<script src="assets/pregens.js"></script>
+<script>
+"use strict";
+const SAVE_KEY = "dross.saved.v1";
+let state = null;
+
+/* ---------- helpers ---------- */
+const $  = (id) => document.getElementById(id);
+const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n|0));
+const roll = (n, d) => { let s=0; for(let i=0;i<n;i++) s += 1 + Math.floor(Math.random()*d); return s; };
+const pick = (a) => a[Math.floor(Math.random()*a.length)];
+const esc = (s) => (s==null?"":String(s)).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function clone(o){ return JSON.parse(JSON.stringify(o)); }
+
+/* ---------- state binding ---------- */
+function bind(key, val){ state[key] = val; renderCard(); }
+
+function loadPregen(p){
+  state = clone(p);
+  state.savedId = null;        // not yet a saved instance
+  state.items = state.items || [];
+  state.abilities = state.abilities || [];
+  renderAll();
+}
+function loadBlank(){
+  state = { id:"custom", name:"New Recruit", role:"Crew, S.V. Dross", blurb:"",
+            str:10, dex:10, wil:10, hp:roll(1,6), armor:0, items:[], abilities:[], secret:"", savedId:null };
+  renderAll();
+}
+
+/* ---------- roll a fresh recruit (Cairn-flavored) ---------- */
+function rollRecruit(){
+  const R = window.DROSS_RECRUIT;
+  const g = pick(R.gadgets);
+  state = {
+    id:"custom",
+    name: pick(R.firstNames) + " " + pick(R.surnames),
+    role: pick(R.roles),
+    blurb: "A fresh sign-on aboard the Dross. " ,
+    str: roll(3,6), dex: roll(3,6), wil: roll(3,6),
+    hp: roll(1,6), armor: 0,
+    items: [ pick(R.items), pick(R.items) ].filter((v,i,a)=>a.indexOf(v)===i),
+    abilities: [ { name: g.name + " (gadget)", desc: g.desc } ],
+    secret: pick(R.bonds),
+    savedId:null
+  };
+  renderAll();
+}
+
+/* ---------- render: editor controls ---------- */
+function renderAll(){ renderEditor(); renderCard(); renderSaved(); }
+
+function renderEditor(){
+  $("f_name").value  = state.name  || "";
+  $("f_role").value  = state.role  || "";
+  $("f_blurb").value = state.blurb || "";
+  $("f_secret").value= state.secret|| "";
+  renderStats(); renderItems(); renderAbilities();
+}
+
+function renderStats(){
+  const defs = [
+    ["str","STR",3,18], ["dex","DEX",3,18], ["wil","WIL",3,18],
+    ["hp","HP",0,30], ["armor","ARM",0,6]
+  ];
+  $("statRows").innerHTML = defs.map(([k,label,lo,hi])=>`
+    <div class="stat-row">
+      <label class="fld" style="margin:0">${label}</label>
+      <div class="stepper">
+        <button onclick="step('${k}',-1,${lo},${hi})">−</button>
+        <input type="number" id="s_${k}" value="${state[k]??0}" min="${lo}" max="${hi}"
+               oninput="setStat('${k}',this.value,${lo},${hi})">
+        <button onclick="step('${k}',1,${lo},${hi})">＋</button>
+        ${ (k==="hp") ? `<button class="small" title="Roll 1d6" onclick="rollStat('${k}',1,6,${lo},${hi})">🎲 1d6</button>`
+          : (k!=="armor") ? `<button class="small" title="Roll 3d6" onclick="rollStat('${k}',3,6,${lo},${hi})">🎲 3d6</button>` : "" }
+      </div>
+    </div>`).join("");
+}
+function step(k,delta,lo,hi){ state[k]=clamp((state[k]||0)+delta,lo,hi); $("s_"+k).value=state[k]; renderCard(); }
+function setStat(k,v,lo,hi){ state[k]=clamp(parseInt(v,10)||0,lo,hi); renderCard(); }
+function rollStat(k,n,d,lo,hi){ state[k]=clamp(roll(n,d),lo,hi); $("s_"+k).value=state[k]; renderCard(); }
+
+function renderItems(){
+  $("itemList").innerHTML = (state.items||[]).map((it,i)=>`
+    <div class="listrow">
+      <input type="text" value="${esc(it)}" oninput="state.items[${i}]=this.value; renderCard()">
+      <button class="warn" onclick="state.items.splice(${i},1); renderItems(); renderCard()">✕</button>
+    </div>`).join("") || `<p class="muted small">No items.</p>`;
+}
+function addItem(){ state.items.push(""); renderItems(); renderCard(); }
+
+function renderAbilities(){
+  $("abilityList").innerHTML = (state.abilities||[]).map((a,i)=>`
+    <div class="ability-edit">
+      <input type="text" placeholder="Ability name" value="${esc(a.name)}" oninput="state.abilities[${i}].name=this.value; renderCard()">
+      <textarea placeholder="What it does" oninput="state.abilities[${i}].desc=this.value; renderCard()">${esc(a.desc)}</textarea>
+      <button class="warn small" onclick="state.abilities.splice(${i},1); renderAbilities(); renderCard()">✕ Remove</button>
+    </div>`).join("") || `<p class="muted small">No abilities.</p>`;
+}
+function addAbility(){ state.abilities.push({name:"",desc:""}); renderAbilities(); renderCard(); }
+
+/* ---------- render: printable card ---------- */
+function renderCard(){
+  const s = state;
+  const armorLine = s.armorNote ? `${s.armor} <span class="muted">(${esc(s.armorNote)})</span>` : s.armor;
+  $("card").innerHTML = `
+    <div class="ctop">
+      <div>
+        <h2>${esc(s.name)||"—"}</h2>
+        <div class="role">${esc(s.role)||""}</div>
+        ${s.blurb?`<p class="blurb">${esc(s.blurb)}</p>`:""}
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>${s.str??"–"}</b><small>STR</small></div>
+      <div class="stat"><b>${s.dex??"–"}</b><small>DEX</small></div>
+      <div class="stat"><b>${s.wil??"–"}</b><small>WIL</small></div>
+      <div class="stat"><b>${s.hp??"–"}</b><small>HP</small></div>
+      <div class="stat"><b>${s.armor??0}</b><small>Armor</small></div>
+    </div>
+    ${ (s.items&&s.items.filter(Boolean).length) ? `<h4>Inventory</h4><ul>${s.items.filter(Boolean).map(i=>`<li>${esc(i)}</li>`).join("")}</ul>` : "" }
+    ${ (s.abilities&&s.abilities.filter(a=>a.name||a.desc).length) ? `<h4>Abilities</h4>${s.abilities.filter(a=>a.name||a.desc).map(a=>`<p class="abil"><b>${esc(a.name)}</b>${a.desc?" — "+esc(a.desc):""}</p>`).join("")}` : "" }
+    ${ s.secret ? `<h4>&nbsp;</h4><div class="secret"><small>Your secret</small>${esc(s.secret)}</div>` : "" }
+  `;
+}
+
+/* ---------- pregen list ---------- */
+function renderPregens(){
+  $("pregenList").innerHTML = window.DROSS_PREGENS.map((p,i)=>`
+    <button class="pick ghost" onclick="loadPregen(window.DROSS_PREGENS[${i}])">
+      <b>${esc(p.name)}</b><span>${esc(p.role)}</span>
+    </button>`).join("");
+}
+
+/* ---------- saved characters (localStorage) ---------- */
+function getSaved(){ try{ return JSON.parse(localStorage.getItem(SAVE_KEY))||[]; }catch(e){ return []; } }
+function setSaved(a){ localStorage.setItem(SAVE_KEY, JSON.stringify(a)); }
+
+function saveChar(){
+  const all = getSaved();
+  if(!state.savedId){ state.savedId = "c"+Date.now(); }
+  const rec = clone(state);
+  const idx = all.findIndex(c=>c.savedId===rec.savedId);
+  if(idx>=0) all[idx]=rec; else all.push(rec);
+  setSaved(all); renderSaved();
+  flash("Saved “"+(state.name||"recruit")+"” to this browser.");
+}
+function renderSaved(){
+  const all = getSaved();
+  if(!all.length){ $("savedList").innerHTML = `<p class="muted small">Nothing saved yet.</p>`; return; }
+  $("savedList").innerHTML = all.map((c,i)=>`
+    <div class="listrow">
+      <button class="pick ghost" style="flex:1" onclick="loadSaved(${i})"><b>${esc(c.name)}</b></button>
+      <button class="warn" onclick="deleteSaved(${i})">✕</button>
+    </div>`).join("");
+}
+function loadSaved(i){ const all=getSaved(); state=clone(all[i]); renderAll(); }
+function deleteSaved(i){ const all=getSaved(); all.splice(i,1); setSaved(all); renderSaved(); }
+
+/* ---------- import / export ---------- */
+function exportJSON(){
+  const data = clone(state); delete data.savedId;
+  const blob = new Blob([JSON.stringify(data,null,2)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = (state.name||"crew").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"") + ".dross.json";
+  a.click(); URL.revokeObjectURL(a.href);
+}
+function importJSON(){ $("importFile").click(); }
+$("importFile").addEventListener("change", (e)=>{
+  const f = e.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = () => { try{ const o=JSON.parse(r.result); o.savedId=null; state=o;
+      state.items=state.items||[]; state.abilities=state.abilities||[]; renderAll();
+      flash("Imported “"+(state.name||"recruit")+".”"); }
+    catch(err){ flash("That file didn’t parse as a Dross character.", true); } };
+  r.readAsText(f); e.target.value="";
+});
+
+/* ---------- tiny toast ---------- */
+let toastT;
+function flash(msg, bad){
+  let el = $("toast");
+  if(!el){ el=document.createElement("div"); el.id="toast";
+    el.style.cssText="position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:50;"
+      +"padding:10px 16px;border-radius:8px;font-size:14px;border:1px solid var(--line);background:var(--panel-2);box-shadow:0 6px 24px rgba(0,0,0,.4)";
+    el.className="no-print"; document.body.appendChild(el); }
+  el.textContent = msg; el.style.borderColor = bad ? "var(--coral)" : "var(--teal)";
+  el.style.opacity="1"; clearTimeout(toastT); toastT=setTimeout(()=>el.style.opacity="0",2200);
+}
+
+/* ---------- boot ---------- */
+renderPregens();
+loadPregen(window.DROSS_PREGENS[0]);
+</script>
+</body>
+</html>
