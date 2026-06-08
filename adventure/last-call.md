@@ -66,7 +66,7 @@ GLADYS announces O₂ at each scene break. It's atmosphere and momentum, not a k
 
 ## THE PREGENS
 
-Hand these out. Each maps to a classic crew archetype, has a distinct mechanical niche so no two players feel the same, and carries a personal hook into the plot. **For 3 players, drop K-7** (fold the repair beats into Dusty) **or drop Rim.** **For a 5th player — or a swap-in — there's an optional pregen, GREASE, at the end of this section.**
+Hand these out. Each maps to a classic crew archetype, has a distinct mechanical niche so no two players feel the same, and carries a personal hook into the plot. **For 3 players, drop K-7** (fold the repair beats into Dusty) **or drop Bartleby.** **For a 5th player — or a swap-in — there's an optional pregen, GREASE, at the end of this section.**
 
 ---
 
@@ -81,8 +81,8 @@ Hand these out. Each maps to a classic crew archetype, has a distinct mechanical
 
 ---
 
-### RIM — Holographic Crewmate (Deceased)
-*Died in "the incident." Kept on as a light-projection because morale, apparently. Pompous, by-the-book, secretly a coward.*
+### BARTLEBY "FEATHERS" — Holographic Crewmate (Deceased)
+*Died in "the incident." Kept on as a light-projection because morale, apparently. Insists on the full "Bartleby Featherstone"; everyone says Feathers. Pompous, by-the-book, secretly a coward.*
 
 - **STR 7 · DEX 13 · WIL 14 · HP 4 · Armor 0**
 - Carries **nothing** (he's made of light). Knows the ship's history and trivia cold — ask GLADYS anything *through* him.
@@ -92,14 +92,15 @@ Hand these out. Each maps to a classic crew archetype, has a distinct mechanical
 
 ---
 
-### FELIX NINE-LIVES — Evolved Feline, "Morale Officer"
-*Descended from the ship's cat over generations in the hold. Catastrophically vain. Allergic to labor. Lethal when motivated (rare).*
+### CROWN & WHISKER — Evolved Feline, "Morale Officer" *(self-appointed, hereditary)*
+*Descended from the ship's cat over generations in the hold, raised in isolation with exactly one companion: the cat-food dispenser. It learned to speak from the machine's marketing copy, and took the brand stamped on the front — "Crown & Whisker Reserve, His Majesty's Pilchard" — as its name, title, and royal line. Catastrophically vain, now with trademark backing. Speaks in slogans, refers to itself as "we," expects "Your Highness." Allergic to labor. Lethal when motivated (rare).*
 
-- **STR 9 · DEX 15 · WIL 8 · HP 5 · Armor 1** (a jacket that is, he insists, "bulletproof, darling")
+- **STR 9 · DEX 15 · WIL 8 · HP 5 · Armor 1** (a jacket it maintains is "ceremonial — and bulletproof, naturally")
 - **Retractable claws** (**d6**)
-- **Nine Lives (1/session):** When you'd be taken down, make a **DEX save** instead — success means you instinctively twist away, take **no** STR damage, and stay standing. *"Wasn't even close."*
+- **Royal Slogans:** It communicates in vending-machine ad copy. *"We thank you for your selection." "Now with thirty percent more valor."* Let players translate; it never quite explains itself.
+- **Nine Lives (1/session):** When you'd be taken down, make a **DEX save** instead — success means you instinctively twist away, take **no** STR damage, and stay standing. *"We do not fall. We recline."*
 - **Nose for Trouble:** You can smell the alien (and danger generally) before you see it. Ask me.
-- **Hook:** The thing has been hunting in *your* territory. This is, frankly, an insult.
+- **Hook:** The thing has been hunting in *our* territory. This is, frankly, treason. (Quieter: the vending machines were its only kin — and they've started turning hostile. It does not discuss this.)
 
 ---
 
@@ -125,7 +126,7 @@ Hand these out. Each maps to a classic crew archetype, has a distinct mechanical
 - **Packrat:** he over-packs; if his inventory is ever truly **full**, he's at **0 HP** until he drops something. A running gag and a real cost.
 - **Hook (player-safe):** the crew never logged him before the nap, so the pods skipped him; he's been awake and alone on a sleeping ship and is a little odd about it. He just wants on the roster. *Officially.*
 
-> **Warden balance note (you flagged this in, so here's the deal):** Grease's **Armor 3** makes him nearly immune to the appliances' d6 cans — lean into that as comedy (Mr. Munch's electrified grab and Brood Mama's d8/d10 acid blast still bite, and **HP 3 + the packrat gag keep him fragile underneath**). His **Suited Up bulk** means he's slow in the crawlspace — good reason to let the others scout (Rim) and squeeze (K-7). He doesn't step on anyone's niche: Dusty improvises, K-7 repairs/vacuum, Rim scouts, Felix smells trouble — Grease *tanks and brews*. If you'd rather not add an armor wall to the fights, run him as **Armor 2** (drop the hatch-shield) and nothing else changes.
+> **Warden balance note (you flagged this in, so here's the deal):** Grease's **Armor 3** makes him nearly immune to the appliances' d6 cans — lean into that as comedy (Mr. Munch's electrified grab and Brood Mama's d8/d10 acid blast still bite, and **HP 3 + the packrat gag keep him fragile underneath**). His **Suited Up bulk** means he's slow in the crawlspace — good reason to let the others scout (Bartleby) and squeeze (K-7). He doesn't step on anyone's niche: Dusty improvises, K-7 repairs/vacuum, Bartleby scouts, Crown & Whisker smells trouble — Grease *tanks and brews*. If you'd rather not add an armor wall to the fights, run him as **Armor 2** (drop the hatch-shield) and nothing else changes.
 
 ---
 
@@ -158,7 +159,7 @@ The galley. Greasy, dim, humming. Three things to play with:
 > *Attack:* hurled cans **d6**, or electrified grab **d8** (in reach).
 > When destroyed it sprays alien slime and dies with a sad descending jingle.
 
-**The clue:** Slime trails, scratch marks, and a half-corrupted maintenance log all point the same way — **down the crawlspace toward the cargo hold.** Felix can smell the nest's direction. Rim, if pressed, finally admits he *saw* something climb out of the salvaged pod.
+**The clue:** Slime trails, scratch marks, and a half-corrupted maintenance log all point the same way — **down the crawlspace toward the cargo hold.** Crown & Whisker can smell the nest's direction. Bartleby, if pressed, finally admits he *saw* something climb out of the salvaged pod.
 
 ➡️ **O₂ drops to 60%.** GLADYS: *"Sixty percent! Still plenty. I once ran on forty for a fortnight. Lost some long-term memory. And a corridor."*
 
@@ -168,9 +169,9 @@ The galley. Greasy, dim, humming. Three things to play with:
 
 To reach the scrubber control they squeeze into the **service ducts** — cramped, hot, dripping. This is the **maintenance beat** and everyone's niche shines:
 
-- **Rim** phases ahead to scout safely.
+- **Bartleby** phases ahead to scout safely.
 - **K-7** fits where others can't and does the repair fast.
-- **Felix** climbs anything.
+- **Crown & Whisker** climbs anything.
 - **Dusty** improvises a fix from junk.
 
 **The repair:** the scrubber intake is **choked with alien egg-sac gunk.** Clearing it is a **DEX or STR save** for anyone — *or* an automatic success for K-7 (Built for Repair). Success reroutes airflow and **slows** the O₂ drop. But pulling the gunk free reveals the horror underneath…
@@ -202,7 +203,7 @@ The **cargo hold.** Cavernous, freezing, strung with translucent webbing and war
 
 **This fight is a trap if they brawl it.** Her d10 blast can chew through HP and into STR fast. The *intended* win is the clever one — and Cairn rewards exactly this:
 
-**The airlock play (the good ending):** Lure or shove Brood Mama into the faulty maintenance airlock and cycle it. **K-7 can operate the airlock from inside vacuum without harm** — that's its moment. Pulling this off might take a lure (Felix as bait — *DEX*), a shove (*STR*, opposed by her bulk), or rigging the cycle (*K-7 auto* / *DEX* for anyone else). Reward planning with few or no rolls.
+**The airlock play (the good ending):** Lure or shove Brood Mama into the faulty maintenance airlock and cycle it. **K-7 can operate the airlock from inside vacuum without harm** — that's its moment. Pulling this off might take a lure (Crown & Whisker as bait — *DEX*), a shove (*STR*, opposed by her bulk), or rigging the cycle (*K-7 auto* / *DEX* for anyone else). Reward planning with few or no rolls.
 
 **If they fight it straight:** totally allowed, just dangerous. With four PCs focusing fire (d6–d8 each) she can drop in 2–3 rounds — but expect at least one cocooning. Make her plead, threaten, and guilt-trip the whole time. *"After everything I've nested for you!"*
 
@@ -217,8 +218,8 @@ Wrap on character beats and a laugh:
 - **GLADYS takes full credit** in her incident report. *"I'm putting myself forward for a commendation. You may co-sign."*
 - **Dusty's** salvage authorization surfaces — does the crew rat him out or bury it?
 - **K-7** finally gets to file its report. It is 400 pages. It is very proud.
-- **Rim** insists he was "tactically intangible," not hiding.
-- **Felix** demands the cargo hold be re-designated his "sun-warmed conquest territory."
+- **Bartleby** insists he was "tactically intangible," not hiding.
+- **Crown & Whisker** demands the cargo hold be re-designated a "sun-warmed royal territory," by decree.
 
 **Stingers (pick one):**
 1. Back in the mess hall, **Mr. Munch** has gone fully sentient and free, and is now charging rent.

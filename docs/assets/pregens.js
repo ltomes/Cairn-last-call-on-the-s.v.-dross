@@ -26,9 +26,9 @@ window.DROSS_PREGENS = [
   },
   {
     id: "rim",
-    name: "Rim",
+    name: "Bartleby “Feathers”",
     role: "Holographic Crewmate (Deceased)",
-    blurb: "Died in “the incident.” Kept on as a light-projection, for morale apparently. Pompous, by-the-book, secretly a coward.",
+    blurb: "Died in “the incident.” Kept on as a light-projection, for morale apparently. Insists on “Bartleby Featherstone”; everyone says Feathers. Pompous, by-the-book, secretly a coward.",
     str: 7, dex: 13, wil: 14, hp: 4, armor: 0,
     items: [
       "Carries nothing — you’re made of light",
@@ -42,19 +42,20 @@ window.DROSS_PREGENS = [
   },
   {
     id: "felix",
-    name: "Felix Nine-Lives",
-    role: "Evolved Feline, “Morale Officer”",
-    blurb: "Descended from the ship’s cat over generations in the hold. Catastrophically vain. Allergic to labor. Lethal when motivated (rare).",
+    name: "Crown & Whisker",
+    role: "Evolved Feline, “Morale Officer” (self-appointed, hereditary)",
+    blurb: "Descended from the ship’s cat over generations in the hold, raised alone but for the cat-food dispenser. You learned to talk from its adverts and took the brand on the front — “Crown & Whisker Reserve, His Majesty’s Pilchard” — as your name, title, and royal line. Catastrophically vain. You speak in slogans, call yourself “we,” and expect “Your Highness.” Allergic to labor. Lethal when motivated (rare).",
     str: 9, dex: 15, wil: 8, hp: 5, armor: 1,
-    armorNote: "a jacket that is, you insist, “bulletproof, darling”",
+    armorNote: "a jacket you maintain is “ceremonial — and bulletproof, naturally”",
     items: [
       "Retractable claws (d6)"
     ],
     abilities: [
-      { name: "Nine Lives (1/session)", desc: "When you’d be taken down, make a DEX save instead — success means you twist away, take no STR damage, stay standing. “Wasn’t even close.”" },
+      { name: "Royal Slogans", desc: "You only really speak in vending-machine ad copy. “We thank you for your selection.” “Now with thirty percent more valor.” Make the table work for it." },
+      { name: "Nine Lives (1/session)", desc: "When you’d be taken down, make a DEX save instead — success means you twist away, take no STR damage, stay standing. “We do not fall. We recline.”" },
       { name: "Nose for Trouble", desc: "You can smell danger before you see it. Ask the Warden." }
     ],
-    secret: "Whatever’s been skulking around the ship has been doing it in your territory. Frankly, it’s an insult."
+    secret: "Whatever’s been skulking around the ship has been doing it in our territory. Frankly, it’s treason. (And the vending machines were the only family you ever had.)"
   },
   {
     id: "k7",

@@ -22,7 +22,7 @@ A complete, ready-to-run **Cairn 2e** tabletop one-shot: *Last Call on the S.V. 
 - **Markdown, prose-forward.** Tables and short lists where they earn it; otherwise sentences. Em-dashes and a light comic touch are intentional, not noise.
 - **Player-safe vs Warden-only:** anything in `players/` must contain **no plot spoilers** (no Brood Mama, no SADYS, no Ascendance reveal). GM secrets live only in `adventure/`. Preserve this boundary in any new player-facing output.
 - **Don't rebalance the game** (stat blocks, the oxygen clock, HP/damage tuning) without flagging it — it's tuned for a 2-hour comedy where combat is a last resort.
-- Keep names consistent: ship **S.V. Dross**; AI **GLADYS** (corrupts to **SADYS**); crew **Dusty, Rim, Felix, K-7**; alien **Brood Mama**; setting **the Bermuda Reclamation**; failed billionaire colony **Ascendance**.
+- Keep names consistent: ship **S.V. Dross**; AI **GLADYS** (corrupts to **SADYS**); crew **Dusty, Bartleby "Feathers", Crown & Whisker, K-7** (plus optional 5th **Grease**); alien **Brood Mama**; setting **the Bermuda Reclamation**; failed billionaire colony **Ascendance**.
 
 ## Task list (priority order)
 

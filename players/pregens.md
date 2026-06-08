@@ -29,8 +29,8 @@
 
 ## ✂— — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
-### RIM — Holographic Crewmate (Deceased)
-*Died in "the incident." Kept on as a light-projection, for morale apparently. Pompous, by-the-book, secretly a coward.*
+### BARTLEBY "FEATHERS" — Holographic Crewmate (Deceased)
+*Died in "the incident." Kept on as a light-projection, for morale apparently. Insists on "Bartleby Featherstone"; everyone says Feathers. Pompous, by-the-book, secretly a coward.*
 
 **STR 7 · DEX 13 · WIL 14 · HP 4 · Armor 0**
 
@@ -41,15 +41,16 @@
 
 ## ✂— — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
-### FELIX NINE-LIVES — Evolved Feline, "Morale Officer"
-*Descended from the ship's cat over generations in the hold. Catastrophically vain. Allergic to labor. Lethal when motivated (rare).*
+### CROWN & WHISKER — Evolved Feline, "Morale Officer" *(self-appointed, hereditary)*
+*Descended from the ship's cat over generations in the hold, raised alone but for the cat-food dispenser. You learned to talk from its adverts and took the brand on the front — "Crown & Whisker Reserve, His Majesty's Pilchard" — as your name, title, and royal line. Catastrophically vain. You speak in slogans, call yourself "we," and expect "Your Highness." Allergic to labor. Lethal when motivated (rare).*
 
-**STR 9 · DEX 15 · WIL 8 · HP 5 · Armor 1** *(a jacket that is, you insist, "bulletproof, darling")*
+**STR 9 · DEX 15 · WIL 8 · HP 5 · Armor 1** *(a jacket you maintain is "ceremonial — and bulletproof, naturally")*
 
 - **Retractable claws** (**d6**).
-- **Nine Lives (1/session):** When you'd be taken down, make a **DEX save** instead — success means you twist away, take no STR damage, stay standing. *"Wasn't even close."*
+- **Royal Slogans:** You only really speak in vending-machine ad copy. *"We thank you for your selection." "Now with thirty percent more valor."* Make the table work for it.
+- **Nine Lives (1/session):** When you'd be taken down, make a **DEX save** instead — success means you twist away, take no STR damage, stay standing. *"We do not fall. We recline."*
 - **Nose for Trouble:** You can smell danger before you see it. Ask the Warden.
-- **Your secret:** Whatever's been skulking around the ship has been doing it in *your* territory. Frankly, it's an insult.
+- **Your secret:** Whatever's been skulking around the ship has been doing it in *our* territory. Frankly, it's treason. (And the vending machines were the only family you ever had.)
 
 ## ✂— — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
@@ -82,4 +83,4 @@
 
 ## ✂— — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
-*Running with 3 players? The Warden will set one card aside — most likely K-7 or Rim. Running with 5, or want a swap-in? **Grease** is the spare — a walking tank with a chemistry set.*
+*Running with 3 players? The Warden will set one card aside — most likely K-7 or Bartleby. Running with 5, or want a swap-in? **Grease** is the spare — a walking tank with a chemistry set.*

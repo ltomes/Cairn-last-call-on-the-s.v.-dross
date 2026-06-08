@@ -24,7 +24,7 @@ Everything below is either a one-line recap of base Cairn or a **HACK** — a de
 Failing a Critical Damage save does **not** kill a PC. They're knocked silly, webbed up, or comically incapacitated — out of the scene until a teammate spends a moment to rouse/free them (no roll). A player may **opt in** to a heroic death if the moment is too good to pass up. NPCs and appliances still go down for good. *Why: keeps a comedy one-shot from grinding to a halt over a bad d20.*
 
 ### 2. Hologram *(HACK — trait)*
-A holographic character (e.g. Rim) is **Intangible** by default: walks through walls, doors, and hazards; cannot be physically harmed; but cannot touch, carry, push, or repair **anything**. They can flip to **Hard Light** for ~10 minutes (interact and be harmed normally); holding it longer needs a **WIL save**, and afterward they recharge at a power point. *Why: a fantastic scout and running gag, with a real cost.*
+A holographic character (e.g. Bartleby "Feathers") is **Intangible** by default: walks through walls, doors, and hazards; cannot be physically harmed; but cannot touch, carry, push, or repair **anything**. They can flip to **Hard Light** for ~10 minutes (interact and be harmed normally); holding it longer needs a **WIL save**, and afterward they recharge at a power point. *Why: a fantastic scout and running gag, with a real cost.*
 
 ### 3. Vacuum-Rated *(HACK — trait)*
 A character with this (e.g. K-7) ignores vacuum, cold, and lack of air entirely. This is the literal key to the airlock solution in the finale. *Why: gives the robot a defining, plot-relevant niche.*
