@@ -30,6 +30,7 @@ A bit of grimy lived-in sci-fi sitcom, a bit of deadpan cosmic bureaucracy. The 
 | `system/rules-and-hacks.md` | Cairn 2e recap + this game's house rules. |
 | `players/pregens.md` | Printable, spoiler-free character cards. |
 | `setting/bermuda-reclamation.md` | The setting primer / lore. |
+| `setting/ship-layout.json` · `.md` | **Ship model** — the canonical spatial layout of the *Dross* (decks, rooms, coordinates, entities, scenes, image prompts), plus a human-readable guide. Source of truth for maps + flavor art. |
 | `docs/` | **Web tools** — a self-contained static site (crew builder, NPC soundboard, deck maps). |
 | `build/` | Generated print-ready PDFs and card sheets (see `CLAUDE.md`). |
 | `CLAUDE.md` | Build & maintenance brief for Claude Code. |
