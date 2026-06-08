@@ -7,11 +7,14 @@
 
    Usage:
      OPENAI_API_KEY=sk-... node tools/generate-images.mjs [flags]
+     node tools/generate-images.mjs --provider local      # local Stable Diffusion
 
    Flags:
-     --provider openai|stability   (default: openai, or $PROVIDER)
-     --model <id>                  (default: gpt-image-1 / sd3.5 core)
-     --size 1536x1024              (gpt-image-1: 1024x1024|1536x1024|1024x1536|auto)
+     --provider openai|stability|local  (default: openai, or $PROVIDER)
+     --model <id>                  (openai: gpt-image-1 · stability: sd3.5-large)
+     --base-url <url>              (local SD, default $SD_BASE_URL or http://127.0.0.1:7860)
+     --steps 28 --cfg 5 --sampler "DPM++ 2M"   (local SD)
+     --size 1536x1024              (openai: 1024x1024|1536x1024|1024x1536|auto · local: WxH)
      --quality low|medium|high     (gpt-image-1, default medium)
      --audience all|player         (player = only player-safe images, default all)
      --only id,id,...              (generate just these target ids)
@@ -45,17 +48,25 @@ const delayMs  = parseInt(flag("delay", "1500"), 10) || 0;
 const size     = String(flag("size", "1536x1024"));
 const quality  = String(flag("quality", "medium"));
 
-/* ---- prompt assembly (mirrors docs/prompts.html, all fragments on) ---- */
-function assemble(ship, specific){
+/* ---- prompt assembly (mirrors docs/prompts.html) ----
+   positive() = everything but the negatives; negative() = the "avoid" list,
+   so SD/Stability can use a real negative_prompt field, while OpenAI (no such
+   field) gets it appended inline by assemble(). */
+function positive(ship, specific){
   const s = ship.style, parts = [];
   if(s.global_prefix) parts.push(s.global_prefix);
   if(s.lighting)      parts.push("Lighting: "+s.lighting);
   parts.push(specific);
   if(s.palette)       parts.push(`Palette: amber ${s.palette.ambient_amber} ambient, teal ${s.palette.systems_teal} systems, coral-red ${s.palette.hazard_alien_coral} alien, against grimy slate ${s.palette.grimy_slate}.`);
-  if(s.negative)      parts.push("Avoid: "+s.negative);
   if(s.aspect)        parts.push(s.aspect+".");
   return parts.join(" ").replace(/\s+/g," ").trim();
 }
+const negative = ship => (ship.style && ship.style.negative) ? ship.style.negative : "";
+function assemble(ship, specific){            // inline form (OpenAI / display)
+  const pos = positive(ship, specific), neg = negative(ship);
+  return neg ? pos+" Avoid: "+neg : pos;
+}
+const sizeWH = () => { const m=/^(\d+)x(\d+)$/.exec(size); return m ? {w:+m[1],h:+m[2]} : {w:1536,h:1024}; };
 
 /* ---- collect targets ---- */
 function targets(ship){
@@ -78,11 +89,12 @@ function targets(ship){
   return out;
 }
 
-/* ---- providers ---- */
-async function genOpenAI(prompt){
+/* ---- providers: each takes (pos, neg) and returns a PNG Buffer ---- */
+async function genOpenAI(pos, neg){
   const key = process.env.OPENAI_API_KEY;
   if(!key) throw new Error("OPENAI_API_KEY is not set.");
   const model = String(flag("model","gpt-image-1"));
+  const prompt = neg ? pos+" Avoid: "+neg : pos;     // no native negative field
   const res = await fetch("https://api.openai.com/v1/images/generations", {
     method:"POST",
     headers:{ "Authorization":"Bearer "+key, "Content-Type":"application/json" },
@@ -94,24 +106,43 @@ async function genOpenAI(prompt){
   if(!b64) throw new Error("OpenAI: no image data returned.");
   return Buffer.from(b64, "base64");
 }
-async function genStability(prompt){
+async function genStability(pos, neg){
   const key = process.env.STABILITY_API_KEY;
   if(!key) throw new Error("STABILITY_API_KEY is not set.");
-  const model = String(flag("model","sd3.5-large"));
   const fd = new FormData();
-  fd.append("prompt", prompt);
+  fd.append("prompt", pos);
+  if(neg) fd.append("negative_prompt", neg);
   fd.append("output_format", "png");
   fd.append("aspect_ratio", "16:9");
-  fd.append("model", model);
+  fd.append("model", String(flag("model","sd3.5-large")));
   const res = await fetch("https://api.stability.ai/v2beta/stable-image/generate/core", {
-    method:"POST",
-    headers:{ "Authorization":"Bearer "+key, "Accept":"image/*" },
-    body: fd
+    method:"POST", headers:{ "Authorization":"Bearer "+key, "Accept":"image/*" }, body: fd
   });
   if(!res.ok) throw new Error(`Stability ${res.status}: ${(await res.text()).slice(0,300)}`);
   return Buffer.from(await res.arrayBuffer());
 }
-const generate = provider==="stability" ? genStability : genOpenAI;
+// Local Stable Diffusion via the AUTOMATIC1111 / Forge txt2img API.
+async function genLocal(pos, neg){
+  const base = String(flag("base-url", process.env.SD_BASE_URL || "http://127.0.0.1:7860")).replace(/\/$/,"");
+  const { w, h } = sizeWH();
+  const body = {
+    prompt: pos, negative_prompt: neg||"",
+    width: w, height: h,
+    steps: parseInt(flag("steps","28"),10)||28,
+    cfg_scale: parseFloat(flag("cfg","5"))||5,
+    sampler_name: String(flag("sampler","DPM++ 2M")),
+    n_iter:1, batch_size:1
+  };
+  const res = await fetch(base+"/sdapi/v1/txt2img", {
+    method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify(body)
+  });
+  if(!res.ok) throw new Error(`Local SD ${res.status} @ ${base}: ${(await res.text()).slice(0,200)}`);
+  const j = await res.json();
+  const b64 = j.images && j.images[0];
+  if(!b64) throw new Error("Local SD: no image returned (is a model loaded?).");
+  return Buffer.from(b64.replace(/^data:image\/\w+;base64,/,""), "base64");
+}
+const generate = provider==="stability" ? genStability : provider==="local" ? genLocal : genOpenAI;
 
 /* ---- helpers ---- */
 const exists = async p => { try { await access(p, constants.F_OK); return true; } catch { return false; } };
@@ -144,7 +175,8 @@ const manifest = { generated_at:new Date().toISOString(), provider, dry, size, i
 let made=0, skipped=0, failed=0;
 
 for(const t of list){
-  const full = assemble(ship, t.prompt);
+  const pos = positive(ship, t.prompt), neg = negative(ship);
+  const full = assemble(ship, t.prompt);   // inline form, for display/manifest
   const file = `${t.id}.png`;
   const dest = path.join(OUT_DIR, file);
   const safe = t.show_to==="players";
@@ -160,7 +192,7 @@ for(const t of list){
     console.log(`= ${t.id}  (exists, skip)`); skipped++; manifest.items.push(rec); continue;
   }
   try{
-    const buf = await withRetry(()=>generate(full), t.id);
+    const buf = await withRetry(()=>generate(pos, neg), t.id);
     await writeFile(dest, buf);
     console.log(`✓ ${t.id}  (${(buf.length/1024).toFixed(0)} KB)`); made++;
     manifest.items.push(rec);

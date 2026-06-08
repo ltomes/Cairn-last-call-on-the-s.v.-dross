@@ -109,10 +109,6 @@ function render(){
     });
     html += `</div>`;
   });
-  if(M.dry){
-    html = `<div class="panel" style="border-color:rgba(242,180,65,.4);background:rgba(242,180,65,.06);margin-bottom:16px">
-      <b>Dry-run manifest.</b> <span class="muted">No images generated yet — run <code>node tools/generate-images.mjs</code> with an API key to fill these in. The layout below is the plan.</span></div>` + html;
-  }
   root.innerHTML = html || "<p class='muted'>No images for this view.</p>";
 }
 function setMode(m){

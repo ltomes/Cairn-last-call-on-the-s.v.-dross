@@ -196,6 +196,29 @@ function fitLabels(){
     while(t.getComputedTextLength()>avail && fs>floor){ fs-=0.5; t.style.fontSize=fs+"px"; }
     if(t.getComputedTextLength()>avail) ellipsize(t, avail);
   });
+  // declutter: per deck, push overlapping entity labels apart and clear of room titles
+  root.querySelectorAll("svg.deck").forEach(svg=>{
+    const movable=[...svg.querySelectorAll("text.entfit")];
+    if(!movable.length || typeof movable[0].getComputedTextLength!=="function") return;
+    const vbH=(svg.viewBox && svg.viewBox.baseVal) ? svg.viewBox.baseVal.height : 1000;
+    const boxOf=t=>{
+      const len=t.getComputedTextLength(), fs=parseFloat(win.getComputedStyle(t).fontSize)||10;
+      const x=parseFloat(t.getAttribute("x"))||0, end=t.getAttribute("text-anchor")==="end", y=parseFloat(t.getAttribute("y"))||0;
+      return { t, fs, x1:end?x-len:x, x2:end?x:x+len, y1:y-fs, y2:y+3 };
+    };
+    const hit=(a,b)=> a.x1<b.x2 && b.x1<a.x2 && a.y1<b.y2 && b.y1<a.y2;
+    const placed=[...svg.querySelectorAll("text.fit")].map(boxOf);   // room/deck titles: fixed obstacles
+    movable.map(boxOf).sort((a,b)=> a.y1-b.y1 || a.x1-b.x1).forEach(b=>{
+      let guard=0;
+      while(placed.some(p=>hit(b,p)) && guard<14){
+        let y=parseFloat(b.t.getAttribute("y"))||0, ny=y+(b.fs+2);
+        if(ny+3>vbH) ny=y-(b.fs+2);     // near the bottom edge -> go up instead
+        b.t.setAttribute("y", ny.toFixed(0));
+        b.y1=ny-b.fs; b.y2=ny+3; guard++;
+      }
+      placed.push(b);
+    });
+  });
 }
 
 /* ---------- aside (scene notes from data) ---------- */

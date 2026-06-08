@@ -21,7 +21,14 @@ OPENAI_API_KEY=sk-… node tools/generate-images.mjs
 
 # Stability
 STABILITY_API_KEY=… node tools/generate-images.mjs --provider stability
+
+# Local Stable Diffusion — AUTOMATIC1111 / Forge txt2img API (no key, no internet)
+node tools/generate-images.mjs --provider local           # default http://127.0.0.1:7860
+SD_BASE_URL=http://127.0.0.1:7860 node tools/generate-images.mjs --provider local
 ```
+
+Negatives are sent as a real `negative_prompt` to Stability and local SD; OpenAI
+(which has no negative field) gets them appended inline.
 
 The key is read from the **environment** — never put it on the command line in a
 shared shell, and never commit it.
@@ -30,9 +37,11 @@ shared shell, and never commit it.
 
 | Flag | Default | Notes |
 |------|---------|-------|
-| `--provider openai\|stability` | `openai` | which API to call |
-| `--model <id>` | `gpt-image-1` / `sd3.5-large` | override the model |
-| `--size 1536x1024` | `1536x1024` | gpt-image-1: `1024x1024`, `1536x1024`, `1024x1536`, `auto` |
+| `--provider openai\|stability\|local` | `openai` | which backend to call |
+| `--model <id>` | `gpt-image-1` / `sd3.5-large` | override the model (openai/stability) |
+| `--base-url <url>` | `$SD_BASE_URL` or `http://127.0.0.1:7860` | local SD endpoint |
+| `--steps` / `--cfg` / `--sampler` | `28` / `5` / `DPM++ 2M` | local SD sampling |
+| `--size 1536x1024` | `1536x1024` | openai presets; local SD reads it as `WxH` |
 | `--quality low\|medium\|high` | `medium` | gpt-image-1 only |
 | `--audience all\|player` | `all` | `player` = only player-safe shots |
 | `--only id,id` | — | generate just these target ids (e.g. `--only mess-hall,nest-broodmama`) |
