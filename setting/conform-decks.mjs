@@ -39,7 +39,7 @@ const RECT = {
   "scrubber-corridor":{x:9,y:13,w:9,h:10},
   // C — scrubber ctrl + reactor forward, crawlspace spine, airlock(stbd), water-recl(port-aft)
   "scrubber-control":{x:0,y:1,w:6,h:7}, "power-plant":{x:7,y:1,w:13,h:7}, "crawlspace":{x:8,y:8,w:3,h:19},
-  "maintenance-airlock":{x:16,y:15,w:5,h:6}, "water-reclamation":{x:0,y:22,w:8,h:7},
+  "corr-c":{x:6,y:4,w:2,h:6}, "maintenance-airlock":{x:16,y:15,w:5,h:6}, "water-reclamation":{x:0,y:22,w:8,h:7},
   // D — cargo hold fills the disc; aft bulb = gangway + airlock(port) + reclamation bay(stbd)
   "cargo-hold":{x:0,y:0,w:20,h:26}, "corr-d":{x:7,y:26,w:6,h:3},
   "cargo-airlock":{x:0,y:29,w:10,h:10}, "reclamation-maw":{x:10,y:29,w:10,h:10},
@@ -54,6 +54,13 @@ for (const deck of d.decks) {
     if (POLY[r.id]) r.poly = POLY[r.id]; else delete r.poly;
     if (r.id === "reclamation-maw") { r.name = "Reclamation Bay (rear cargo door)"; r.map_label = "Reclam. Bay"; }
   }
+}
+// Each deck's waypoint guide gets its OWN hi-vis colour, all distinct from the room/entity
+// UX palette (amber #f2b441 / teal #4fd1c5 / purple #a78bfa / coral #ff7a6b) so routes read
+// clearly on the plan and you can tell which deck's path at a glance.
+if (d.wayfinding) {
+  d.wayfinding.deck_colors = { "deck-a": "#b6ff00", "deck-b": "#ff36c4", "deck-c": "#00c2ff", "deck-d": "#ffffff" };
+  delete d.wayfinding.line_color;
 }
 fs.writeFileSync(P, JSON.stringify(d, null, 2) + "\n");
 // regen the web mirror

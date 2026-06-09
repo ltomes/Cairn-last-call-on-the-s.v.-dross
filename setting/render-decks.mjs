@@ -81,7 +81,7 @@ function deckSVG(deck, mode) {
   const WP = p => ({ x: PAD + p[1] * S, y: PAD + p[0] * S });
   ((SHIP.wayfinding && SHIP.wayfinding.routes) || []).filter(rt => rt.deck === deck.id).forEach(rt => {
     if (mode === "player" && (rt.spoiler || rt.reveal === "warden")) return;
-    const col = ((SHIP.wayfinding.deck_colors) || {})[deck.id] || "#6fb6ac";
+    const col = ((SHIP.wayfinding.deck_colors) || {})[deck.id] || "#b6ff00";   // per-deck hi-vis guide colour
     const pts = (rt.path || []).map(WP); if (pts.length < 2) return;
     const dash = rt.role === "secondary" ? ' stroke-dasharray="7 5"' : "";
     out += `<path d="M${pts.map(p => `${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(" L")}" fill="none" stroke="${col}" stroke-width="3"${dash}/>`;

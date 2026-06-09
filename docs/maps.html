@@ -203,7 +203,7 @@ function deckSVG(deck){
   const WP = p => ({ x: PAD + p[1]*S, y: PAD + p[0]*S });
   ((SHIP.wayfinding && SHIP.wayfinding.routes) || []).filter(rt=>rt.deck===deck.id).forEach(rt=>{
     if(mode==="player" && (rt.spoiler || rt.reveal==="warden")) return;
-    const col = ((SHIP.wayfinding.deck_colors)||{})[deck.id] || "var(--teal)";
+    const col = ((SHIP.wayfinding.deck_colors)||{})[deck.id] || "#b6ff00";   // per-deck hi-vis guide colour, distinct from room/entity palette
     const pts = (rt.path||[]).map(WP);
     if(pts.length<2) return;
     const dash = rt.role==="secondary" ? ` stroke-dasharray="7 5"` : "";

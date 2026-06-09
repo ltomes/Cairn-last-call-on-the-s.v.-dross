@@ -799,7 +799,7 @@ window.DROSS_SHIP = {
             "x": 6,
             "y": 4,
             "w": 2,
-            "h": 4
+            "h": 6
           },
           "doors": [
             {
@@ -1169,8 +1169,8 @@ window.DROSS_SHIP = {
       "deck": "deck-a",
       "room": "gladys-core",
       "pos": {
-        "x": 12,
-        "y": 7.6
+        "x": 13,
+        "y": 9
       },
       "scene": 0,
       "spoiler": false,
@@ -1186,8 +1186,8 @@ window.DROSS_SHIP = {
       "deck": "deck-a",
       "room": "gladys-core",
       "pos": {
-        "x": 10.66,
-        "y": 13.2
+        "x": 10.99,
+        "y": 11
       },
       "scene": 2,
       "spoiler": true,
@@ -1203,8 +1203,8 @@ window.DROSS_SHIP = {
       "deck": "deck-a",
       "room": "stasis-bay",
       "pos": {
-        "x": 4.5,
-        "y": 11
+        "x": 5,
+        "y": 10.11
       },
       "scene": 0,
       "spoiler": false,
@@ -1221,7 +1221,7 @@ window.DROSS_SHIP = {
       "room": "holo-bay",
       "pos": {
         "x": 10,
-        "y": 20.6
+        "y": 20
       },
       "scene": 0,
       "spoiler": false,
@@ -1237,7 +1237,7 @@ window.DROSS_SHIP = {
       "deck": "deck-b",
       "room": "mess-hall",
       "pos": {
-        "x": 10.31,
+        "x": 10.23,
         "y": 13
       },
       "scene": 1,
@@ -1254,8 +1254,8 @@ window.DROSS_SHIP = {
       "deck": "deck-b",
       "room": "mess-hall",
       "pos": {
-        "x": 2.69,
-        "y": 6.76
+        "x": 1.77,
+        "y": 6.14
       },
       "scene": 1,
       "spoiler": false,
@@ -1271,8 +1271,8 @@ window.DROSS_SHIP = {
       "deck": "deck-b",
       "room": "mess-hall",
       "pos": {
-        "x": 8.92,
-        "y": 11.12
+        "x": 8.69,
+        "y": 10.93
       },
       "scene": 1,
       "spoiler": false,
@@ -1299,8 +1299,8 @@ window.DROSS_SHIP = {
       "deck": "deck-c",
       "room": "scrubber-control",
       "pos": {
-        "x": 4,
-        "y": 4
+        "x": 3,
+        "y": 4.5
       },
       "scene": 2,
       "spoiler": false,
@@ -1316,8 +1316,8 @@ window.DROSS_SHIP = {
       "deck": "deck-c",
       "room": "crawlspace",
       "pos": {
-        "x": 8.5,
-        "y": 9.56
+        "x": 8.75,
+        "y": 12.23
       },
       "scene": 2,
       "spoiler": false,
@@ -1333,8 +1333,8 @@ window.DROSS_SHIP = {
       "deck": "deck-c",
       "room": "crawlspace",
       "pos": {
-        "x": 8.88,
-        "y": 13.11
+        "x": 9.32,
+        "y": 16.44
       },
       "scene": 2,
       "spoiler": true,
@@ -1350,8 +1350,8 @@ window.DROSS_SHIP = {
       "deck": "deck-c",
       "room": "crawlspace",
       "pos": {
-        "x": 9.12,
-        "y": 14.89
+        "x": 9.68,
+        "y": 18.56
       },
       "scene": 2,
       "spoiler": true,
@@ -1378,8 +1378,8 @@ window.DROSS_SHIP = {
       "deck": "deck-c",
       "room": "maintenance-airlock",
       "pos": {
-        "x": 16,
-        "y": 17.2
+        "x": 17.67,
+        "y": 17.4
       },
       "scene": 2,
       "spoiler": false,
@@ -1412,8 +1412,8 @@ window.DROSS_SHIP = {
       "deck": "deck-d",
       "room": "cargo-hold",
       "pos": {
-        "x": 10.5,
-        "y": 12.29
+        "x": 10,
+        "y": 11.15
       },
       "scene": 3,
       "spoiler": true,
@@ -1437,8 +1437,8 @@ window.DROSS_SHIP = {
       "deck": "deck-d",
       "room": "cargo-hold",
       "pos": {
-        "x": 6.28,
-        "y": 7.14
+        "x": 5.56,
+        "y": 5.57
       },
       "scene": 3,
       "spoiler": true,
@@ -1454,8 +1454,8 @@ window.DROSS_SHIP = {
       "deck": "deck-d",
       "room": "cargo-hold",
       "pos": {
-        "x": 15.78,
-        "y": 18.29
+        "x": 15.56,
+        "y": 17.65
       },
       "scene": 3,
       "spoiler": true,
@@ -1471,8 +1471,8 @@ window.DROSS_SHIP = {
       "deck": "deck-d",
       "room": "cargo-airlock",
       "pos": {
-        "x": 10.5,
-        "y": 28
+        "x": 5,
+        "y": 31.5
       },
       "scene": 3,
       "spoiler": false,
@@ -1488,8 +1488,8 @@ window.DROSS_SHIP = {
       "deck": "deck-a",
       "room": "bridge",
       "pos": {
-        "x": 8,
-        "y": 3.51
+        "x": 7,
+        "y": 1.17
       },
       "spoiler": false,
       "place": "wall",
@@ -1504,8 +1504,8 @@ window.DROSS_SHIP = {
       "deck": "deck-a",
       "room": "bridge",
       "pos": {
-        "x": 9.5,
-        "y": 8.5
+        "x": 10,
+        "y": 3.5
       },
       "spoiler": false,
       "place": "floor",
@@ -1520,8 +1520,8 @@ window.DROSS_SHIP = {
       "deck": "deck-a",
       "room": "bridge",
       "pos": {
-        "x": 11,
-        "y": 5.99
+        "x": 13,
+        "y": 2.33
       },
       "spoiler": false,
       "place": "wall",
@@ -1536,8 +1536,8 @@ window.DROSS_SHIP = {
       "deck": "deck-a",
       "room": "stasis-bay",
       "pos": {
-        "x": 2.75,
-        "y": 13
+        "x": 2.5,
+        "y": 11.67
       },
       "spoiler": false,
       "place": "floor",
@@ -1553,7 +1553,7 @@ window.DROSS_SHIP = {
       "room": "holo-bay",
       "pos": {
         "x": 10,
-        "y": 21.4
+        "y": 21
       },
       "spoiler": false,
       "place": "floor",
@@ -1568,8 +1568,8 @@ window.DROSS_SHIP = {
       "deck": "deck-b",
       "room": "mess-hall",
       "pos": {
-        "x": 3.38,
-        "y": 4.88
+        "x": 2.53,
+        "y": 4.07
       },
       "spoiler": false,
       "place": "wall",
@@ -1584,8 +1584,8 @@ window.DROSS_SHIP = {
       "deck": "deck-b",
       "room": "mess-hall",
       "pos": {
-        "x": 6.15,
-        "y": 9.24
+        "x": 5.61,
+        "y": 8.86
       },
       "spoiler": false,
       "place": "floor",
@@ -1600,8 +1600,8 @@ window.DROSS_SHIP = {
       "deck": "deck-b",
       "room": "scrubber-corridor",
       "pos": {
-        "x": 10,
-        "y": 15.25
+        "x": 12,
+        "y": 15.5
       },
       "spoiler": false,
       "place": "floor",
@@ -1616,8 +1616,8 @@ window.DROSS_SHIP = {
       "deck": "deck-b",
       "room": "scrubber-corridor",
       "pos": {
-        "x": 9.25,
-        "y": 14.12
+        "x": 9.75,
+        "y": 14.24
       },
       "spoiler": false,
       "place": "wall",
@@ -1632,7 +1632,7 @@ window.DROSS_SHIP = {
       "deck": "deck-c",
       "room": "scrubber-control",
       "pos": {
-        "x": 2.67,
+        "x": 1,
         "y": 3.33
       },
       "spoiler": false,
@@ -1648,8 +1648,8 @@ window.DROSS_SHIP = {
       "deck": "deck-d",
       "room": "cargo-airlock",
       "pos": {
-        "x": 9.67,
-        "y": 28
+        "x": 3.34,
+        "y": 31.5
       },
       "spoiler": false,
       "place": "wall",
@@ -1665,7 +1665,7 @@ window.DROSS_SHIP = {
       "room": "commons-a",
       "pos": {
         "x": 10,
-        "y": 17
+        "y": 18
       },
       "spoiler": false,
       "place": "wall",
@@ -1873,10 +1873,10 @@ window.DROSS_SHIP = {
     "grid_m_per_unit": 2,
     "style": "matte_painted_grimy",
     "deck_colors": {
-      "deck-a": "#f2b441",
-      "deck-b": "#4fd1c5",
-      "deck-c": "#a78bfa",
-      "deck-d": "#ff7a6b"
+      "deck-a": "#b6ff00",
+      "deck-b": "#ff36c4",
+      "deck-c": "#00c2ff",
+      "deck-d": "#ffffff"
     },
     "routes": [
       {
@@ -1890,23 +1890,23 @@ window.DROSS_SHIP = {
         "spoiler": false,
         "path": [
           [
-            4,
+            3.5,
             10
           ],
           [
-            6.5,
+            8.25,
             10
-          ],
-          [
-            9.5,
-            13
-          ],
-          [
-            9.5,
-            13.75
           ],
           [
             9.75,
+            11.5
+          ],
+          [
+            9.75,
+            15.5
+          ],
+          [
+            9.25,
             16
           ],
           [
@@ -1943,16 +1943,20 @@ window.DROSS_SHIP = {
         "spoiler": false,
         "path": [
           [
-            5,
-            10.25
+            3.75,
+            8
+          ],
+          [
+            4,
+            9.5
           ],
           [
             9.25,
-            10.25
+            9.75
           ],
           [
             10.75,
-            8.75
+            8.25
           ],
           [
             10.75,
@@ -2015,11 +2019,7 @@ window.DROSS_SHIP = {
           ],
           [
             9.25,
-            18.5
-          ],
-          [
-            10,
-            19.25
+            20.25
           ],
           [
             10,
@@ -2052,27 +2052,19 @@ window.DROSS_SHIP = {
         "path": [
           [
             4,
-            4
+            3.5
           ],
           [
-            4.75,
-            4.75
+            6.25,
+            6
           ],
           [
-            6,
-            4.75
-          ],
-          [
-            8.75,
+            6.25,
             7.5
           ],
           [
-            9.25,
-            12.25
-          ],
-          [
             8.25,
-            13.25
+            9.5
           ],
           [
             8.25,
@@ -2112,32 +2104,32 @@ window.DROSS_SHIP = {
             5
           ],
           [
-            2.75,
+            1.75,
             5
           ],
           [
-            1.25,
+            0.25,
             6.5
           ],
           [
-            1.25,
+            0.25,
             24.5
           ],
           [
-            2.5,
+            1.5,
             25.75
           ],
           [
-            9,
+            9.5,
             25.75
           ],
           [
             9.75,
-            26.5
+            28.5
           ],
           [
-            10.25,
-            29
+            10,
+            28.75
           ]
         ],
         "rooms": [
