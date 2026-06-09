@@ -10,16 +10,30 @@ const P = new URL("./ship-layout.json", import.meta.url);
 const d = JSON.parse(fs.readFileSync(P, "utf8"));
 
 const HULL = {
-  "deck-a": [[6,0],[12,0],[15,3],[16,8],[16,15],[14,20],[11,22],[7,22],[4,20],[2,15],[2,8],[3,3]],
+  // Deck A is the HAMMERHEAD deck: the convex BODY (habitation spine) used for clipping rooms;
+  // the winged hammerhead is the Bridge's own polygon + the concave hull_outline below.
+  "deck-a": [[5,6],[15,6],[16,9],[16,16],[14,20],[11,22],[9,22],[6,20],[4,16],[4,9]],
   "deck-b": [[5,0],[13,0],[16,3],[18,8],[18,17],[16,22],[12,25],[6,25],[2,22],[0,17],[0,8],[2,3]],
   "deck-c": [[5,0],[14,0],[18,4],[20,9],[20,20],[18,26],[13,29],[6,29],[1,26],[-1,20],[-1,9],[1,4]],
   "deck-d": [[6,0],[13,0],[17,4],[19,9],[20,16],[20,26],[21,31],[18,36],[14,39],[5,39],[1,36],[-1,31],[0,26],[0,16],[1,9],[3,4]],
 };
+// Deck A concave silhouette (drawn shell): narrow raked cockpit nose -> sensor/grapple WINGS
+// jutting past the body on both sides -> habitation spine behind. Symmetric about gx=10.
+const OUTLINE = {
+  "deck-a": [[8,0],[12,0],[13,1],[21,1],[21,5],[16,6],[16,9],[16,16],[14,20],[11,22],[9,22],[6,20],[4,16],[4,9],[4,6],[-1,5],[-1,1],[7,1]],
+};
+// Explicit room polygons (drawn as-is, NOT hull-clipped). The Bridge IS the hammerhead:
+// a wide thin CROSSBAR of sensor/grapple wing pods jutting past the hull (gx -1..21, well past
+// the gx4..16 body), with a raked cockpit viewport nub at the forward tip; necks into the body.
+const POLY = {
+  "bridge": [[8,0],[12,0],[13,1],[21,1],[21,5],[13,5],[13,7],[7,7],[7,5],[-1,5],[-1,1],[7,1]],
+};
 // rooms grown to the shell (outer edges only); interior rooms untouched
 const RECT = {
-  // A — forward bridge cap (hammerhead) + stasis(port)/GLADYS(starboard) row + crew + aft commons
-  "bridge":{x:5,y:0,w:10,h:5}, "stasis-bay":{x:0,y:5,w:10,h:8}, "gladys-core":{x:10,y:5,w:6,h:6},
-  "crew-quarters":{x:10,y:11,w:10,h:7}, "commons-a":{x:0,y:16,w:20,h:6}, "holo-bay":{x:7,y:18,w:6,h:5},
+  // A — Bridge = hammerhead (POLY); habitation spine behind: stasis(port)/GLADYS(stbd) + crew + aft commons
+  "bridge":{x:5,y:0,w:10,h:7}, "stasis-bay":{x:0,y:7,w:10,h:7}, "gladys-core":{x:10,y:7,w:6,h:5},
+  "crew-quarters":{x:10,y:12,w:10,h:7}, "commons-a":{x:0,y:16,w:20,h:6}, "holo-bay":{x:7,y:18,w:6,h:5},
+  "corr-a":{x:8,y:7,w:2,h:9},
   // B — mess(port-fore)/galley(stbd-fore) + rec(port-aft)/scrubber-corridor(stbd-aft)
   "mess-hall":{x:1,y:2,w:10,h:11}, "galley-store":{x:11,y:2,w:8,h:7}, "rec-nook":{x:1,y:13,w:7,h:10},
   "scrubber-corridor":{x:9,y:13,w:9,h:10},
@@ -34,8 +48,10 @@ const RECT = {
 let hullN = 0, rectN = 0;
 for (const deck of d.decks) {
   if (HULL[deck.id]) { deck.hull = HULL[deck.id]; hullN++; }
+  if (OUTLINE[deck.id]) deck.hull_outline = OUTLINE[deck.id]; else delete deck.hull_outline;
   for (const r of deck.rooms) {
     if (RECT[r.id]) { Object.assign(r.rect, RECT[r.id]); rectN++; }
+    if (POLY[r.id]) r.poly = POLY[r.id]; else delete r.poly;
     if (r.id === "reclamation-maw") { r.name = "Reclamation Bay (rear cargo door)"; r.map_label = "Reclam. Bay"; }
   }
 }

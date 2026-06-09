@@ -161,8 +161,9 @@ function deckSVG(deck){
   // hull + axes
   out += `<rect class="wall" x="${PAD-8}" y="${PAD-8}" width="${W-2*PAD+16}" height="${H-2*PAD+16}" rx="10"/>`;
   // ship hull outline for this deck (blunt bow -> spine -> aft bulb), if present
-  if(deck.hull){ const hp = deck.hull.map(p=>`${(PAD+p[1]*S).toFixed(1)},${(PAD+p[0]*S).toFixed(1)}`).join(" ");
-    out += `<polygon class="hull" points="${hp}" fill="none" stroke="#6fb6ac" stroke-width="2.5" opacity="0.8"/>`; }
+  { const HO = deck.hull_outline || deck.hull;     // hull_outline = concave silhouette (e.g. Deck A hammerhead); hull = convex clip body
+    if(HO){ const hp = HO.map(p=>`${(PAD+p[1]*S).toFixed(1)},${(PAD+p[0]*S).toFixed(1)}`).join(" ");
+      out += `<polygon class="hull" points="${hp}" fill="none" stroke="#6fb6ac" stroke-width="2.5" opacity="0.8"/>`; } }
   out += `<text class="axis" x="${PAD-12}" y="${H/2}" transform="rotate(-90 ${PAD-12} ${H/2})" text-anchor="middle">FORE</text>`;
   out += `<text class="axis" x="${W-PAD+18}" y="${H/2}" transform="rotate(90 ${W-PAD+18} ${H/2})" text-anchor="middle">AFT</text>`;
 
@@ -185,7 +186,9 @@ function deckSVG(deck){
     const hidden = roomHidden(r);
     const cls = hidden ? "room unexplored"
       : "room scene" + (r.type==="duct_network"?" duct":"") + ((mode==="warden"&&r.spoiler)?" spoiler":"");
-    const poly = deck.hull ? clipRoomToHull(r.rect, deck.hull) : null;
+    // r.poly = explicit shape drawn as-is (e.g. the Bridge hammerhead, which juts PAST the
+    // body and must not be clipped); otherwise clip the rect to the convex hull for angled walls.
+    const poly = r.poly ? r.poly : (deck.hull ? clipRoomToHull(r.rect, deck.hull) : null);
     if(poly && poly.length>=3){ const pts = poly.map(p=>`${(PAD+p[1]*S).toFixed(1)},${(PAD+p[0]*S).toFixed(1)}`).join(" ");
       out += `<polygon class="${cls}" points="${pts}"/>`; }
     else out += `<rect class="${cls}" x="${x}" y="${y}" width="${w}" height="${h}" rx="6"/>`;

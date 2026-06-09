@@ -54,7 +54,8 @@ function deckSVG(deck, mode) {
   let out = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">`;
   out += `<rect x="0" y="0" width="${W}" height="${H}" fill="#0e1418"/>`;
   out += `<rect x="${PAD - 8}" y="${PAD - 8}" width="${W - 2 * PAD + 16}" height="${H - 2 * PAD + 16}" rx="10" fill="none" stroke="#2a3640" stroke-width="2"/>`;
-  if (deck.hull) out += `<polygon points="${deck.hull.map(M).join(" ")}" fill="none" stroke="#6fb6ac" stroke-width="2.5" opacity="0.85"/>`;
+  const HO = deck.hull_outline || deck.hull;
+  if (HO) out += `<polygon points="${HO.map(M).join(" ")}" fill="none" stroke="#6fb6ac" stroke-width="2.5" opacity="0.85"/>`;
   // doors
   const seen = {};
   deck.rooms.forEach(r => (r.doors || []).forEach(d => {
@@ -70,7 +71,7 @@ function deckSVG(deck, mode) {
     const hidden = roomHidden(r);
     const fill = hidden ? "#161d22" : (mode === "warden" && r.spoiler) ? "#2a1416" : "#16242a";
     const stroke = hidden ? "#39474c" : (mode === "warden" && r.spoiler) ? "#ff7a6b" : "#4a6b73";
-    const poly = deck.hull ? clipRoomToHull(r.rect, deck.hull) : null;
+    const poly = r.poly ? r.poly : (deck.hull ? clipRoomToHull(r.rect, deck.hull) : null);
     if (poly && poly.length >= 3) out += `<polygon points="${poly.map(M).join(" ")}" fill="${fill}" stroke="${stroke}" stroke-width="1.6"/>`;
     else out += `<rect x="${RX(r.rect)}" y="${RY(r.rect)}" width="${RW(r.rect)}" height="${RH(r.rect)}" rx="6" fill="${fill}" stroke="${stroke}" stroke-width="1.6"/>`;
     const name = hidden ? "Unexplored" : roomLabel(r);
