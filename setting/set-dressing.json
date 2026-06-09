@@ -5,7 +5,7 @@
   "design_code": {
     "_source": "OSHA 1910.36(g) means-of-egress + NEC 110.26 / OSHA 1910.303 working space. Used as a layout/routing GRAMMAR (consistent rules to design + route around), not for realism.",
     "aisle_min_clear_m": 0.71,
-    "wall_offset_m": 0.35,
+    "wall_offset_m": 0.6,
     "equipment_clearance_m": 0.9,
     "marking_width_m": 0.1,
     "ceiling_height_m": 2.3,

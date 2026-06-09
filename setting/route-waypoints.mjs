@@ -7,8 +7,18 @@ const dress = JSON.parse(fs.readFileSync(DIR + "/setting/set-dressing.json", "ut
 const DC = dress.design_code, M = dress.grid_m_per_unit, RES = 4;
 const m2u = m => m / M;
 const roomById = {}; ship.decks.forEach(d => d.rooms.forEach(r => roomById[r.id] = r));
+const deckOf = {}; ship.decks.forEach(d => d.rooms.forEach(r => deckOf[r.id] = d));
 const rectOf = r => [r.rect.x, r.rect.y, r.rect.w, r.rect.h];
 const inRect = (ux, uy, R) => ux >= R[0] && ux <= R[0]+R[2] && uy >= R[1] && uy <= R[1]+R[3];
+// hull containment: rooms are drawn CLIPPED to deck.hull, so the routable area must be
+// inside the hull AND clear of the angled hull walls — otherwise a line drawn in the
+// rect-but-outside-hull margin reads as "in the wall".
+const pip = (p, poly) => { let c = false; for (let i=0,j=poly.length-1;i<poly.length;j=i++){ const a=poly[i],b=poly[j];
+  if (((a[1]>p[1])!==(b[1]>p[1])) && (p[0] < (b[0]-a[0])*(p[1]-a[1])/((b[1]-a[1])||1e-9)+a[0])) c=!c; } return c; };
+const d2seg = (p, a, b) => { const dx=b[0]-a[0], dy=b[1]-a[1], L=dx*dx+dy*dy||1e-9;
+  let t=((p[0]-a[0])*dx+(p[1]-a[1])*dy)/L; t=Math.max(0,Math.min(1,t));
+  return Math.hypot(p[0]-(a[0]+t*dx), p[1]-(a[1]+t*dy)); };
+const dPoly = (p, poly) => { let m=Infinity; for (let i=0,j=poly.length-1;i<poly.length;j=i++) m=Math.min(m,d2seg(p,poly[i],poly[j])); return m; };
 
 function bridge(a, b){
   const A = rectOf(roomById[a]), B = rectOf(roomById[b]);
@@ -38,7 +48,9 @@ function route(spec){
   const regions = rooms.map(r => inset(rectOf(roomById[r])));
   for (let i=0;i<rooms.length-1;i++) regions.push(bridge(rooms[i], rooms[i+1]));  // door bridges stay full width
   const obs = obstacles(rooms);
-  const walkable = (ux,uy) => regions.some(R=>inRect(ux,uy,R)) && !obs.some(O=>inRect(ux,uy,O));
+  const hull = (deckOf[rooms[0]] || {}).hull;
+  const inHull = (ux, uy) => !hull || (pip([ux, uy], hull) && dPoly([ux, uy], hull) >= wo);
+  const walkable = (ux,uy) => regions.some(R=>inRect(ux,uy,R)) && inHull(ux,uy) && !obs.some(O=>inRect(ux,uy,O));
   const off = m2u(DC.wall_offset_m);
   const roomAt = (ux,uy) => rooms.find(rr=>inRect(ux,uy,rectOf(roomById[rr])));
   const hugCost = (ux,uy) => { const rid=roomAt(ux,uy); if(!rid) return 0; const h=(dress.rooms[rid]||{}).hug; const r=rectOf(roomById[rid]);
@@ -57,7 +69,7 @@ function route(spec){
   while(open.size && iter++<300000){ let bk=null,bf=Infinity; for(const [k,f] of open) if(f<bf){bf=f;bk=k;}
     open.delete(bk); const [cx,cy]=bk.split(",").map(Number);
     if(Math.abs(cx-goal[0])<=1 && Math.abs(cy-goal[1])<=1){ came.set(key(...goal),bk); g.set(key(...goal),g.get(bk)); break; }
-    for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]]){ const nx=cx+dx, ny=cy+dy; if(!cellWalk(nx,ny)) continue;
+    for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){ const nx=cx+dx, ny=cy+dy; if(!cellWalk(nx,ny)) continue;  // ORTHOGONAL only -> lines run parallel to walls, 90deg turns (no diagonal shortcuts)
       const step=Math.hypot(dx,dy)*(1 + HUGW*Math.max(0,hugCost(nx/RES,ny/RES))), nk=key(nx,ny), ng=g.get(bk)+step;
       if(ng < (g.get(nk)??Infinity)){ g.set(nk,ng); came.set(nk,bk); open.set(nk, ng + h([nx,ny],goal)); } } }
   let path=[], cur=came.has(key(...goal))?key(...goal):null;
