@@ -71,3 +71,32 @@ Hard negatives for her: forklift / vehicle / machine / submarine (the phrase
   is Warden-only (the nest, Brood Mama, SADYS, the pod's origin). Player images →
   `docs/assets/img/<id>.png`; Warden images → `docs/assets/img/warden/<id>.png`,
   gated behind Warden Mode (`assets/warden.js`).
+
+## Ship exterior & profile (3D)
+
+The S.V. Dross is **wide, flat, and roughly disc-shaped** — about as wide as it is
+long (a tad longer), and much *less tall* than wide/long (~110 m L × ~76 m beam ×
+~12 m / 4 decks). Decks stack **A (command, top) → D (cargo, bottom)**; each deck's
+floor-plan footprint is the **hull cross-section at that height** (the cargo bulb is
+widest at the bottom, the command deck smallest on top). Full structured spec lives in
+`ship-layout.json` → `exterior`.
+
+- **Hammerhead bridge** — a **single-deck** command superstructure perched
+  *forward-on-top* (not the whole hull). A teardrop/lens pod with a blunt **raked
+  cockpit viewport** onto the starfield, tapering to a steeper underside and a gentle
+  canopy. Its **wings** are outboard **sensor/scanner + grapple/tractor pods** that
+  splay past the hull to spot and grab salvage — that's what makes it a *hammerhead*.
+  Deck A habitation sits in the hull body behind it.
+- **Hull body** — a fat, rounded-bow spine housing decks B (mess), C (machinery),
+  D (cargo), tapering up.
+- **Aft bulb** — the swollen **reclamation hold**, a significant chunk of the ship
+  (the alien nest in-plot; vented via the cargo-airlock).
+- **The garbage maw** — the ship's one **asymmetric** feature (Millennium-Falcon
+  style): an **articulated salvage boom** (crab-claw / excavator arm) off the
+  **aft-starboard**. It swings out, **cuts/tears** salvage with a grinder/cutter/
+  plasma-torch head, **pulls** the pieces in with a **flat electromagnet** grabber,
+  then folds back to a **large rear cargo door** where the hold consumes it.
+- **Symmetry** — symmetric port/starboard *except* the maw boom.
+
+When drawing the ship's exterior (establishing shots, the maw in action, the bridge),
+honor this silhouette; interiors are bounded by the deck's hull cross-section.

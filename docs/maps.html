@@ -127,6 +127,28 @@ const entLabel  = e => { const L=e.map_label||e.name; return mode==="player"?str
 /* ---------- per-deck plan ---------- */
 const S = 14, PAD = 30;   // px per grid unit, padding
 
+// Clip a room rect to the deck's CONVEX hull (grid coords) so perimeter rooms get
+// angled exterior walls following the shell. Fully-interior rooms come back as the rect.
+// Keep IDENTICAL to clipRoomToHull() in setting/render-decks.mjs (the visual harness).
+function clipRoomToHull(rect, hull){
+  let out = [[rect.x,rect.y],[rect.x+rect.w,rect.y],[rect.x+rect.w,rect.y+rect.h],[rect.x,rect.y+rect.h]];
+  if(!hull || hull.length<3) return out;
+  let area=0; for(let i=0;i<hull.length;i++){const a=hull[i],b=hull[(i+1)%hull.length]; area+=a[0]*b[1]-b[0]*a[1];}
+  const ccw=area>0;
+  const inter=(P,Q,A,B)=>{const den=(A[0]-B[0])*(P[1]-Q[1])-(A[1]-B[1])*(P[0]-Q[0]);
+    const t=((A[0]-P[0])*(P[1]-Q[1])-(A[1]-P[1])*(P[0]-Q[0]))/den; return [A[0]+t*(B[0]-A[0]),A[1]+t*(B[1]-A[1])];};
+  for(let i=0;i<hull.length && out.length;i++){
+    const A=hull[i],B=hull[(i+1)%hull.length],input=out; out=[];
+    const inside=P=>{const c=(B[0]-A[0])*(P[1]-A[1])-(B[1]-A[1])*(P[0]-A[0]); return ccw?c>=-1e-9:c<=1e-9;};
+    for(let j=0;j<input.length;j++){
+      const cur=input[j],prev=input[(j+input.length-1)%input.length],ci=inside(cur),pi=inside(prev);
+      if(ci){ if(!pi) out.push(inter(prev,cur,A,B)); out.push(cur); }
+      else if(pi) out.push(inter(prev,cur,A,B));
+    }
+  }
+  return out;
+}
+
 function deckSVG(deck){
   const g = deck.grid;                       // {w,h}
   const W = g.h*S + PAD*2, H = g.w*S + PAD*2; // landscape: fore->aft horizontal
@@ -163,7 +185,10 @@ function deckSVG(deck){
     const hidden = roomHidden(r);
     const cls = hidden ? "room unexplored"
       : "room scene" + (r.type==="duct_network"?" duct":"") + ((mode==="warden"&&r.spoiler)?" spoiler":"");
-    out += `<rect class="${cls}" x="${x}" y="${y}" width="${w}" height="${h}" rx="6"/>`;
+    const poly = deck.hull ? clipRoomToHull(r.rect, deck.hull) : null;
+    if(poly && poly.length>=3){ const pts = poly.map(p=>`${(PAD+p[1]*S).toFixed(1)},${(PAD+p[0]*S).toFixed(1)}`).join(" ");
+      out += `<polygon class="${cls}" points="${pts}"/>`; }
+    else out += `<rect class="${cls}" x="${x}" y="${y}" width="${w}" height="${h}" rx="6"/>`;
     // label — single line, fit-to-room in a post-render pass
     const name = hidden ? "Unexplored" : roomLabel(r);
     const lblCls = hidden ? "lbl un" : ((mode==="warden"&&r.spoiler) ? "lbl sp" : "lbl");

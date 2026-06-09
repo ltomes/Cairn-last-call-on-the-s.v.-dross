@@ -13,7 +13,7 @@ window.DROSS_SHIP = {
       "beam": 42,
       "height_decks": 4
     },
-    "silhouette": "Ugly and sturdy: a blunt hammerhead bridge forward, a long ribbed spine of habitation and machinery, and a swollen bulb of cargo/reclamation hold aft. Barnacled with sensor masts, vent stacks, and a great garbage maw at the stern. Everything Ascendance refused to be: operational.",
+    "silhouette": "Ugly, wide and flat — roughly disc-shaped (about as wide as long, much less tall): a single-deck blunt HAMMERHEAD BRIDGE perched forward-on-top with outboard sensor/grapple wings and a raked cockpit viewport; a fat rounded-bow habitation/machinery spine; a swollen aft BULB of cargo/reclamation hold; and the ship's one asymmetric feature — a great GARBAGE MAW that is an articulated crab-claw salvage boom off the aft-starboard, folding back to a large rear cargo door. Barnacled with sensor masts and vent stacks. Operational where Ascendance was not.",
     "crew": "Skeleton crew, mostly in stasis. Government-issue AI (GLADYS).",
     "tone": "Grimy lived-in sci-fi sitcom crossed with deadpan cosmic bureaucracy. Funny first, soft stakes."
   },
@@ -67,10 +67,10 @@ window.DROSS_SHIP = {
           "name": "Bridge",
           "type": "command",
           "rect": {
-            "x": 7,
-            "y": 1,
-            "w": 5,
-            "h": 4
+            "x": 5,
+            "y": 0,
+            "w": 10,
+            "h": 5
           },
           "doors": [
             {
@@ -97,10 +97,10 @@ window.DROSS_SHIP = {
           "name": "GLADYS Personality Core",
           "type": "computer",
           "rect": {
-            "x": 12,
-            "y": 2,
-            "w": 2,
-            "h": 2
+            "x": 10,
+            "y": 5,
+            "w": 6,
+            "h": 6
           },
           "doors": [
             {
@@ -126,10 +126,10 @@ window.DROSS_SHIP = {
           "name": "Stasis Bay",
           "type": "quarters",
           "rect": {
-            "x": 1,
-            "y": 7,
-            "w": 7,
-            "h": 7
+            "x": 0,
+            "y": 5,
+            "w": 10,
+            "h": 8
           },
           "doors": [
             {
@@ -156,8 +156,8 @@ window.DROSS_SHIP = {
           "type": "quarters",
           "rect": {
             "x": 10,
-            "y": 7,
-            "w": 8,
+            "y": 11,
+            "w": 10,
             "h": 7
           },
           "doors": [
@@ -179,10 +179,10 @@ window.DROSS_SHIP = {
           "name": "Habitation Corridor",
           "type": "corridor",
           "rect": {
-            "x": 2,
+            "x": 0,
             "y": 16,
-            "w": 16,
-            "h": 3
+            "w": 20,
+            "h": 6
           },
           "doors": [
             {
@@ -210,10 +210,10 @@ window.DROSS_SHIP = {
           "name": "Holo-Projector Bay",
           "type": "utility",
           "rect": {
-            "x": 8,
-            "y": 19,
-            "w": 4,
-            "h": 4
+            "x": 7,
+            "y": 18,
+            "w": 6,
+            "h": 5
           },
           "doors": [
             {
@@ -268,36 +268,52 @@ window.DROSS_SHIP = {
       ],
       "hull": [
         [
-          3,
+          6,
           0
         ],
         [
-          16,
+          12,
           0
         ],
         [
-          19,
-          4
-        ],
-        [
-          19,
-          22
+          15,
+          3
         ],
         [
           16,
-          24
+          8
         ],
         [
-          3,
-          24
+          16,
+          15
         ],
         [
-          0,
+          14,
           20
         ],
         [
-          0,
-          4
+          11,
+          22
+        ],
+        [
+          7,
+          22
+        ],
+        [
+          4,
+          20
+        ],
+        [
+          2,
+          15
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          3
         ]
       ]
     },
@@ -325,10 +341,10 @@ window.DROSS_SHIP = {
           "name": "Mess Hall / Galley",
           "type": "commons",
           "rect": {
-            "x": 2,
-            "y": 3,
-            "w": 9,
-            "h": 9
+            "x": 1,
+            "y": 2,
+            "w": 10,
+            "h": 11
           },
           "doors": [
             {
@@ -362,10 +378,10 @@ window.DROSS_SHIP = {
           "name": "Dry Store",
           "type": "utility",
           "rect": {
-            "x": 12,
-            "y": 3,
-            "w": 4,
-            "h": 5
+            "x": 11,
+            "y": 2,
+            "w": 8,
+            "h": 7
           },
           "doors": [
             {
@@ -381,10 +397,10 @@ window.DROSS_SHIP = {
           "name": "Rec Nook",
           "type": "commons",
           "rect": {
-            "x": 2,
-            "y": 14,
-            "w": 5,
-            "h": 5
+            "x": 1,
+            "y": 13,
+            "w": 7,
+            "h": 10
           },
           "doors": [
             {
@@ -406,8 +422,8 @@ window.DROSS_SHIP = {
           "rect": {
             "x": 9,
             "y": 13,
-            "w": 3,
-            "h": 9
+            "w": 9,
+            "h": 10
           },
           "doors": [
             {
@@ -458,35 +474,51 @@ window.DROSS_SHIP = {
       ],
       "hull": [
         [
-          2,
+          5,
+          0
+        ],
+        [
+          13,
           0
         ],
         [
           16,
-          0
-        ],
-        [
-          18,
           3
         ],
         [
           18,
-          21
+          8
         ],
         [
-          15,
-          24
+          18,
+          17
         ],
         [
-          3,
-          24
+          16,
+          22
+        ],
+        [
+          12,
+          25
+        ],
+        [
+          6,
+          25
+        ],
+        [
+          2,
+          22
         ],
         [
           0,
-          21
+          17
         ],
         [
           0,
+          8
+        ],
+        [
+          2,
           3
         ]
       ]
@@ -515,10 +547,10 @@ window.DROSS_SHIP = {
           "name": "Air Scrubber Control",
           "type": "machinery",
           "rect": {
-            "x": 2,
-            "y": 2,
-            "w": 4,
-            "h": 4
+            "x": 0,
+            "y": 1,
+            "w": 6,
+            "h": 7
           },
           "doors": [
             {
@@ -544,10 +576,10 @@ window.DROSS_SHIP = {
           "name": "Lift-Reactor Plant",
           "type": "machinery",
           "rect": {
-            "x": 13,
-            "y": 2,
-            "w": 5,
-            "h": 5
+            "x": 7,
+            "y": 1,
+            "w": 13,
+            "h": 7
           },
           "doors": [
             {
@@ -568,9 +600,9 @@ window.DROSS_SHIP = {
           "type": "duct_network",
           "rect": {
             "x": 8,
-            "y": 6,
-            "w": 2,
-            "h": 16
+            "y": 8,
+            "w": 3,
+            "h": 19
           },
           "doors": [
             {
@@ -605,10 +637,10 @@ window.DROSS_SHIP = {
           "name": "Maintenance Airlock (FAULTY)",
           "type": "airlock",
           "rect": {
-            "x": 15,
-            "y": 16,
-            "w": 3,
-            "h": 3
+            "x": 16,
+            "y": 15,
+            "w": 5,
+            "h": 6
           },
           "doors": [
             {
@@ -629,10 +661,10 @@ window.DROSS_SHIP = {
           "name": "Water Reclamation",
           "type": "machinery",
           "rect": {
-            "x": 2,
+            "x": 0,
             "y": 22,
-            "w": 4,
-            "h": 4
+            "w": 8,
+            "h": 7
           },
           "doors": [
             {
@@ -673,36 +705,52 @@ window.DROSS_SHIP = {
       ],
       "hull": [
         [
-          2,
+          5,
+          0
+        ],
+        [
+          14,
           0
         ],
         [
           18,
-          0
+          4
         ],
         [
           20,
-          3
+          9
         ],
         [
           20,
-          25
+          20
         ],
         [
-          17,
-          28
+          18,
+          26
         ],
         [
-          3,
-          28
+          13,
+          29
         ],
         [
-          0,
-          25
+          6,
+          29
         ],
         [
-          0,
-          3
+          1,
+          26
+        ],
+        [
+          -1,
+          20
+        ],
+        [
+          -1,
+          9
+        ],
+        [
+          1,
+          4
         ]
       ]
     },
@@ -730,10 +778,10 @@ window.DROSS_SHIP = {
           "name": "Cargo Hold (the Nest)",
           "type": "cargo",
           "rect": {
-            "x": 1,
-            "y": 2,
-            "w": 19,
-            "h": 24
+            "x": 0,
+            "y": 0,
+            "w": 20,
+            "h": 26
           },
           "doors": [
             {
@@ -789,10 +837,10 @@ window.DROSS_SHIP = {
           "name": "Main Cargo Airlock",
           "type": "airlock",
           "rect": {
-            "x": 8,
-            "y": 27,
-            "w": 5,
-            "h": 4
+            "x": 0,
+            "y": 29,
+            "w": 10,
+            "h": 10
           },
           "doors": [
             {
@@ -815,13 +863,13 @@ window.DROSS_SHIP = {
         },
         {
           "id": "reclamation-maw",
-          "name": "Reclamation Maw",
+          "name": "Reclamation Bay (rear cargo door)",
           "type": "machinery",
           "rect": {
-            "x": 1,
-            "y": 32,
-            "w": 19,
-            "h": 4
+            "x": 10,
+            "y": 29,
+            "w": 10,
+            "h": 10
           },
           "doors": [
             {
@@ -834,16 +882,16 @@ window.DROSS_SHIP = {
             }
           ],
           "mood": "The garbage compactor/intake at the stern. Toothy, dormant, flavor (and a tempting hazard).",
-          "map_label": "Reclam. Maw"
+          "map_label": "Reclam. Bay"
         },
         {
           "id": "corr-d",
           "name": "Hold Gangway",
           "type": "corridor",
           "rect": {
-            "x": 9,
-            "y": 25,
-            "w": 4,
+            "x": 7,
+            "y": 26,
+            "w": 6,
             "h": 3
           },
           "doors": [
@@ -866,35 +914,67 @@ window.DROSS_SHIP = {
       ],
       "hull": [
         [
-          1,
+          6,
           0
         ],
         [
-          19,
+          13,
           0
         ],
         [
-          21,
+          17,
           4
         ],
         [
+          19,
+          9
+        ],
+        [
+          20,
+          16
+        ],
+        [
+          20,
+          26
+        ],
+        [
           21,
-          33
+          31
         ],
         [
           18,
-          37
+          36
         ],
         [
-          2,
-          37
+          14,
+          39
+        ],
+        [
+          5,
+          39
+        ],
+        [
+          1,
+          36
+        ],
+        [
+          -1,
+          31
         ],
         [
           0,
-          33
+          26
         ],
         [
           0,
+          16
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          3,
           4
         ]
       ]
@@ -973,8 +1053,8 @@ window.DROSS_SHIP = {
       "deck": "deck-a",
       "room": "gladys-core",
       "pos": {
-        "x": 13,
-        "y": 2.8
+        "x": 12,
+        "y": 7.6
       },
       "scene": 0,
       "spoiler": false,
@@ -990,8 +1070,8 @@ window.DROSS_SHIP = {
       "deck": "deck-a",
       "room": "gladys-core",
       "pos": {
-        "x": 12.33,
-        "y": 3.6
+        "x": 10.66,
+        "y": 13.2
       },
       "scene": 2,
       "spoiler": true,
@@ -1008,7 +1088,7 @@ window.DROSS_SHIP = {
       "room": "stasis-bay",
       "pos": {
         "x": 4.5,
-        "y": 10.11
+        "y": 11
       },
       "scene": 0,
       "spoiler": false,
@@ -1042,7 +1122,7 @@ window.DROSS_SHIP = {
       "room": "mess-hall",
       "pos": {
         "x": 10.31,
-        "y": 12
+        "y": 13
       },
       "scene": 1,
       "spoiler": false,
@@ -1059,7 +1139,7 @@ window.DROSS_SHIP = {
       "room": "mess-hall",
       "pos": {
         "x": 2.69,
-        "y": 6.38
+        "y": 6.76
       },
       "scene": 1,
       "spoiler": false,
@@ -1076,7 +1156,7 @@ window.DROSS_SHIP = {
       "room": "mess-hall",
       "pos": {
         "x": 8.92,
-        "y": 10.31
+        "y": 11.12
       },
       "scene": 1,
       "spoiler": false,
@@ -1293,7 +1373,7 @@ window.DROSS_SHIP = {
       "room": "bridge",
       "pos": {
         "x": 8,
-        "y": 1.67
+        "y": 3.51
       },
       "spoiler": false,
       "place": "wall",
@@ -1309,7 +1389,7 @@ window.DROSS_SHIP = {
       "room": "bridge",
       "pos": {
         "x": 9.5,
-        "y": 3
+        "y": 8.5
       },
       "spoiler": false,
       "place": "floor",
@@ -1325,7 +1405,7 @@ window.DROSS_SHIP = {
       "room": "bridge",
       "pos": {
         "x": 11,
-        "y": 2.33
+        "y": 5.99
       },
       "spoiler": false,
       "place": "wall",
@@ -1341,7 +1421,7 @@ window.DROSS_SHIP = {
       "room": "stasis-bay",
       "pos": {
         "x": 2.75,
-        "y": 11.67
+        "y": 13
       },
       "spoiler": false,
       "place": "floor",
@@ -1373,7 +1453,7 @@ window.DROSS_SHIP = {
       "room": "mess-hall",
       "pos": {
         "x": 3.38,
-        "y": 4.69
+        "y": 4.88
       },
       "spoiler": false,
       "place": "wall",
@@ -1389,7 +1469,7 @@ window.DROSS_SHIP = {
       "room": "mess-hall",
       "pos": {
         "x": 6.15,
-        "y": 8.62
+        "y": 9.24
       },
       "spoiler": false,
       "place": "floor",
@@ -1698,12 +1778,16 @@ window.DROSS_SHIP = {
             10
           ],
           [
-            7.25,
+            6.5,
             10
           ],
           [
-            9.75,
-            12.5
+            9.5,
+            13
+          ],
+          [
+            9.5,
+            13.75
           ],
           [
             9.75,
@@ -1744,15 +1828,15 @@ window.DROSS_SHIP = {
         "path": [
           [
             5,
-            9.5
+            10.25
           ],
           [
             9.25,
-            9.5
+            10.25
           ],
           [
             10.75,
-            8
+            8.75
           ],
           [
             10.75,
@@ -1799,15 +1883,15 @@ window.DROSS_SHIP = {
           ],
           [
             10.75,
-            10.75
+            11.5
           ],
           [
-            9.75,
-            11.75
+            9.5,
+            12.75
           ],
           [
-            9,
-            11.75
+            8.75,
+            13
           ],
           [
             8.75,
@@ -1970,5 +2054,27 @@ window.DROSS_SHIP = {
       "on_trigger:<event>": "revealed when the named image_event fires",
       "warden": "Warden-only (spoiler)"
     }
+  },
+  "exterior": {
+    "_doc": "3D exterior design of the S.V. Dross. Decks A(top,command)->D(bottom,cargo) stack; each deck footprint = the hull cross-section at its height (cargo bulb widest at the bottom, command smallest on top). Drives hull-conformed deck plans + flavour images.",
+    "proportions": "Wide, flat, roughly disc-shaped: about as wide as long (a tad longer if needed), and much less tall than wide/long. ~110m L x ~76m beam x ~12m (4 decks).",
+    "hammerhead_bridge": {
+      "what": "SINGLE-DECK command bridge superstructure perched forward-on-top (NOT the whole hull cross-section). Teardrop/lens pod: a blunt RAKED forward cockpit VIEWPORT onto the starfield, tapering to a steeper underside and a gentle canopy.",
+      "wings": "Outboard SENSOR/SCANNER + GRAPPLE/TRACTOR pods jutting past the hull on both sides — what makes it a hammerhead; they splay out to spot and grab salvage from ahead.",
+      "behind": "Deck A habitation (stasis bay, crew quarters, GLADYS core, commons, holo-bay) sits in the hull body behind the bridge."
+    },
+    "hull_body": "Fat rounded-bow spine. Decks B (mess/commons), C (service/machinery), D (cargo/reclamation) stack and taper up.",
+    "aft_bulb": "Swollen reclamation HOLD — a significant portion of the ship; stores salvage/garbage (the alien nest in-plot), vented to space via the cargo-airlock.",
+    "maw": {
+      "what": "The great garbage MAW is an ARTICULATED SALVAGE BOOM — a crab-claw / excavator arm mounted OFF-CENTRE at the aft-starboard. The ship's single asymmetric feature (Millennium-Falcon style).",
+      "operation": "Swings out from the ship; CUTS/TEARS salvage with a grinder/cutter/plasma-torch head; PULLS the cut pieces in with a flat ELECTROMAGNET grabber; then folds the boom back toward a LARGE REAR CARGO DOOR where the hold consumes (grinds/reclaims) the material.",
+      "parts": [
+        "articulated arm (2-3 segments, swings out)",
+        "grinder/cutter/plasma-torch head",
+        "flat electromagnet grabber plate",
+        "large rear cargo door (consumption intake)"
+      ]
+    },
+    "symmetry": "Symmetric port/starboard EXCEPT the maw boom (the one deliberate asymmetric feature)."
   }
 };
