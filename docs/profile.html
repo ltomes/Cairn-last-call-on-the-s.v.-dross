@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S.V. Dross — hull side elevation (deck layers)</title>
+<meta name="description" content="Orthographic side elevation of the S.V. Dross: the four decks as stacked layers, derived live from the canonical ship model.">
+<style>
+  :root{ --bg:#0e1418; --ink:#e8e2d4; --amber:#f2b441; --teal:#4fd1c5; --muted:#8a9aa0; }
+  body{ background:var(--bg); color:var(--ink); font:15px/1.5 system-ui,sans-serif; margin:24px; }
+  h1{ color:var(--amber); font-size:20px; margin:0 0 4px; }
+  .crumbs{ margin-bottom:14px; } .crumbs a{ color:var(--teal); text-decoration:none; }
+  p{ max-width:820px; color:#b8c2c6; }
+  svg{ width:100%; max-width:1040px; height:auto; background:#0e1418; border:1px solid #25323a; border-radius:8px; }
+  text{ font-family:system-ui,sans-serif; }
+</style></head>
+<body>
+  <div class="crumbs"><a href="index.html">⟵ S.V. Dross hub</a> · <a href="maps.html">Deck maps</a> · Side elevation</div>
+  <h1>Hull side elevation — the decks as layers</h1>
+  <p>Orthographic profile (length × height), fore to the left. Each deck is drawn at its
+  <em>level</em> (A command on top → D cargo on the bottom) and spans its own fore–aft extent,
+  taken live from each deck's hull in the canonical model — so the command deck is short, the
+  cargo/reclamation deck runs longest into the swollen aft bulb, and Deck A carries the
+  hammerhead bridge forward-on-top. The garbage maw is the external salvage boom off the
+  aft-starboard (not a walkable deck), shown ghosted.</p>
+  <div id="content"><p class="muted">Loading ship model…</p></div>
+
+<script src="assets/ship.js"></script>
+<script>
+const SHIP = window.DROSS_SHIP;
+const DECK_COL = { "deck-a":"#f2b441", "deck-b":"#4fd1c5", "deck-c":"#a78bfa", "deck-d":"#ff7a6b" };
+
+function gyExtent(deck){               // fore–aft span of a deck, from hull (+ any room poly, e.g. the hammerhead)
+  let lo=Infinity, hi=-Infinity;
+  const eat = pts => (pts||[]).forEach(p => { lo=Math.min(lo,p[1]); hi=Math.max(hi,p[1]); });
+  eat(deck.hull_outline || deck.hull);
+  (deck.rooms||[]).forEach(r => eat(r.poly));   // hammerhead bridge juts forward of the body hull
+  return [lo, hi];
+}
+
+function render(){
+  if(!SHIP){ document.getElementById("content").innerHTML="<p>Ship model failed to load (assets/ship.js).</p>"; return; }
+  const decks = [...SHIP.decks].sort((a,b)=> (b.level??0)-(a.level??0));   // A (top) → D (bottom)
+  const ext = decks.map(gyExtent);
+  const maxGy = Math.max(...ext.map(e=>e[1]));
+  const unitM = (SHIP.decks[0].grid && SHIP.decks[0].grid.unit_m) || 2;
+  const S = 22, PAD = 36, DH = 42, GAP = 8;                 // px/unit, padding, deck-band height, gap
+  const W = maxGy*S + PAD*2, H = decks.length*(DH+GAP) + PAD*2 + 24;
+  const X = gy => PAD + gy*S;
+  let out = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="S.V. Dross hull side elevation">`;
+  out += `<text x="${PAD}" y="22" fill="#f2b441" font-size="13">S.V. Dross — side elevation · ${SHIP.exterior?.proportions ? "~110 m L × ~76 m beam × ~12 m, 4 decks" : ""}</text>`;
+  // hammerhead bump marker (forward-top, on Deck A)
+  const aIdx = decks.findIndex(d=>d.id==="deck-a");
+  decks.forEach((d,i)=>{
+    const [lo,hi] = ext[i], y = PAD + 14 + i*(DH+GAP);
+    const x0 = X(Math.max(0,lo)), x1 = X(hi), col = DECK_COL[d.id] || "#6fb6ac";
+    out += `<rect x="${x0}" y="${y}" width="${Math.max(2,x1-x0)}" height="${DH}" rx="4" fill="${col}22" stroke="${col}" stroke-width="2"/>`;
+    const tag = "Deck " + d.id.slice(-1).toUpperCase() + " · " + (d.name||"");
+    out += `<text x="${x0+8}" y="${y+25}" fill="${col}" font-size="13" font-weight="600">${tag}</text>`;
+  });
+  // hammerhead bridge, ghosted, perched forward-on-top of Deck A
+  if(aIdx>=0){
+    const aDeck = decks[aIdx], y = PAD + 14 + aIdx*(DH+GAP);
+    const ham = (aDeck.rooms||[]).find(r=>r.id==="bridge" && r.poly);
+    if(ham){ let lo=Infinity,hi=-Infinity; ham.poly.forEach(p=>{lo=Math.min(lo,p[1]);hi=Math.max(hi,p[1]);});
+      out += `<rect x="${X(Math.max(0,lo))}" y="${y-22}" width="${Math.max(2,X(hi)-X(Math.max(0,lo)))}" height="22" rx="3" fill="#f2b44133" stroke="#f2b441" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+      out += `<text x="${X(Math.max(0,lo))+6}" y="${y-7}" fill="#f2b441" font-size="11">Hammerhead bridge (forward-on-top)</text>`;
+    }
+  }
+  // external garbage maw boom, ghosted, off the aft (Deck D row, beyond the hull)
+  const dIdx = decks.findIndex(d=>d.id==="deck-d");
+  if(dIdx>=0){ const y = PAD + 14 + dIdx*(DH+GAP), xm = X(ext[dIdx][1]);
+    out += `<path d="M${xm} ${y+DH*0.4} l 34 6 l 10 14 l -8 6 l -36 -6" fill="#9a6b5b33" stroke="#9a6b5b" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+    out += `<text x="${xm+6}" y="${y+DH+16}" fill="#9a6b5b" font-size="11">garbage maw — external boom (not walkable)</text>`;
+  }
+  // fore/aft axis
+  out += `<text x="${PAD}" y="${H-10}" fill="#8a9aa0" font-size="11">◀ FORE (bow / hammerhead)</text>`;
+  out += `<text x="${W-PAD}" y="${H-10}" fill="#8a9aa0" font-size="11" text-anchor="end">AFT (cargo bulb / maw) ▶</text>`;
+  out += `</svg>`;
+  document.getElementById("content").innerHTML = out;
+}
+render();
+</script>
+</body></html>

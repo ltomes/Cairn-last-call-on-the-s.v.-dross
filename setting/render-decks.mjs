@@ -96,6 +96,24 @@ function deckSVG(deck, mode) {
   return out + "</svg>";
 }
 
+// side elevation (deck layers) — mirrors docs/profile.html, used here as a render check
+function profileSVG() {
+  const COL = { "deck-a": "#f2b441", "deck-b": "#4fd1c5", "deck-c": "#a78bfa", "deck-d": "#ff7a6b" };
+  const gyExt = deck => { let lo = Infinity, hi = -Infinity; const eat = p => (p || []).forEach(q => { lo = Math.min(lo, q[1]); hi = Math.max(hi, q[1]); });
+    eat(deck.hull_outline || deck.hull); (deck.rooms || []).forEach(r => eat(r.poly)); return [lo, hi]; };
+  const decks = [...SHIP.decks].sort((a, b) => (b.level ?? 0) - (a.level ?? 0));
+  const ext = decks.map(gyExt), maxGy = Math.max(...ext.map(e => e[1]));
+  const Sx = 22, PAD = 36, DH = 42, GAP = 8, X = gy => PAD + gy * Sx;
+  const W = maxGy * Sx + PAD * 2, H = decks.length * (DH + GAP) + PAD * 2 + 24;
+  let o = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}"><rect width="${W}" height="${H}" fill="#0e1418"/>`;
+  o += `<text x="${PAD}" y="22" fill="#f2b441" font-size="13" font-family="sans-serif">S.V. Dross — side elevation (deck layers, fore left)</text>`;
+  decks.forEach((d, i) => { const [lo, hi] = ext[i], y = PAD + 14 + i * (DH + GAP), x0 = X(Math.max(0, lo)), x1 = X(hi), c = COL[d.id] || "#6fb6ac";
+    o += `<rect x="${x0}" y="${y}" width="${Math.max(2, x1 - x0)}" height="${DH}" rx="4" fill="${c}22" stroke="${c}" stroke-width="2"/>`;
+    o += `<text x="${x0 + 8}" y="${y + 25}" fill="${c}" font-size="13" font-family="sans-serif">Deck ${d.id.slice(-1).toUpperCase()} · ${esc(d.name || "")}</text>`; });
+  return o + "</svg>";
+}
+fs.writeFileSync(new URL("deck-profile.svg", OUT), profileSVG());
+
 let n = 0;
 for (const deck of SHIP.decks) for (const mode of ["warden", "player"]) {
   const f = new URL(`${deck.id}-${mode}.svg`, OUT);
