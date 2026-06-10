@@ -15,3 +15,24 @@ desktop.ini
 *.log
 *.out
 *.tmp
+# generation intermediates / pipeline (cairn-guard)
+*-depth.png
+*-base.png
+*-edge.png
+*.glb
+*.safetensors
+*.hf_token
+shipgen/
+gen-room.py
+render3d.py
+gen2.py
+gen_audio.py
+
+# adb keys / android tooling creds — NEVER publish (private repo: talos-cluster tv-app/.android)
+.android/
+*.adbkey
+adbkey
+adbkey.pub
+
+# local image backups (not for publish)
+*.prev.png

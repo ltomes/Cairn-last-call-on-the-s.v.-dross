@@ -1,0 +1,110 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><title>Ship Layout — S.V. Dross</title>
+<style>
+:root{color-scheme:dark}
+body{background:#0c1115;color:#dde6ea;font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+ max-width:860px;margin:0 auto;padding:24px 20px 80px}
+a{color:#4fd1c5} h1,h2,h3{color:#f2b441;line-height:1.25;margin:1.4em 0 .5em} h1{border-bottom:1px solid #2a343c;padding-bottom:.3em}
+code{background:#161d23;padding:.1em .4em;border-radius:4px;font-family:ui-monospace,monospace;font-size:.92em}
+pre{background:#161d23;padding:14px;border-radius:8px;overflow:auto;border:1px solid #2a343c} pre code{background:none;padding:0}
+blockquote{border-left:3px solid #4fd1c5;margin:1em 0;padding:.2em 1em;color:#aebcc4;background:#11171c}
+table{border-collapse:collapse;width:100%;margin:1em 0} th,td{border:1px solid #2a343c;padding:7px 10px;text-align:left}
+th{background:#161d23;color:#f2b441} hr{border:0;border-top:1px solid #2a343c;margin:1.6em 0}
+.nav{position:sticky;top:0;background:#0c1115ee;backdrop-filter:blur(6px);padding:10px 0;border-bottom:1px solid #2a343c;margin-bottom:18px}
+.warn{color:#ff7a6b;font-weight:700}
+</style></head><body><div class=nav><a href='index.html'>📚 all docs</a> &nbsp;·&nbsp; <a href='../index.html'>← hub</a></div><h1>Ship Layout</h1><p class=warn>⚠ WARDEN — contains spoilers</p><h1 id="the-sv-dross-ship-layout">THE S.V. DROSS — SHIP LAYOUT</h1>
+<h3 id="a-spatial-reference-for-last-call-on-the-sv-dross">A spatial reference for <em>Last Call on the S.V. Dross</em></h3>
+<blockquote>
+<p><em>Ugly, sturdy, over-staffed, working-class to the bolts. Everything Ascendance refused to be: operational.</em></p>
+</blockquote>
+<p>This is the <strong>rough-pass ship model</strong> — one coherent layout that downstream tools refine:</p>
+<ol>
+<li><strong><code>setting/ship-layout.json</code></strong> is the <strong>source of truth</strong> (machine-readable: decks, rooms, coordinates, doors, entities, scenes, and image prompts).</li>
+<li><strong><code>docs/assets/ship.js</code></strong> is a <strong>generated mirror</strong> of that JSON for the web tools (the Deck-Maps builder can read <code>window.DROSS_SHIP</code>). Don't hand-edit it — regenerate (see <em>Downstream</em>).</li>
+<li>This file is the <strong>human guide</strong>: the design logic, ASCII plans, and how the pieces connect.</li>
+</ol>
+<hr />
+<h2 id="the-big-idea-a-descent-down-one-spine">THE BIG IDEA: A DESCENT DOWN ONE SPINE</h2>
+<p>The adventure is a <strong>descent</strong>. The crew wakes at the <strong>top</strong> and works <strong>down</strong> to the <strong>bottom</strong>, one deck per scene, the oxygen dropping 10% at each transition:</p>
+<pre><code> LEVEL          DECK                         SCENE              O2
+ ─────  ──────────────────────────────────  ─────────────────  ───
+   3    A · Command &amp; Habitation             0 Rude Awakening   80%   ← wake here
+   2    B · Mess &amp; Commons                   1 Mess Hall Mutiny 60%
+   1    C · Service &amp; Machinery              2 The Crawlspace   50%
+   0    D · Cargo &amp; Reclamation Hold         3 The Nest         40%   ← the win is here
+</code></pre>
+<p><strong>Why it's spatially coherent — the Infection Spine.</strong> A single vertical run of warm machinery ducting threads all four decks. <strong>The nest in the cargo hold (D) grows up along it:</strong></p>
+<pre><code>        ┌─────────────── DECK A ── GLADYS's core  ← reaches here at 40% O2 = SADYS
+        │                DECK B ── vending machines turn hostile (Scene 1)
+   infection                       (Mr. Munch, the infected dispenser)
+     spine                DECK C ── clogs the scrubber intake (the whole problem)
+        │                          + seeds eggs in the crawlspace (Scene 2)
+        └─────────────── DECK D ── THE NEST (source) — Brood Mama (Scene 3)
+</code></pre>
+<p>That one conduit explains <strong>everything</strong> from a single geometry: the clogged scrubbers, the eggs in the ducts, the mutinous appliances, and the optional SADYS turn. <strong>Clear or vent the nest at the bottom (D) and the entire spine clears</strong> — air climbs back to safe. The two routes down map to the two play styles: the <strong>forward ladderway</strong> (the normal way) and the <strong>service crawlspace</strong> (the intimate, dangerous Scene-2 squeeze).</p>
+<hr />
+<h2 id="deck-plans-rough-top-down">DECK PLANS (rough, top-down)</h2>
+<p>Grid convention: origin top-left, <strong>+X = starboard (right)</strong>, <strong>+Y = aft (down the page)</strong>, fore at top. One unit ≈ 2 m. (Exact rects live in the JSON; these sketches are for orientation.)</p>
+<h3 id="deck-a-command-habitation-scene-0">Deck A — Command &amp; Habitation <em>(Scene 0)</em></h3>
+<pre><code> fore ┌────────────────────────────┐
+      │        [ BRIDGE ]          │
+      │      [ GLADYS CORE ]•      │  • infection tendril (spoiler)
+      │ [ STASIS BAY ] [ QUARTERS ]│  ← wake here
+      │ ───── habitation corridor ─┼─▶ ladderway ↓
+      │        [ HOLO BAY ]        │  Bartleby's recharge point
+ aft  └────────────────────────────┘
+</code></pre>
+<h3 id="deck-b-mess-commons-scene-1">Deck B — Mess &amp; Commons <em>(Scene 1)</em></h3>
+<pre><code> fore ┌────────────────────────────┐
+      │ [   MESS HALL / GALLEY   ] │  Mr. Munch ▣ (blocks the only door)
+      │  ☕ coffee  ☢ infected disp.│  ← appliances live here
+      │ [ REC NOOK ]   ▣Munch▶═════╪═▶ scrubber corridor ↓ (slime trail)
+ aft  └────────────────────────────┘
+</code></pre>
+<h3 id="deck-c-service-machinery-scene-2">Deck C — Service &amp; Machinery <em>(Scene 2)</em></h3>
+<pre><code> fore ┌────────────────────────────┐
+      │ [SCRUBBER CTRL] [ REACTOR ] │  ← the objective panel (FAULT)
+      │ ┌── service crawlspace ───┐ │
+      │ │ ⊗ intake(egg-clog)  eggs│▣│  ▣ FAULTY AIRLOCK &quot;DO NOT CYCLE&quot;
+      │ │   ...scuttler...        │ │     (the gun on the mantel)
+      │ [WATER RECLAIM] └── duct ↓─┘ │  ↓ crawlspace continues to D
+ aft  └────────────────────────────┘
+</code></pre>
+<h3 id="deck-d-cargo-reclamation-hold-scene-3-spoiler">Deck D — Cargo &amp; Reclamation Hold <em>(Scene 3)</em>  · <strong>spoiler</strong></h3>
+<pre><code> fore ┌────────────────────────────┐
+      │ ░░ webbing ░░ eggs ░░░░░░░░ │
+      │ ░░   [ SALVAGED POD ]   ░░ │  Brood Mama draped over it
+      │ ░░    + BROOD MAMA      ░░ │
+      │ ░░░░  [ CARGO AIRLOCK ] ░░ │  ← vent her here = win (K-7 in vacuum)
+      │ ════════ reclamation maw ══ │  (stern compactor, flavor/hazard)
+ aft  └────────────────────────────┘
+</code></pre>
+<hr />
+<h2 id="systems-at-a-glance">SYSTEMS AT A GLANCE</h2>
+<ul>
+<li><strong>Oxygen clock:</strong> starts 80%, −10%/scene. 40% = optional SADYS trigger; 20% = woozy (WIL saves); 0% = impound. Clearing the nest resets it.</li>
+<li><strong>Scrubber loop:</strong> control on Deck C; the fault is the nest gunk choking the intake (fed up the spine from D). Partial fix = clear the intake (Scene 2, slows the drop). Full fix = vent/kill Brood Mama (Scene 3, clears it at the source).</li>
+<li><strong>Power:</strong> the "lift" (reclaimite) reactor on Deck C. When SADYS sulks, upkeep lapses — lights sag, doors hiss open slowly.</li>
+<li><strong>The two routes down:</strong> forward <strong>ladderway</strong> (normal) vs. the <strong>service crawlspace</strong> (Scene 2's squeeze, where every PC's niche shines).</li>
+</ul>
+<hr />
+<h2 id="entity-spoiler-map">ENTITY &amp; SPOILER MAP</h2>
+<p>Every room and entity in the JSON carries a <code>spoiler</code> flag and (for events) a <code>show_to</code> of <code>players</code> or <code>warden</code>. <strong>Player-facing renders and image sets should include only <code>spoiler: false</code> / <code>show_to: "players"</code> items.</strong> Spoilers to gate: the <strong>infection spine</strong>, the <strong>eggs</strong>, the <strong>scuttler</strong>, the <strong>salvaged pod's</strong> origin, <strong>Brood Mama</strong>, the <strong>nest</strong>, and the <strong>SADYS</strong> beat. (This keeps the <code>players/</code> boundary intact, per <code>CLAUDE.md</code>.)</p>
+<hr />
+<h2 id="image-prompts-flavor-art">IMAGE PROMPTS (flavor art)</h2>
+<p>The JSON carries a shared <strong><code>style</code></strong> block (art direction, lighting, palette, materials, negatives) plus ready-to-paste prompts in two places:</p>
+<ul>
+<li><strong>Per-space</strong> — each key room has an <code>image_prompt</code> for an establishing shot (bridge, stasis bay, mess hall, crawlspace, cargo hold, etc.).</li>
+<li><strong>Per-event</strong> — <code>image_events[]</code> covers key beats (the wake-up, Mr. Munch blocking the door, the egg reveal, Brood Mama, the airlock vent, the SADYS sag, the customs-checkpoint loss, the stinger).</li>
+</ul>
+<p><strong>To build a prompt:</strong> prepend <code>style.global_prefix</code> (and, if you like, the <code>lighting</code>, <code>palette</code>, and <code>negative</code> lines) to the specific room/event <code>prompt</code>. The palette (amber <code>#f2b441</code> ambient / teal <code>#4fd1c5</code> systems / coral <code>#ff7a6b</code> alien) and the "grimy used-future garbage barge, not a sleek starship" anchor keep every image reading as <strong>one ship</strong>.</p>
+<p>Each room also has <code>lighting</code>, <code>mood</code>, <code>sensory</code>/<code>ambient</code> fields you can fold in for richer prompts or for reading aloud at the table.</p>
+<hr />
+<h2 id="downstream-how-the-pieces-connect">DOWNSTREAM: HOW THE PIECES CONNECT</h2>
+<p><strong>Deck-Maps builder (<code>docs/</code>).</strong> <code>docs/maps.html</code> now renders <strong>live</strong> from <code>window.DROSS_SHIP</code> (loaded via <code>docs/assets/ship.js</code>): it iterates <code>decks[].rooms[].rect</code> to draw boxes, routes same-deck <code>doors</code>, drops <code>entities</code> at their <code>pos</code> (colored by <code>kind</code>), draws the vertical <code>connectors</code> on the overview, and builds the scene asides from <code>scenes[].beats</code>. A <strong>Warden/Player toggle</strong> hides everything <code>spoiler: true</code> (rooms become "Unexplored"), the infection spine, scene titles, and Warden tactical text. Edit the JSON, regenerate the mirror, and the maps follow.</p>
+<p><strong><code>map_label</code> (concise display names).</strong> Rooms, entities, and connectors carry an optional short <code>map_label</code> (e.g. <code>"GLADYS Core"</code>, <code>"DO NOT CYCLE"</code>) used by the renderer instead of the long canonical <code>name</code>, so labels fit inside small rooms. The renderer also runs a measurement pass that shrinks/ellipsizes any label to its box and flips edge labels — but a good <code>map_label</code> keeps things legible. In player view, a trailing <code>"(…)"</code> is stripped from labels (e.g. <code>"Intake (clogged)"</code> → <code>"Intake"</code>).</p>
+<p><strong>Image-prompt writing.</strong> Pull <code>style</code> + a room/event <code>prompt</code>, fill in, send to your image generator. Use <code>show_to</code> to decide what's safe to show players in the moment vs. Warden-only reveals.</p>
+<p><strong>Regenerating the web mirror</strong> after editing the JSON:</p>
+<pre><code class="language-sh">node -e 'const fs=require(&quot;fs&quot;);const d=JSON.parse(fs.readFileSync(&quot;setting/ship-layout.json&quot;,&quot;utf8&quot;));fs.writeFileSync(&quot;docs/assets/ship.js&quot;,&quot;/* GENERATED — mirror of setting/ship-layout.json; do not edit by hand. */\nwindow.DROSS_SHIP = &quot;+JSON.stringify(d,null,2)+&quot;;\n&quot;);console.log(&quot;regenerated docs/assets/ship.js&quot;);'
+</code></pre>
+<hr />
+<p><em>Schematic, not to scale. Edit the JSON; everything else follows.</em></p></body></html>

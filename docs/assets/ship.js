@@ -148,9 +148,9 @@ window.DROSS_SHIP = {
           "type": "computer",
           "rect": {
             "x": 10,
-            "y": 7,
-            "w": 6,
-            "h": 5
+            "y": 5,
+            "w": 7,
+            "h": 7
           },
           "doors": [
             {
@@ -177,9 +177,9 @@ window.DROSS_SHIP = {
           "type": "quarters",
           "rect": {
             "x": 0,
-            "y": 7,
+            "y": 5,
             "w": 10,
-            "h": 7
+            "h": 9
           },
           "doors": [
             {
@@ -222,6 +222,7 @@ window.DROSS_SHIP = {
           ],
           "lighting": "Dim, personal lamps.",
           "mood": "Lived-in clutter, bunks, posters.",
+          "image_prompt": "cramped crew quarters aboard the garbage barge S.V. Dross: a tight warren of stacked steel bunks with sagging mattresses and crumpled regulation Bermuda-shorts uniforms, personal lamps clipped to the frames, taped-up postcards and a faded pin-up calendar, mugs and paperbacks on a fold-down shelf, somebody's knitted blanket, a single recycled-air vent overhead. Snug, grubby, intensely domestic — half the bunks made, half a disaster. Dim amber personal lamps and the glow of a forgotten handheld screen.",
           "map_label": "Quarters"
         },
         {
@@ -232,7 +233,7 @@ window.DROSS_SHIP = {
             "x": 0,
             "y": 16,
             "w": 20,
-            "h": 6
+            "h": 7
           },
           "doors": [
             {
@@ -250,6 +251,7 @@ window.DROSS_SHIP = {
           ],
           "lighting": "Strip lighting, half working.",
           "mood": "Spine of the deck.",
+          "image_prompt": "the aft common room and habitation corridor that runs the spine of the garbage barge's top deck: a worn rubber-matted thoroughfare widening into a scruffy rec lounge with a sagging vinyl bench, a notice-board furred with curling memos and a regulation Bermuda-shorts roster, mugs on a ledge. Bolted to the bulkhead, a grimy framed DECK SCHEMATIC — a hand-stencilled cutaway of all four decks under scratched glass, the one thing everyone reads. Strip lighting half working, amber and dead tubes.",
           "map_label": "Corridor",
           "entities": [
             "ship-map"
@@ -457,10 +459,10 @@ window.DROSS_SHIP = {
           "name": "Mess Hall / Galley",
           "type": "commons",
           "rect": {
-            "x": 1,
-            "y": 2,
-            "w": 10,
-            "h": 11
+            "x": -1,
+            "y": -1,
+            "w": 12,
+            "h": 14
           },
           "doors": [
             {
@@ -495,9 +497,9 @@ window.DROSS_SHIP = {
           "type": "utility",
           "rect": {
             "x": 11,
-            "y": 2,
+            "y": -1,
             "w": 8,
-            "h": 7
+            "h": 10
           },
           "doors": [
             {
@@ -505,7 +507,9 @@ window.DROSS_SHIP = {
               "kind": "door"
             }
           ],
+          "lighting": "One buzzing tube, deep shelf shadow.",
           "mood": "Shelves of regrettable foil rations.",
+          "image_prompt": "a cramped dry-goods larder off the mess hall of a grimy garbage barge: floor-to-ceiling wire shelving crammed with dented cans, foil ration bricks and unlabelled tubs, a clipboard inventory long out of date, sacks of something powdered slumped in a corner, a hand-stencilled 'GALLEY STORES — FIFO PLEASE' notice nobody obeys. A single buzzing fluorescent tube throwing deep shelf shadows, grease and dust on everything. Claustrophobic, lived-in, faintly comic.",
           "map_label": "Dry Store"
         },
         {
@@ -513,10 +517,10 @@ window.DROSS_SHIP = {
           "name": "Rec Nook",
           "type": "commons",
           "rect": {
-            "x": 1,
+            "x": -1,
             "y": 13,
-            "w": 7,
-            "h": 10
+            "w": 9,
+            "h": 13
           },
           "doors": [
             {
@@ -528,7 +532,9 @@ window.DROSS_SHIP = {
               "kind": "door"
             }
           ],
+          "lighting": "Dead arcade glow, one flickering tube.",
           "mood": "A sagging couch, a dead arcade cabinet.",
+          "image_prompt": "a sad little recreation alcove off the mess of a garbage barge: a sagging brown vinyl couch patched with duct tape, a dead arcade cabinet with a cracked screen and a 'OUT OF ORDER (since launch)' note, a wonky dartboard, a shelf of warped board games with missing pieces and a single dog-eared paperback. A wall TV showing static, mugs and crumbs on a crate doubling as a table, a limp ship's-team pennant. One flickering tube, the dead cabinet's faint glow, grimy and threadbare but warm. Comic, threadbare, lived-in.",
           "map_label": "Rec Nook"
         },
         {
@@ -538,8 +544,8 @@ window.DROSS_SHIP = {
           "rect": {
             "x": 9,
             "y": 13,
-            "w": 9,
-            "h": 10
+            "w": 10,
+            "h": 13
           },
           "doors": [
             {
@@ -663,10 +669,10 @@ window.DROSS_SHIP = {
           "name": "Air Scrubber Control",
           "type": "machinery",
           "rect": {
-            "x": 0,
-            "y": 1,
-            "w": 6,
-            "h": 7
+            "x": -2,
+            "y": -1,
+            "w": 8,
+            "h": 9
           },
           "doors": [
             {
@@ -693,9 +699,9 @@ window.DROSS_SHIP = {
           "type": "machinery",
           "rect": {
             "x": 7,
-            "y": 1,
-            "w": 13,
-            "h": 7
+            "y": -1,
+            "w": 14,
+            "h": 9
           },
           "doors": [
             {
@@ -707,6 +713,8 @@ window.DROSS_SHIP = {
               "kind": "door"
             }
           ],
+          "lighting": "Reactor-throat amber glow, hazard strobes.",
+          "image_prompt": "the power plant of a grimy garbage barge: the squat humming 'lift' reclaimite reactor, a riveted drum venting heat-shimmer through a slatted throat that glows warm amber, ringed by thick shielded conduit, coolant pipes and analog dials twitching in the safe band. Yellow-and-black hazard chevrons painted everywhere, a stencilled 'NO LONE WORKING — DO NOT TOUCH' notice, scorch marks, a fire blanket on a hook. Throbbing, hot, do-not-touch energy; sodium-orange work lights and a slow hazard strobe.",
           "mood": "The 'lift' (reclaimite) reactor; warm hum, do-not-touch energy.",
           "map_label": "Reactor"
         },
@@ -777,10 +785,10 @@ window.DROSS_SHIP = {
           "name": "Water Reclamation",
           "type": "machinery",
           "rect": {
-            "x": 0,
+            "x": -2,
             "y": 22,
-            "w": 8,
-            "h": 7
+            "w": 10,
+            "h": 8
           },
           "doors": [
             {
@@ -788,6 +796,8 @@ window.DROSS_SHIP = {
               "kind": "door"
             }
           ],
+          "lighting": "Sickly green tank underglow, dripping shadow.",
+          "image_prompt": "the water-reclamation plant in the guts of a grimy garbage barge: bulbous greenish recycling tanks sweating condensation, a tangle of stained pipes and dripping valves, a manifold of gauges showing 'GREY' and 'POTABLE (ish)', puddles and a clogged floor drain, a stained mop. A hand-stencilled sign reads 'WATER RECLAMATION — YOU DON'T WANT TO KNOW', with a smaller 'WE DO HOPE THIS FINDS YOU WELL'. Sickly green tank underglow, dripping shadow, the implied bad smell. Industrial, grimy, queasily comic.",
           "mood": "Gurgling tanks, a smell best not described.",
           "map_label": "Water Recl."
         },
@@ -894,10 +904,10 @@ window.DROSS_SHIP = {
           "name": "Cargo Hold (the Nest)",
           "type": "cargo",
           "rect": {
-            "x": 0,
-            "y": 0,
-            "w": 20,
-            "h": 26
+            "x": -2,
+            "y": -1,
+            "w": 24,
+            "h": 27
           },
           "doors": [
             {
@@ -946,17 +956,51 @@ window.DROSS_SHIP = {
           "spoiler": true,
           "mood": "Gold-trimmed, monogrammed, founder-class. The thing they hauled in.",
           "image_prompt": "a derelict founder-class luxury escape pod, gaudy gold trim and a monogrammed crest now scratched and frosted, hatch hanging open, draped in alien webbing, incongruously fancy amid a grimy industrial cargo hold. (The First Exodus billionaires' lifeboat.)",
-          "map_label": "Salvaged Pod"
+          "map_label": "Salvaged Pod",
+          "poly": [
+            [
+              8,
+              13
+            ],
+            [
+              10,
+              11
+            ],
+            [
+              11,
+              11
+            ],
+            [
+              13,
+              13
+            ],
+            [
+              13,
+              14
+            ],
+            [
+              11,
+              16
+            ],
+            [
+              10,
+              16
+            ],
+            [
+              8,
+              14
+            ]
+          ]
         },
         {
           "id": "cargo-airlock",
           "name": "Main Cargo Airlock",
           "type": "airlock",
           "rect": {
-            "x": 0,
+            "x": -2,
             "y": 29,
-            "w": 10,
-            "h": 10
+            "w": 12,
+            "h": 11
           },
           "doors": [
             {
@@ -984,8 +1028,8 @@ window.DROSS_SHIP = {
           "rect": {
             "x": 10,
             "y": 29,
-            "w": 10,
-            "h": 10
+            "w": 12,
+            "h": 11
           },
           "doors": [
             {
@@ -997,6 +1041,8 @@ window.DROSS_SHIP = {
               "kind": "door"
             }
           ],
+          "lighting": "Failing floods, sparks, cold stern shadow.",
+          "image_prompt": "the rear reclamation bay at the stern of a freezing garbage barge: a cavernous grease-blackened compactor throat ringed with worn grinding teeth and a flat electromagnet grabber plate, scarred salvage and crushed hull-plate heaped at the bottom. A vast hinged REAR CARGO DOOR stands part-cycled, and through the gap the articulated crab-claw salvage MAW boom is folded against the hull, plasma-cutter head dormant, the black of space and a drifting wreck beyond. Hazard chevrons, a 'KEEP CLEAR — RECLAMATION ACTIVE' stencil, breath-fog. Failing floods, stray sparks, coral-tinged cold. Toothy, dormant, a tempting hazard.",
           "mood": "The garbage compactor/intake at the stern. Toothy, dormant, flavor (and a tempting hazard).",
           "map_label": "Reclam. Bay"
         },
@@ -1242,7 +1288,15 @@ window.DROSS_SHIP = {
       },
       "scene": 1,
       "spoiler": false,
-      "desc": "Passive-aggressive snack machine; has rolled across the only door to the scrubber corridor. Solve by change/persuasion/STR.",
+      "stats": {
+        "hp": 4,
+        "str": 12,
+        "dex": 4,
+        "wil": 12,
+        "armor": 2,
+        "attacks": "none — a puzzle, not a fight; shoves and shrieks. Smashing him open the door makes him scream and the nest starts the finale alert (no surprise round)."
+      },
+      "desc": "Passive-aggressive snack machine; has rolled across the only door to the scrubber corridor. Solve by change/persuasion/STR — a puzzle first, not a fight.",
       "map_label": "Mr. Munch",
       "reveal": "on_enter",
       "place": "appliance"
@@ -1421,9 +1475,10 @@ window.DROSS_SHIP = {
         "hp": 12,
         "str": 15,
         "dex": 8,
+        "wil": 13,
         "armor": 1,
         "attacks": "lashing tongue d8 / acid spew d10 (blast)",
-        "weakness": "vacuum (instant)"
+        "weakness": "vacuum (instant); a genuine offer to leave + a WIL save vs her WIL 13 can talk her off the ship (the kindest ending)"
       },
       "desc": "Campy googly-eyed maternal horror the size of a forklift. Not, in her view, the villain. Positions to keep the party between herself and any airlock.",
       "map_label": "Brood Mama",

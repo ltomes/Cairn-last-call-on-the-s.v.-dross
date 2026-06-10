@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>S.V. Dross — room art: current vs alternates</title>
+<style>
+:root{color-scheme:dark}
+body{background:#0c1115;color:#dde6ea;font:16px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:0 auto;max-width:1200px;padding:20px 16px 80px}
+h1{color:#f2b441} a{color:#4fd1c5}
+.note{color:#8b99a3;font-size:14px;margin-bottom:20px}
+.room{border:1px solid #2a343c;border-radius:12px;padding:14px;margin-bottom:22px;background:#11171c}
+.room h2{color:#f2b441;font-size:17px;margin:0 0 4px}
+.room .why{color:#8b99a3;font-size:13px;margin:0 0 12px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:680px){.pair{grid-template-columns:1fr}}
+figure{margin:0}
+figure img{width:100%;height:auto;display:block;border-radius:8px;background:#000;aspect-ratio:16/9;object-fit:cover}
+figcaption{font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-top:6px;color:#9fb1b8}
+.cur figcaption{color:#9fb1b8} .alt figcaption{color:#4fd1c5}
+.tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-left:8px;background:rgba(79,209,197,.15);color:#4fd1c5;border:1px solid rgba(79,209,197,.4)}
+</style>
+</head>
+<body>
+<h1>Room art — current vs alternate</h1>
+<p class="note">Your live/playable set on the left (in use). Plot-driven alternates on the right (candidates) — these were generated because the current art doesn't clearly show a plot-critical element. Nothing here is swapped in automatically. <a href="index.html">← hub</a></p>
+<div id="list"></div>
+<script>
+// rooms flagged by the plot-vs-art audit (worst plot mismatch first)
+var ROOMS = [
+  ["deck-c-crawlspace",        "Crawlspace", "Needs: egg-clogged scrubber intake + egg cluster (Scene 2 repair & scare). Current = empty clean pipe."],
+  ["deck-d-cargo-hold",        "Cargo Hold (the Nest)", "Needs: webbing + glowing eggs + the gold pod (the finale). Current = flooded container yard."],
+  ["deck-b-scrubber-corridor", "Scrubber Corridor", "Needs: slime trail leading to a floor hatch (the way down, Scene 1→2). Current = a door/sign close-up."],
+  ["deck-d-cargo-airlock",     "Cargo Airlock", "Needs: the massive sealable vault door + cycle lever (the vacuum solution). Current reads as an open tunnel."],
+  ["deck-a-commons-a",         "Habitation / Commons", "Needs: a readable four-deck DECK SCHEMATIC map. Current = a garbled nameplate only."],
+  ["deck-d-salvaged-pod",      "Salvaged Pod", "Needs: gaudy monogrammed gold founder-class pod, hatch open. Current reads more like a vault."],
+  ["deck-a-holo-bay",          "Holo Bay", "Needs: clearer holo-pylon + recharge-ring pad. Current is flat / ambiguous."]
+];
+var v = Date.now();
+var html = ROOMS.map(function(r){
+  var id=r[0], name=r[1], why=r[2];
+  return '<div class="room"><h2>'+name+'<span class="tag">'+id+'</span></h2><p class="why">'+why+'</p>'+
+    '<div class="pair">'+
+      '<figure class="cur"><img src="assets/rooms/'+id+'.png?v='+v+'" alt="current" loading="lazy"><figcaption>CURRENT — in use</figcaption></figure>'+
+      '<figure class="alt"><img src="assets/rooms-alt/'+id+'.png?v='+v+'" alt="alternate" loading="lazy" onerror="this.style.opacity=.25;this.alt=\'(generating…)\'"><figcaption>ALTERNATE — candidate</figcaption></figure>'+
+    '</div></div>';
+}).join('');
+document.getElementById('list').innerHTML = html;
+</script>
+</body>
+</html>

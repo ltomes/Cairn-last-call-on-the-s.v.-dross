@@ -1,0 +1,329 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><title>Plot Review &amp; Fixes — S.V. Dross</title>
+<style>
+:root{color-scheme:dark}
+body{background:#0c1115;color:#dde6ea;font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+ max-width:860px;margin:0 auto;padding:24px 20px 80px}
+a{color:#4fd1c5} h1,h2,h3{color:#f2b441;line-height:1.25;margin:1.4em 0 .5em} h1{border-bottom:1px solid #2a343c;padding-bottom:.3em}
+code{background:#161d23;padding:.1em .4em;border-radius:4px;font-family:ui-monospace,monospace;font-size:.92em}
+pre{background:#161d23;padding:14px;border-radius:8px;overflow:auto;border:1px solid #2a343c} pre code{background:none;padding:0}
+blockquote{border-left:3px solid #4fd1c5;margin:1em 0;padding:.2em 1em;color:#aebcc4;background:#11171c}
+table{border-collapse:collapse;width:100%;margin:1em 0} th,td{border:1px solid #2a343c;padding:7px 10px;text-align:left}
+th{background:#161d23;color:#f2b441} hr{border:0;border-top:1px solid #2a343c;margin:1.6em 0}
+.nav{position:sticky;top:0;background:#0c1115ee;backdrop-filter:blur(6px);padding:10px 0;border-bottom:1px solid #2a343c;margin-bottom:18px}
+.warn{color:#ff7a6b;font-weight:700}
+</style></head><body><div class=nav><a href='index.html'>📚 all docs</a> &nbsp;·&nbsp; <a href='../index.html'>← hub</a></div><h1>Plot Review &amp; Fixes</h1><p class=warn>⚠ WARDEN — contains spoilers</p><h1 id="plot-review-last-call-on-the-sv-dross">PLOT REVIEW — <em>Last Call on the S.V. Dross</em></h1>
+<h3 id="coherence-run-readiness-pass-for-a-34h-35-player-session-tonight-2026-06-09">Coherence + run-readiness pass for a 3–4h / 3–5 player session, TONIGHT (2026-06-09)</h3>
+<p>Read-only review. Proposes changes; <strong>does not edit</strong> <code>last-call.md</code>. Builds on
+<code>WARDEN-PREP-TONIGHT.md</code> (which already nailed the airlock conflict, the missing
+stat blocks, the O₂-ladder mismatch, and the dangling threads) — this doc adds
+the <strong>end-to-end coherence verdict, clue-redundancy audit, win-condition check,
+and the 3-things-to-change-tonight call.</strong> Where the prep already has a fix, I
+cite it rather than re-deriving.</p>
+<hr />
+<h2 id="0-one-line-coherence-verdict">0 · ONE-LINE COHERENCE VERDICT</h2>
+<p><strong>The plot is sound and runnable tonight as-is.</strong> Cause→effect holds end to end
+(salvaged Ascendance pod → Brood Mama nests in warm machinery → eggs clog the
+scrubber intake → O₂ falls → fix = clear the nest at its source on Deck D).
+There is <strong>one real internal contradiction</strong> (the finale-airlock deck conflict)
+and a handful of <strong>single-path clues</strong> that want a cheap backup so a missed roll
+can't stall the table. None of it is structural; all of it is a 2-minute ruling.</p>
+<hr />
+<h2 id="1-coherence-end-to-end">1 · COHERENCE END-TO-END</h2>
+<p>The spine is clean and the JSON's <code>infection-spine</code> connector encodes it
+explicitly: nest (D) → scrubber intake + crawlspace eggs (C) → vending machines
+(B) → GLADYS core (A). Every scene the party descends one level <em>along that
+spine</em>, which means the geography itself teaches the mystery — they are walking
+up the alien's supply line in reverse. That's a genuinely tight design.</p>
+<p>Motivation checks out at every layer:
+- <strong>Players:</strong> don't suffocate / don't get impounded (shame, not death).
+- <strong>Brood Mama:</strong> wanted somewhere warm to raise kids; she is not wrong, which
+  is what makes the airlock a <em>choice</em> and not a chore.
+- <strong>GLADYS:</strong> government-issue, can only <em>disclose</em> not <em>advise</em> — this single
+  lore beat (bermuda-reclamation.md L78) explains why she's useless <strong>and</strong>
+  retroactively justifies every withheld clue. Excellent load-bearing gag.</p>
+<p><strong>The one soft spot:</strong> the causal link "eggs in the intake = scrubbers fail" is
+stated (Scene 2) but the <em>reverse</em> — "kill/vent Mama and the clog blows clear"
+— is a bit magic-handwave. It plays fine for a comedy (the nest is one organism
+along the spine; remove the queen, the growth dies). Just <strong>say it out loud once</strong>
+when it happens so it lands as cause-effect, not GM fiat: <em>"the moment she's
+gone, the egg-matter in the intake goes slack and sloughs free — the scrubbers
+cough and roar back."</em> The run-doc already has the beat (L210); just make the
+"because" explicit.</p>
+<hr />
+<h2 id="2-critical-clue-solvability-two-path-audit">2 · CRITICAL-CLUE SOLVABILITY (two-path audit)</h2>
+<p>The rule: every clue the plot <em>depends on</em> needs <strong>≥2 independent ways to
+surface</strong>, so one missed roll/overlooked room can't dead-end the night. Audit:</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Clue (what the table must learn)</th>
+<th>Path A</th>
+<th>Path B</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Go DOWN toward the cargo hold</strong></td>
+<td>Slime trail + corrupted maintenance log (Scene 1, auto, no roll)</td>
+<td>Crown &amp; Whisker smells the nest direction (Nose for Trouble, no roll)</td>
+<td><strong>SAFE</strong> — at least 3 paths (Bartleby's confession is a 3rd). Auto-surfaced.</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>It's a live alien, not just a fault</strong></td>
+<td>Coffee machine's "wet thing dragged something shiny" (needs comforting)</td>
+<td>Bartleby saw it leave the pod (needs pressing)</td>
+<td><strong>SINGLE-CLASS RISK</strong> — both are social/optional; a heads-down repair crew can reach Scene 3 <em>believing it's a clog</em> and get ambushed cold. That's survivable (the reveal just happens in the hold) but the SADYS valve (L233) exists precisely for this. <strong>Backup below.</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>The vacuum weakness (how to win)</strong></td>
+<td>"SEAL FAULTY — DO NOT CYCLE" airlock sign, Scene 2 (auto-place; GLADYS states it if missed)</td>
+<td>Crown &amp; Whisker smells "she fears the cold/the black"; or SADYS hands it over free (L245)</td>
+<td><strong>SAFE</strong> — auto-placed sign + GLADYS backstop + SADYS. Three paths.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Where the airlock IS in the finale</strong></td>
+<td>The Deck-C sign <em>taught</em> the trick</td>
+<td>The cargo airlock is <strong>right there</strong> in the hold, teal-ringed, "big enough for a forklift"</td>
+<td><strong>SAFE once you apply the ruling in §3.</strong></td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Dusty signed the salvage form (whodunit)</strong></td>
+<td>Dusty's own hook card</td>
+<td>Surfaces in Aftermath</td>
+<td>Sequel hook, not load-bearing. Fine to leave open.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The one single-point-of-failure to fix:</strong> clue #2 (it's alive). Both surfacing
+routes are <em>optional social beats</em>. Proposed backup — a <strong>free, no-roll
+environmental tell</strong> that costs nothing and can't be missed:</p>
+<blockquote>
+<p><strong>In the scrubber corridor (end of Scene 1) or the intake (Scene 2), the
+"gunk" is unmistakably ALIVE</strong> — warm, faintly pulsing, breathing in slow
+wet contractions, and when K-7/Dusty pulls a clot free it <em>recoils and
+re-grips.</em> Nobody can mistake this for limescale.</p>
+</blockquote>
+<p>That converts "is it alive?" from a clue they might miss into a fact the ship
+shoves in their face the moment they touch the repair — without removing the
+<em>fun</em> of the coffee-machine and Bartleby beats (those now confirm <em>what</em> and
+<em>where it came from</em>, not merely <em>that</em>). One sentence, total.</p>
+<hr />
+<h2 id="3-encounter-puzzle-integrity">3 · ENCOUNTER / PUZZLE INTEGRITY</h2>
+<h3 id="mr-munch-blocked-door-win-condition-clear-well-redundant">Mr. Munch (blocked door) — <strong>WIN CONDITION CLEAR, well-redundant.</strong></h3>
+<p>Four solves offered: correct change (Dusty's Improviser is tailor-made), WIL
+persuade, STR tip-over, or smash (loud — a soft cost, not a wall). No single
+roll gates it. <strong>Gap:</strong> no stat block if smashed. WARDEN-PREP already rules this
+(reuse dispenser chassis: HP 4 / STR 12 / Armor 2, no attack, maximum
+screaming). Adopt that. Also give him a <strong>WIL ~12</strong> in case a player tries to
+<em>argue</em> him into despair/compliance (very on-tone). Munch should yield after
+<strong>one</strong> successful approach — see pacing.</p>
+<h3 id="crawlspace-squeeze-integrity-ok-watch-grease">Crawlspace squeeze — <strong>integrity OK; watch Grease.</strong></h3>
+<p>Niche-spotlight beat (Bartleby scouts intangibly, K-7 fits + auto-repairs,
+Crown climbs, Dusty improvises). The intake clear is a DEX <em>or</em> STR save for
+anyone, auto for K-7 — so it cannot hard-fail. <strong>One friction point:</strong> Grease's
+<strong>Suited Up bulk</strong> means he physically can't fit the duct (the prep flags this
+as a feature — good). Just pre-decide that bulk = he waits at the mouth and
+hands tools forward, so a 5-player table doesn't stall on "but how do I get in."</p>
+<h3 id="brood-mama-the-vacuumairlock-solution-the-one-contradiction-confirmed">Brood Mama + the vacuum/airlock solution — <strong>THE ONE CONTRADICTION. Confirmed.</strong></h3>
+<blockquote>
+<p><strong>The conflict (verified against the JSON):</strong>
+- Run-doc Scene 2 (L186) plants a <strong>"maintenance airlock"</strong> and Scene 3
+  (L206) says <em>"Lure or shove Brood Mama into the faulty </em><em>maintenance
+  airlock</em><em> and cycle it."</em>
+- In <code>ship-layout.json</code>, <code>maintenance-airlock</code> is on <strong>Deck C</strong> (rect 5×6,
+  ~10×12 m), reachable <strong>only via a hatch off the crawlspace</strong>, one deck
+  <em>above</em> the fight. A forklift-sized horror cannot be lured up a deck into
+  a duct-sized lock.
+- The JSON's actual finale vent is <code>cargo-airlock</code> on <strong>Deck D</strong> (rect
+  12×11, <em>"big enough for a forklift-sized horror"</em>), with its own
+  <code>cargo-airlock-controls</code> and the K-7-cycles-from-vacuum note. Scene 3's
+  entity list, the <code>airlock-vent-win</code> image event, and wayfinding route
+  <code>wf-d</code> <strong>all</strong> point at the cargo airlock.</p>
+</blockquote>
+<p><strong>RULING (say this to yourself once before Scene 3):</strong></p>
+<blockquote>
+<p>The <strong>Deck-C maintenance airlock TEACHES the trick</strong> (its "SEAL FAULTY — DO
+NOT CYCLE" sign is the gun on the mantel — <em>airlocks on this tub vent if you
+override the fault</em>). The <strong>actual vent is the cargo airlock right there in
+the hold</strong> — same deck as the fight, forklift-sized, teal status ring. It has
+its own faulty-seal override moment; <strong>K-7 still cycles it from inside vacuum
+unharmed</strong> (that's its hero beat). Brood Mama positions to keep the party
+between her and <em>that</em> door.</p>
+</blockquote>
+<p>This matches the prep's call (§3). The only thing the run-doc needs is a
+<strong>two-word text change</strong> if the user wants the doc internally clean: in L186 and
+L206, "maintenance airlock" → <strong>"cargo airlock"</strong> in the Scene-3 <em>play</em>, and keep
+the Deck-C sign as the <em>foreshadow</em>. (Proposed, not applied.)</p>
+<p><strong>Win condition reachability:</strong> the airlock play is reachable by <strong>multiple
+stat lines</strong> (lure = Crown DEX; shove = STR opposed; rig = K-7 auto or anyone's
+DEX), so no single PC build gates the good ending. And the <strong>brawl is an
+explicit, balanced fallback</strong> (HP 12, drops in 2–3 rounds of focused d6–d8;
+Cocoon-not-kill means even a bad fight can't TPK). Both win paths are sound.</p>
+<h3 id="sadys-subplot-integrity-ok-its-a-valve-not-a-gate">SADYS subplot — <strong>integrity OK; it's a valve, not a gate.</strong></h3>
+<p>Correctly optional, correctly triggered (40% O₂ <em>or</em> "still treating it as a
+repair job"). Its mechanical job is <strong>pacing rescue</strong> (over-shares any missing
+clue) and <strong>tone-jolt</strong>. The climax vent-the-deck beat is the only part that can
+<em>eat time</em> (depressed-mainframe countdown <em>during</em> the boss fight) — see pacing
+for the cut. No win-condition problem: the pep-talk is a plain WIL save, and
+either outcome still routes to "kill Mama below = cure her."</p>
+<hr />
+<h2 id="4-pacing-34h-35-players">4 · PACING (3–4h, 3–5 players)</h2>
+<p>The docs are written for a <strong>2-hour</strong> target; tonight is 3–4h, so the buffer is
+real — the danger is <strong>sprawl in Scene 1</strong>, not running out of clock. Estimates
+assume 4 players; <strong>add ~20% to every social block for 5.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Block</th>
+<th>Estimate (4p)</th>
+<th>Likely overrun</th>
+<th>Concrete cut</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Teach + intros</td>
+<td>20–25m</td>
+<td>Low</td>
+<td>Deal cards <em>while</em> teaching; don't read lore aloud — drip it.</td>
+</tr>
+<tr>
+<td>Scene 0 Awakening</td>
+<td>12–15m</td>
+<td>Low</td>
+<td>GLADYS gives route in one breath; <strong>skip the bridge</strong> (it's color).</td>
+</tr>
+<tr>
+<td>Scene 1 Mess Hall</td>
+<td><strong>35–45m</strong></td>
+<td><strong>HIGHEST</strong> — appliance-voice improv + first combat is a black hole</td>
+<td>Munch yields after <strong>one</strong> good approach; dispenser is HP 4 — let it die in 1–2 rounds; at the 30-min mark GLADYS "helpfully" announces O₂ + the slime trail.</td>
+</tr>
+<tr>
+<td>Scene 2 Crawlspace</td>
+<td>30–35m</td>
+<td>Medium — duct roleplay sprawl</td>
+<td>The run-doc's own lever (L34): cut the scuttler chase, intake = one roll.</td>
+</tr>
+<tr>
+<td>Scene 3 The Nest</td>
+<td>35–45m</td>
+<td>High <strong>if SADYS climax fires mid-fight</strong></td>
+<td>If behind, SADYS only over-shares clues; <strong>skip her vent-the-deck countdown</strong>. Brawl resolves fast (2–3 rounds).</td>
+</tr>
+<tr>
+<td>Scene 4 + stinger</td>
+<td>12–15m</td>
+<td>Low</td>
+<td><strong>One</strong> stinger, not three.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total ≈ 2h45–3h15.</strong> Comfortably inside a 3–4h window with room for a break.</p>
+<ul>
+<li><strong>If players RUSH</strong> (heads-down, no voices): fire <strong>SADYS at 40%</strong> for a
+  tone-jolt; add a second rogue appliance mid-Scene-3 (reuse the dispenser
+  block); roll the d6 malfunction table (L271) for texture.</li>
+<li><strong>If players STALL</strong> (lost, or treating it as pure repair): drop an extra
+  −10% O₂ with a panicking appliance; fire <strong>SADYS early</strong> as the clue-faucet
+  (she mournfully hands them the nest location / vacuum weakness, L245). SADYS
+  is your single best pacing tool in both directions.</li>
+<li><strong>Hard time-box:</strong> if you hit Scene 3 with &lt;40 min left, <strong>go straight to the
+  airlock play</strong> — Mama plants herself, someone lures/shoves, K-7 cycles, done.</li>
+</ul>
+<hr />
+<h2 id="5-gaps">5 · GAPS</h2>
+<h3 id="missing-underspecified-stat-blocks">Missing / underspecified stat blocks</h3>
+<ul>
+<li><strong>Mr. Munch</strong> — invited to be tipped/smashed, no block. <em>Fix:</em> reuse dispenser
+  chassis (HP 4 / STR 12 / Armor 2, no attack), <strong>WIL 12</strong> for argue-attempts.</li>
+<li><strong>Foe WIL omitted on all three blocks</strong> — matters the instant a PC tries to
+  <em>guilt or pep-talk</em> Brood Mama (squarely on-tone; she's written to plead).
+  <em>Fix (prep's suggestion, adopt it):</em> dispenser WIL 5, scuttler 8, <strong>Brood
+  Mama 13</strong>. A WIL save vs. <em>her</em> WIL 13 to talk her down voluntarily is a
+  lovely alternate ending — she leaves on the next supply hauler, kids and all.</li>
+<li><strong>Weeping coffee machine</strong> — flavor only, no stats needed; if attacked it just
+  weeps harder. Rule it.</li>
+</ul>
+<h3 id="o2-ladder-consistency">O₂ ladder consistency</h3>
+<ul>
+<li>Run-doc plays <strong>80 → 70 → 60 → 50 → (win)</strong>, dropping 10% per scene break, and
+  this is what GLADYS <em>announces</em> — keep it.</li>
+<li><strong>JSON disagrees:</strong> <code>scenes[].o2_pct</code> reads 80 / 60 / 50 / 40 (skips 70, and
+  Scene-3 starts at 40 = the SADYS trigger). The <code>systems.o2_clock</code> block says
+  "drop 10 per scene," which contradicts its own scene values.</li>
+<li><strong>Ruling for tonight:</strong> <strong>the run-doc ladder is canonical</strong> (it's the spoken
+  number). The JSON is a data artifact for the map renderer; the mismatch has
+  <strong>zero table impact</strong> — just don't read the JSON numbers aloud. (Flag JSON
+  <code>o2_pct</code> for later cleanup; not tonight's problem.)</li>
+<li>Note Scene 3 nominally sits at <strong>40–50%</strong>, i.e. <em>at or near the SADYS
+  trigger</em>. That's intentional — if you want SADYS, the clock hands it to you
+  right as the finale opens. Decide <strong>before</strong> Scene 3 whether you're running her.</li>
+</ul>
+<h3 id="dangling-threads-and-the-one-line-each-the-prep-already-drafted-adopt">Dangling threads (and the one-line each the prep already drafted — adopt)</h3>
+<ol>
+<li><strong>Who wiped Dusty's memory + K-7's logs?</strong> Both hooks point at a wiper the
+   doc never names. <em>Fix:</em> <strong>GLADYS did it</strong> — <em>"you all seemed so stressed
+   before bed, dears"</em> — confessed in Aftermath (or volunteered, devastatingly,
+   by SADYS). Ties two loose hooks with one line and is funny.</li>
+<li><strong>The found ship-map / "who knows the layout" model</strong> — JSON says K-7 knows
+   the decks innately and a wall schematic in <code>commons-a</code> reveals them to all,
+   but the run-doc surfaces <em>neither</em>. <em>Fix:</em> Scene-0 exit beat — K-7 recites
+   the schematic (or a player reads the bolted-up deck map), and flip
+   <code>maps.html</code> to player view. Costs nothing, removes "where do we even go."</li>
+<li><strong>SADYS tendril if she never fires</strong> — the coral tendril at GLADYS's core
+   goes undiscovered. <em>Fix:</em> Aftermath throwaway — GLADYS: <em>"Oh, and the tenant
+   in my thinking-room left. I'd been meaning to mention it."</em></li>
+<li><strong>Stingers</strong> (Munch charging rent / last egg / "the OTHER thing") — <em>intended</em>
+   open sequel hooks. Pick ONE; don't resolve.</li>
+<li><strong>Dusty's salvage form</strong> — deliberate sequel seed (bermuda-reclamation.md
+   L80). Leave open; let the table decide rat-out vs. bury.</li>
+</ol>
+<h3 id="rules-friction-wont-block-play-pre-decide-to-avoid-table-debate">Rules-friction (won't block play, pre-decide to avoid table debate)</h3>
+<ul>
+<li><strong>Grease's armor math:</strong> 2+1+1 = 4, sheet says "Armor 3." Cairn caps at 3 —
+  say "capped at 3." Fallback (drop hatch-shield → Armor 2) already in L129.</li>
+<li><strong>"Disadvantage feel" @20% O₂</strong> — Cairn has no disadvantage; both docs already
+  implement it as <em>WIL-save-before-fiddly</em>. Use the save, drop the word.</li>
+<li><strong>Holo-Decoy gadget</strong> says enemies need a <strong>DEX</strong> save to ignore it; being
+  <em>fooled</em> is a <strong>WIL</strong> save in Cairn idiom. Rule WIL.</li>
+<li><strong>Rest wording:</strong> teach says "a minute," rules say "a moment." Pick one
+  ("a minute") and stay consistent. None of these touch the plot.</li>
+</ul>
+<hr />
+<h2 id="6-the-3-things-to-change-before-tonight">6 · THE 3 THINGS TO CHANGE BEFORE TONIGHT</h2>
+<p>Everything else is polish. These three are the ones that actually protect the
+session:</p>
+<ol>
+<li>
+<p><strong>Settle the finale airlock — say it out loud now.</strong> The win is the <strong>Deck-D
+   cargo airlock in the hold</strong> (the Deck-C sign only <em>taught</em> the trick). Brood
+   Mama can't be dragged up a deck. Pre-load the ruling in §3 so you don't fumble
+   it live. <em>(Optional clean-up: swap "maintenance airlock" → "cargo airlock" in
+   the Scene-3 text at L186/L206.)</em></p>
+</li>
+<li>
+<p><strong>Add the free "the gunk is ALIVE" tell</strong> (§2, clue #2). One sentence at the
+   intake makes "there's a live alien aboard" un-missable without a roll,
+   closing the only single-point-of-failure clue. Keep the coffee-machine and
+   Bartleby beats as <em>flavor confirmation</em>, not load-bearing.</p>
+</li>
+<li>
+<p><strong>Fill the three missing numbers and pick your O₂ canon.</strong> Mr. Munch (HP 4 /
+   STR 12 / Armor 2 / WIL 12), Brood Mama <strong>WIL 13</strong> (so she can be talked
+   down), and commit to the <strong>run-doc O₂ ladder (80/70/60/50)</strong> — ignore the
+   JSON's numbers, they're renderer data. Decide <strong>before Scene 3</strong> whether
+   SADYS is firing, since the clock lands you on her trigger right as the finale
+   opens.</p>
+</li>
+</ol>
+<hr />
+<p><em>Read-only review, 2026-06-09. No run-doc or setting files were modified.
+Proposals only — the user reviews before any edit.</em></p></body></html>

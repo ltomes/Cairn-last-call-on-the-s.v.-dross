@@ -23,6 +23,8 @@
   .slider{ display:flex; align-items:center; gap:8px; font-size:12px; color:var(--ink-dim); }
   input[type=range]{ width:120px; }
   .nowspeaking{ outline:2px solid var(--teal); outline-offset:2px; }
+  .nowplaying{ outline:2px solid var(--teal); outline-offset:2px; }
+  .amb .pp{ font-family:var(--mono); font-size:10px; color:var(--teal); letter-spacing:.08em; text-transform:uppercase; padding-top:3px; margin-left:auto; }
 </style>
 </head>
 <body>
@@ -58,6 +60,22 @@
         </div>
       </div>
       <p id="novoice" class="muted small" style="margin:8px 0 0; display:none; color:var(--coral)"></p>
+    </div>
+
+    <!-- Room ambience & sound effects -->
+    <div class="panel amb" id="ambience">
+      <div class="head">
+        <h3>Room Ambience &amp; Sound Effects</h3>
+        <span class="vtag">audio · spoilers</span>
+      </div>
+      <p class="note">Ambience tracks loop until you pick another room or hit stop. Effects play once, layered over the ambience.</p>
+      <div class="row no-print" style="margin:0 0 10px">
+        <button class="warn" onclick="Amb.stop()">⏹ Stop all audio</button>
+        <span id="amb-status" class="muted small"></span>
+      </div>
+      <div class="lines" id="amb-loops"><p class="muted small">Loading tracks…</p></div>
+      <p class="note" style="margin:14px 0 8px">One-shot effects</p>
+      <div class="lines" id="amb-sfx"></div>
     </div>
 
     <div id="board"></div>
@@ -174,6 +192,69 @@ pitch.addEventListener("input",e=>{ pitchMul=parseFloat(e.target.value); documen
 window.addEventListener("beforeunload", ()=>{ if(synth) synth.cancel(); });
 
 applyGate();   // gate on load (respects an already-on Warden session)
+</script>
+<script>
+"use strict";
+// Room Ambience & Sound Effects — ambience tracks from assets/audio/.
+// One looping <audio> carries the room bed; a second one layers one-shot
+// effects on top so an effect never cuts the ambience.
+const Amb = (function(){
+  const bed = new Audio(); bed.loop = true;   // room ambience (loops)
+  const fx  = new Audio();                    // one-shot effects
+  let tracks = [];
+
+  const $ = id => document.getElementById(id);
+  const setStatus = t => { $("amb-status").textContent = t || ""; };
+  const clearMarks = () => document.querySelectorAll("#amb-loops .line").forEach(b => {
+    b.classList.remove("nowplaying");
+    const pp = b.querySelector(".pp"); if(pp) pp.textContent = "";
+  });
+
+  function playLoop(i, btn){
+    const t = tracks[i];
+    clearMarks();
+    bed.src = "assets/audio/" + t.file;
+    bed.play().then(() => {
+      btn.classList.add("nowplaying");
+      const pp = btn.querySelector(".pp"); if(pp) pp.textContent = "▶ playing";
+      setStatus("▶ " + t.title);
+    }).catch(() => setStatus("Couldn't play " + t.file));
+  }
+  function playFx(i){
+    const t = tracks[i];
+    fx.src = "assets/audio/" + t.file;
+    fx.play().catch(() => setStatus("Couldn't play " + t.file));
+  }
+  function stop(){
+    if(bed.src){ bed.pause(); bed.currentTime = 0; }
+    if(fx.src){ fx.pause(); fx.currentTime = 0; }
+    clearMarks(); setStatus("");
+  }
+
+  function row(t, i, isLoop){
+    const act = isLoop ? `Amb.playLoop(${i}, this)` : `Amb.playFx(${i})`;
+    return `<button class="line ghost" onclick="${act}">
+      <span class="lt">${isLoop ? "ambience" : "effect"}</span>
+      <span>${t.title}</span>${isLoop ? '<span class="pp"></span>' : ""}
+    </button>`;
+  }
+
+  fetch("assets/audio/index.json")
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(list => {
+      tracks = list;
+      $("amb-loops").innerHTML = list.map((t,i) => t.loop ? row(t,i,true) : "").join("")
+        || '<p class="muted small">No tracks found.</p>';
+      $("amb-sfx").innerHTML = list.map((t,i) => !t.loop ? row(t,i,false) : "").join("");
+    })
+    .catch(() => { $("amb-loops").innerHTML = '<p class="muted small">Audio tracks unavailable.</p>'; });
+
+  // silence the room if Warden mode is switched off or the page closes
+  window.addEventListener("warden:change", () => { if(!(window.Warden && window.Warden.on)) stop(); });
+  window.addEventListener("beforeunload", stop);
+
+  return { playLoop, playFx, stop };
+})();
 </script>
 </body>
 </html>

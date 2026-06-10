@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S.V. Dross — room flavour images</title>
+<meta name="description" content="Depth-ControlNet flavour images of each S.V. Dross room, conditioned on the conformed deck geometry.">
+<style>
+  :root{ --bg:#0e1418; --ink:#e8e2d4; --amber:#f2b441; --teal:#4fd1c5; }
+  body{ background:var(--bg); color:var(--ink); font:15px/1.5 system-ui,sans-serif; margin:24px; }
+  h1{ color:var(--amber); font-size:20px; margin:0 0 4px; }
+  h2{ color:var(--teal); font-size:14px; text-transform:uppercase; letter-spacing:.08em; margin:26px 0 10px; border-bottom:1px solid #25323a; padding-bottom:4px; }
+  .crumbs{ margin-bottom:8px; } .crumbs a{ color:var(--teal); text-decoration:none; }
+  p.muted{ color:#8a9aa0; max-width:820px; }
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px; }
+  figure{ margin:0; background:#121a1f; border:1px solid #25323a; border-radius:10px; overflow:hidden; }
+  figure img{ width:100%; height:auto; display:block; background:#0e1418; aspect-ratio:1/1; object-fit:cover; }
+  figcaption{ padding:8px 10px; font-size:13px; }
+  figcaption b{ color:var(--ink); } figcaption .sp{ color:#ff7a6b; }
+  figcaption a{ color:#7fd9cf; text-decoration:none; font-size:12px; }
+</style></head>
+<body>
+  <div class="crumbs"><a href="index.html">⟵ S.V. Dross hub</a> · <a href="maps.html">Deck maps</a> · <a href="decks-3d.html">3D decks</a> · Room images</div>
+  <h1>Room flavour images</h1>
+  <p class="muted">Generated with SD 3.5 + Depth ControlNet, conditioned on each room's conformed
+  geometry (so walls/floor/perspective match the deck plans), prompted with the room's contents —
+  appliances, set-dressing, and the painted floor waypoint. Warden/spoiler material.</p>
+  <div id="content"><p class="muted">Loading…</p></div>
+
+<script src="assets/ship.js"></script>
+<script>
+const SHIP = window.DROSS_SHIP;
+function render(){
+  if(!SHIP){ document.getElementById("content").innerHTML="<p>Ship model failed to load.</p>"; return; }
+  let html = "";
+  for(const deck of SHIP.decks){
+    const rooms = (deck.rooms||[]).filter(r => r.image_prompt);
+    if(!rooms.length) continue;
+    html += `<h2>Deck ${deck.id.slice(-1).toUpperCase()} · ${esc(deck.name||"")}</h2><div class="grid">`;
+    for(const r of rooms){
+      const src = `assets/rooms/${deck.id}-${r.id}.png`;
+      const sp = r.spoiler ? ` <span class="sp">spoiler</span>` : "";
+      html += `<figure><img src="${src}" alt="${esc(r.name||r.id)}" loading="lazy"
+                 onerror="this.closest('figure').style.display='none'">
+               <figcaption><b>${esc(r.map_label||r.name||r.id)}</b>${sp}
+                 <br><a href="${src}" target="_blank">full</a></figcaption></figure>`;
+    }
+    html += `</div>`;
+  }
+  document.getElementById("content").innerHTML = html || "<p class='muted'>No room images yet.</p>";
+}
+function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+render();
+</script>
+</body></html>

@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S.V. Dross — decks as layers (3D)</title>
+<style>
+  html,body{ margin:0; height:100%; background:#0e1418; overflow:hidden; font:13px system-ui,sans-serif; color:#9fb1b8; }
+  #hud{ position:fixed; top:10px; left:12px; z-index:5; pointer-events:none; line-height:1.5; }
+  #hud b{ color:#f2b441; } #hud a{ color:#4fd1c5; pointer-events:auto; }
+  #legend{ position:fixed; top:10px; right:12px; z-index:5; text-align:right; }
+  #legend span{ display:inline-block; width:10px; height:10px; border-radius:2px; margin-left:6px; vertical-align:middle; }
+  #err{ position:fixed; bottom:12px; left:12px; color:#ff7a6b; z-index:6; }
+</style></head>
+<body>
+  <div id="hud"><b>S.V. Dross — decks as layers</b> · drag to orbit · scroll to zoom<br>
+    A command (top) → D cargo (bottom); rooms = boxes, corridors = low slabs, hull envelope per deck.<br>
+    <a href="index.html">← hub</a> · <a href="maps.html">deck maps</a> · <a href="ship-3d.html">3D views</a></div>
+  <div id="legend">
+    Deck A <span style="background:#f2b441"></span><br>
+    Deck B <span style="background:#4fd1c5"></span><br>
+    Deck C <span style="background:#a78bfa"></span><br>
+    Deck D <span style="background:#ff7a6b"></span>
+  </div>
+  <div id="err"></div>
+
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
+<script src="assets/ship.js"></script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const SHIP = window.DROSS_SHIP;
+const fail = m => { document.getElementById('err').textContent = m; };
+if (!SHIP) fail('Ship model failed to load (assets/ship.js).');
+
+const M = 2;        // metres per grid unit
+const DH = 9;       // deck spacing (exaggerated from ~3.2 m so the layers separate)
+const CH = 6;       // room box height
+const CORR_H = 0.8; // corridor slab height
+const DECKCOL = { "deck-a":0xf2b441, "deck-b":0x4fd1c5, "deck-c":0xa78bfa, "deck-d":0xff7a6b };
+const isCorr = r => r.type === "corridor" || /^corr-|crawlspace/.test(r.id);
+
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0x0e1418);
+const cam = new THREE.PerspectiveCamera(50, innerWidth/innerHeight, 0.1, 8000);
+const renderer = new THREE.WebGLRenderer({ antialias:true });
+renderer.setSize(innerWidth, innerHeight); document.body.appendChild(renderer.domElement);
+scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+const dl = new THREE.DirectionalLight(0xffffff, 0.7); dl.position.set(120, 260, 160); scene.add(dl);
+const ctl = new OrbitControls(cam, renderer.domElement); ctl.enableDamping = true;
+
+const grp = new THREE.Group();
+// resample a hull polygon to N evenly-spaced points, normalised so every deck starts at the
+// fore-most vertex with the same winding — so lofting deck-to-deck doesn't twist.
+function resample(poly, N){
+  let P = poly.map(p => [p[0], p[1]]);                 // GRID coords (×M applied when building geometry)
+  let area=0; for(let i=0;i<P.length;i++){ const a=P[i], b=P[(i+1)%P.length]; area += a[0]*b[1]-b[0]*a[1]; }
+  if (area < 0) P = P.reverse();                                  // consistent winding across decks
+  let s0=0; for(let i=1;i<P.length;i++) if(P[i][1] < P[s0][1]) s0=i;   // start at the fore-most vertex
+  P = P.slice(s0).concat(P.slice(0,s0));
+  const cum=[0]; let total=0;
+  for(let i=0;i<P.length;i++){ const a=P[i], b=P[(i+1)%P.length]; total += Math.hypot(b[0]-a[0], b[1]-a[1]); cum.push(total); }
+  const out=[];
+  for(let k=0;k<N;k++){ const dd = total*k/N; let i=0; while(i<P.length-1 && cum[i+1] <= dd) i++;
+    const a=P[i], b=P[(i+1)%P.length], seg=cum[i+1]-cum[i], t = seg>1e-9 ? (dd-cum[i])/seg : 0;
+    out.push([a[0]+t*(b[0]-a[0]), a[1]+t*(b[1]-a[1])]); }
+  return out;
+}
+function outline(pts, z, color, opacity){                  // line loop at a height
+  const v = pts.map(p => new THREE.Vector3(p[0]*M, z, p[1]*M));
+  return new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(v), new THREE.LineBasicMaterial({ color, transparent:true, opacity }));
+}
+// identical hull-clip to docs/maps.html — a room's outboard walls follow the convex hull.
+// Accepts a rect {x,y,w,h} OR an explicit footprint polygon [[x,y],...] (canted rooms).
+function clipRoomToHull(rect, hull){
+  let out = Array.isArray(rect) ? rect.map(p=>[p[0],p[1]])
+          : [[rect.x,rect.y],[rect.x+rect.w,rect.y],[rect.x+rect.w,rect.y+rect.h],[rect.x,rect.y+rect.h]];
+  if(!hull || hull.length<3) return out;
+  let area=0; for(let i=0;i<hull.length;i++){const a=hull[i],b=hull[(i+1)%hull.length]; area+=a[0]*b[1]-b[0]*a[1];}
+  const ccw=area>0;
+  const inter=(P,Q,A,B)=>{const den=(A[0]-B[0])*(P[1]-Q[1])-(A[1]-B[1])*(P[0]-Q[0]);
+    const t=((A[0]-P[0])*(P[1]-Q[1])-(A[1]-P[1])*(P[0]-Q[0]))/den; return [A[0]+t*(B[0]-A[0]),A[1]+t*(B[1]-A[1])];};
+  for(let i=0;i<hull.length && out.length;i++){
+    const A=hull[i],B=hull[(i+1)%hull.length],input=out; out=[];
+    const inside=P=>{const cc=(B[0]-A[0])*(P[1]-A[1])-(B[1]-A[1])*(P[0]-A[0]); return ccw?cc>=-1e-9:cc<=1e-9;};
+    for(let j=0;j<input.length;j++){ const cur=input[j],prev=input[(j+input.length-1)%input.length],ci=inside(cur),pi=inside(prev);
+      if(ci){ if(!pi) out.push(inter(prev,cur,A,B)); out.push(cur); } else if(pi) out.push(inter(prev,cur,A,B)); }
+  }
+  return out;
+}
+// extrude a footprint polygon (grid coords, may be concave e.g. the hammerhead) into a prism
+function prism(poly, z0, z1, color, opacity){
+  const P = poly.map(p => [p[0]*M, p[1]*M]); if(P.length<3) return null;
+  const pos = [];
+  for(let i=0;i<P.length;i++){ const a=P[i], b=P[(i+1)%P.length];     // angled side walls
+    pos.push(a[0],z0,a[1], b[0],z0,b[1], b[0],z1,b[1]);
+    pos.push(a[0],z0,a[1], b[0],z1,b[1], a[0],z1,a[1]); }
+  const tris = THREE.ShapeUtils.triangulateShape(P.map(p=>new THREE.Vector2(p[0],p[1])), []);  // caps (handles concave)
+  for(const t of tris){ const [i,j,k]=t;
+    pos.push(P[i][0],z1,P[i][1], P[j][0],z1,P[j][1], P[k][0],z1,P[k][1]);
+    pos.push(P[i][0],z0,P[i][1], P[k][0],z0,P[k][1], P[j][0],z0,P[j][1]); }
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos,3)); g.computeVertexNormals();
+  return new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color, transparent:true, opacity, roughness:0.85, side:THREE.DoubleSide, depthWrite:false }));
+}
+
+// resampled hull cross-sections per deck (GRID coords), bottom -> top, for height interpolation
+const HN = 64;
+const HD = (SHIP ? SHIP.decks.filter(d => d.hull) : []).map(d => ({ z:(d.level||0)*DH, pts: resample(d.hull, HN) })).sort((a,b)=>a.z-b.z);
+if (HD.length) {                                     // DOME the hull inward above the command deck so Deck A rooms rake too
+  const tD = HD[HD.length-1]; let tcx=0, tcy=0; tD.pts.forEach(p=>{ tcx+=p[0]; tcy+=p[1]; }); tcx/=HN; tcy/=HN;
+  HD.push({ z: tD.z + CH, pts: tD.pts.map(p => [ tcx+(p[0]-tcx)*0.78, tcy+(p[1]-tcy)*0.78 ]) });
+}
+function hullAt(z){                                  // interpolated hull cross-section at height z (grid coords)
+  if(!HD.length) return null;
+  if(z <= HD[0].z) return HD[0].pts;
+  if(z >= HD[HD.length-1].z) return HD[HD.length-1].pts;
+  let s=0; while(s<HD.length-1 && HD[s+1].z < z) s++;
+  const lo=HD[s], hi=HD[s+1], t=(z-lo.z)/(hi.z-lo.z);
+  return lo.pts.map((p,i)=>[ p[0]+(hi.pts[i][0]-p[0])*t, p[1]+(hi.pts[i][1]-p[1])*t ]);
+}
+function prismSides(poly, z0, z1, color, opacity){   // raking side walls only (no caps)
+  const P = poly.map(p=>[p[0]*M, p[1]*M]); if(P.length<3) return null;
+  const pos=[];
+  for(let i=0;i<P.length;i++){ const a=P[i], b=P[(i+1)%P.length];
+    pos.push(a[0],z0,a[1], b[0],z0,b[1], b[0],z1,b[1]); pos.push(a[0],z0,a[1], b[0],z1,b[1], a[0],z1,a[1]); }
+  const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3)); g.computeVertexNormals();
+  return new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color, transparent:true, opacity, roughness:0.85, side:THREE.DoubleSide, depthWrite:false }));
+}
+function cap(poly, z, color, opacity){               // flat filled polygon at a height
+  const P = poly.map(p=>[p[0]*M, p[1]*M]); if(P.length<3) return null;
+  const tris = THREE.ShapeUtils.triangulateShape(P.map(p=>new THREE.Vector2(p[0],p[1])), []);
+  const pos=[]; for(const t of tris){ const [i,j,k]=t; pos.push(P[i][0],z,P[i][1], P[j][0],z,P[j][1], P[k][0],z,P[k][1]); }
+  const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3)); g.computeVertexNormals();
+  return new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color, transparent:true, opacity, roughness:0.85, side:THREE.DoubleSide, depthWrite:false }));
+}
+
+function nearestHullSeg(v, H){                        // segment of H closest to v (+ param t)
+  let bi=-1, bt=0, bd=Infinity;
+  for(let i=0;i<H.length;i++){ const a=H[i], b=H[(i+1)%H.length], dx=b[0]-a[0], dy=b[1]-a[1], L=dx*dx+dy*dy||1e-9;
+    let t=((v[0]-a[0])*dx+(v[1]-a[1])*dy)/L; t=Math.max(0,Math.min(1,t));
+    const d=Math.hypot(v[0]-(a[0]+t*dx), v[1]-(a[1]+t*dy)); if(d<bd){ bd=d; bi=i; bt=t; } }
+  return { i:bi, t:bt, dist:bd };
+}
+// ANGLED-VERTEX room: floor clipped to hull(z0); each floor vertex that sits ON the hull gets a
+// ceiling vertex pulled inboard to hull(z1) (same hull segment) -> the outboard wall is ONE flat
+// sloped quad, not a stack. Interior vertices stay put (vertical). Room stays inside the shell.
+function angledRoom(rect, z0, z1, H0, H1, color, opacity){
+  const F = clipRoomToHull(rect, H0); if(F.length<3) return null;
+  const C = F.map(v => { const s=nearestHullSeg(v, H0);
+    if(s.dist < 0.06){ const a=H1[s.i], b=H1[(s.i+1)%H1.length]; return [a[0]+(b[0]-a[0])*s.t, a[1]+(b[1]-a[1])*s.t]; }
+    return v; });
+  const pos=[];
+  for(let i=0;i<F.length;i++){ const j=(i+1)%F.length;
+    const a=[F[i][0]*M,F[i][1]*M], b=[F[j][0]*M,F[j][1]*M], cc=[C[j][0]*M,C[j][1]*M], d=[C[i][0]*M,C[i][1]*M];
+    pos.push(a[0],z0,a[1], b[0],z0,b[1], cc[0],z1,cc[1]); pos.push(a[0],z0,a[1], cc[0],z1,cc[1], d[0],z1,d[1]); }
+  const capT=(poly,z)=>{ const P=poly.map(p=>[p[0]*M,p[1]*M]); const tr=THREE.ShapeUtils.triangulateShape(P.map(p=>new THREE.Vector2(p[0],p[1])),[]);
+    for(const t of tr){ const[i,j,k]=t; pos.push(P[i][0],z,P[i][1], P[j][0],z,P[j][1], P[k][0],z,P[k][1]); } };
+  capT(F,z0); capT(C,z1);
+  const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3)); g.computeVertexNormals();
+  return { mesh:new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color, transparent:true, opacity, roughness:0.85, side:THREE.DoubleSide, depthWrite:false })), top:C };
+}
+// HAMMERHEAD bridge pod: loft the bridge polygon through rings — narrow keel -> wide WING line ->
+// canopy that shrinks and rakes AFT — to match the teardrop/winged pod of the exterior model.
+function hammerheadPod(poly, zBase, color, opacity){
+  const RINGS = [[0,0.62,0],[2,1.0,0],[4.2,0.84,1.8],[6.5,0.5,4.2]];   // [dz, scale, aft-shift(grid)]
+  let cx=0, cy=0; poly.forEach(p=>{ cx+=p[0]; cy+=p[1]; }); cx/=poly.length; cy/=poly.length;
+  const rings = RINGS.map(([dz,s,ay]) => ({ z:zBase+dz, pts: poly.map(p => [ cx+(p[0]-cx)*s, cy+(p[1]-cy)*s + ay ]) }));
+  const pos=[];
+  for(let r=0;r<rings.length-1;r++){ const A=rings[r], B=rings[r+1], n=poly.length;
+    for(let i=0;i<n;i++){ const j=(i+1)%n;
+      const a=[A.pts[i][0]*M,A.pts[i][1]*M], b=[A.pts[j][0]*M,A.pts[j][1]*M], c=[B.pts[j][0]*M,B.pts[j][1]*M], d=[B.pts[i][0]*M,B.pts[i][1]*M];
+      pos.push(a[0],A.z,a[1], b[0],A.z,b[1], c[0],B.z,c[1]); pos.push(a[0],A.z,a[1], c[0],B.z,c[1], d[0],B.z,d[1]); } }
+  const capT=(ring)=>{ const P=ring.pts.map(p=>[p[0]*M,p[1]*M]); const tr=THREE.ShapeUtils.triangulateShape(P.map(p=>new THREE.Vector2(p[0],p[1])),[]);
+    for(const t of tr){ const[i,j,k]=t; pos.push(P[i][0],ring.z,P[i][1], P[j][0],ring.z,P[j][1], P[k][0],ring.z,P[k][1]); } };
+  capT(rings[0]); capT(rings[rings.length-1]);
+  const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3)); g.computeVertexNormals();
+  return { mesh:new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color, transparent:true, opacity, roughness:0.8, side:THREE.DoubleSide, depthWrite:false })), top:rings[rings.length-1] };
+}
+
+if (SHIP) for (const deck of SHIP.decks) {
+  const z0 = (deck.level||0) * DH, c = DECKCOL[deck.id] || 0x6fb6ac;
+  for (const r of deck.rooms) {
+    const top = z0 + (isCorr(r) ? CORR_H : CH), op = isCorr(r) ? 0.18 : 0.34;
+    if (r.id === 'bridge' && r.poly) {               // ONLY the bridge is the lofted winged hammerhead pod;
+      const pod = hammerheadPod(r.poly, z0, c, Math.min(0.5, op + 0.12));      // other rooms' poly = canted footprint
+      grp.add(pod.mesh); grp.add(outline(pod.top.pts, pod.top.z, c, 0.7)); continue;
+    }
+    const res = angledRoom(r.poly || r.rect, z0, top, hullAt(z0), hullAt(top), c, op);   // canted footprint OR rect, hull-sloped outboard wall
+    if(res){ grp.add(res.mesh); grp.add(outline(res.top, top, c, 0.7)); }
+  }
+  if (deck.hull) grp.add(outline(deck.hull_outline || deck.hull, z0, c, 0.85));
+}
+
+// faint exterior shell envelope (the sloped skin), from the same resampled cross-sections
+if (SHIP && HD.length > 1) {
+  const pos=[];
+  const q=(a,za,b,zb,cc,zc,d,zd)=>{ pos.push(a[0]*M,za,a[1]*M, b[0]*M,zb,b[1]*M, cc[0]*M,zc,cc[1]*M); pos.push(a[0]*M,za,a[1]*M, cc[0]*M,zc,cc[1]*M, d[0]*M,zd,d[1]*M); };
+  for (let s=0;s<HD.length-1;s++){ const lo=HD[s], hi=HD[s+1]; for(let i=0;i<HN;i++){ const j=(i+1)%HN; q(lo.pts[i],lo.z, lo.pts[j],lo.z, hi.pts[j],hi.z, hi.pts[i],hi.z); } }
+  const tp=HD[HD.length-1], Pt=tp.pts.map(p=>[p[0]*M,p[1]*M]);   // close the domed top
+  for(const t of THREE.ShapeUtils.triangulateShape(Pt.map(p=>new THREE.Vector2(p[0],p[1])),[])){ const[i,j,k]=t; pos.push(Pt[i][0],tp.z,Pt[i][1], Pt[j][0],tp.z,Pt[j][1], Pt[k][0],tp.z,Pt[k][1]); }
+  const sg=new THREE.BufferGeometry(); sg.setAttribute('position',new THREE.Float32BufferAttribute(pos,3)); sg.computeVertexNormals();
+  grp.add(new THREE.Mesh(sg, new THREE.MeshBasicMaterial({ color:0x6fb6ac, transparent:true, opacity:0.05, side:THREE.DoubleSide, depthWrite:false })));
+}
+
+if (SHIP) {
+  const bb = new THREE.Box3().setFromObject(grp), ctr = bb.getCenter(new THREE.Vector3()), sz = bb.getSize(new THREE.Vector3());
+  grp.position.sub(ctr); scene.add(grp);
+  const mx = Math.max(sz.x, sz.y, sz.z);
+  cam.position.set(mx*1.0, mx*0.85, mx*1.35); ctl.target.set(0,0,0); ctl.update();
+  const grid = new THREE.GridHelper(mx*2.4, 24, 0x223038, 0x161f25); grid.position.y = -sz.y/2 - 4; scene.add(grid);
+}
+
+addEventListener('resize', () => { cam.aspect = innerWidth/innerHeight; cam.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+
+// ---- iframe casting: serialize/restore the orbit pose ----------------------
+// Derive azimuth/polar/distance + target from the camera relative to the
+// OrbitControls target, postMessage it to the parent (the control page) when
+// orbiting inside an iframe, and accept {type:"setcam"} to mirror another pose.
+const inIframe = (function(){ try { return window.self !== window.top; } catch(e){ return true; } })();
+function camPose(){
+  const t = ctl.target;
+  const off = new THREE.Vector3().subVectors(cam.position, t);
+  const dist = off.length();
+  // azimuth: angle in the XZ plane; polar: from +Y axis. Matches OrbitControls' spherical.
+  const az = Math.atan2(off.x, off.z);
+  const el = Math.acos(Math.max(-1, Math.min(1, off.y / (dist || 1e-9))));
+  return { az, el, dist, target: [t.x, t.y, t.z] };
+}
+function applyCamPose(p){
+  if (!p) return;
+  const dist = (typeof p.dist === 'number' && isFinite(p.dist)) ? p.dist : ctl.target.distanceTo(cam.position);
+  const az = (typeof p.az === 'number') ? p.az : 0;
+  const el = (typeof p.el === 'number') ? p.el : Math.PI/3;
+  if (Array.isArray(p.target) && p.target.length === 3) ctl.target.set(p.target[0], p.target[1], p.target[2]);
+  const sinEl = Math.sin(el);
+  cam.position.set(
+    ctl.target.x + dist * sinEl * Math.sin(az),
+    ctl.target.y + dist * Math.cos(el),
+    ctl.target.z + dist * sinEl * Math.cos(az)
+  );
+  cam.lookAt(ctl.target);
+  ctl.update();
+}
+// throttle outbound cam messages to ~10/s while orbiting
+let _camLast = 0, _camPending = false;
+function emitCam(){
+  if (!inIframe) return;
+  const now = Date.now();
+  if (now - _camLast < 100) {
+    if (!_camPending) { _camPending = true; setTimeout(function(){ _camPending = false; emitCam(); }, 100 - (now - _camLast)); }
+    return;
+  }
+  _camLast = now;
+  try { window.parent.postMessage(Object.assign({ type: 'cam' }, camPose()), '*'); } catch(e){}
+}
+ctl.addEventListener('change', emitCam);
+// accept a pose from the parent / a peer instance (e.g. the TV mirroring the phone)
+let _applyingCam = false;
+window.addEventListener('message', function(ev){
+  const d = ev && ev.data;
+  if (!d || d.type !== 'setcam') return;
+  _applyingCam = true;
+  applyCamPose(d);
+  _applyingCam = false;
+});
+
+(function loop(){ requestAnimationFrame(loop); ctl.update(); renderer.render(scene, cam); })();
+</script>
+</body></html>

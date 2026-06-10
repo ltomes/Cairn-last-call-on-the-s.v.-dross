@@ -28,6 +28,9 @@
 <script>
 const SHIP = window.DROSS_SHIP;
 const DECK_COL = { "deck-a":"#f2b441", "deck-b":"#4fd1c5", "deck-c":"#a78bfa", "deck-d":"#ff7a6b" };
+// escape text for SVG/XML — deck names contain "&" (e.g. "Command & Habitation") which is
+// invalid raw XML and stops the whole SVG from parsing/rendering in the browser.
+const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
 
 function gyExtent(deck){               // fore–aft span of a deck, from hull (+ any room poly, e.g. the hammerhead)
   let lo=Infinity, hi=-Infinity;
@@ -44,22 +47,22 @@ function render(){
   const maxGy = Math.max(...ext.map(e=>e[1]));
   const unitM = (SHIP.decks[0].grid && SHIP.decks[0].grid.unit_m) || 2;
   const S = 22, PAD = 36, DH = 42, GAP = 8;                 // px/unit, padding, deck-band height, gap
-  const W = maxGy*S + PAD*2, H = decks.length*(DH+GAP) + PAD*2 + 24;
+  const W = maxGy*S + PAD*2, H = decks.length*(DH+GAP) + PAD*2 + 42;
   const X = gy => PAD + gy*S;
   let out = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="S.V. Dross hull side elevation">`;
   out += `<text x="${PAD}" y="22" fill="#f2b441" font-size="13">S.V. Dross — side elevation · ${SHIP.exterior?.proportions ? "~110 m L × ~76 m beam × ~12 m, 4 decks" : ""}</text>`;
   // hammerhead bump marker (forward-top, on Deck A)
   const aIdx = decks.findIndex(d=>d.id==="deck-a");
   decks.forEach((d,i)=>{
-    const [lo,hi] = ext[i], y = PAD + 14 + i*(DH+GAP);
+    const [lo,hi] = ext[i], y = PAD + 32 + i*(DH+GAP);
     const x0 = X(Math.max(0,lo)), x1 = X(hi), col = DECK_COL[d.id] || "#6fb6ac";
     out += `<rect x="${x0}" y="${y}" width="${Math.max(2,x1-x0)}" height="${DH}" rx="4" fill="${col}22" stroke="${col}" stroke-width="2"/>`;
     const tag = "Deck " + d.id.slice(-1).toUpperCase() + " · " + (d.name||"");
-    out += `<text x="${x0+8}" y="${y+25}" fill="${col}" font-size="13" font-weight="600">${tag}</text>`;
+    out += `<text x="${x0+8}" y="${y+25}" fill="${col}" font-size="13" font-weight="600">${esc(tag)}</text>`;
   });
   // hammerhead bridge, ghosted, perched forward-on-top of Deck A
   if(aIdx>=0){
-    const aDeck = decks[aIdx], y = PAD + 14 + aIdx*(DH+GAP);
+    const aDeck = decks[aIdx], y = PAD + 32 + aIdx*(DH+GAP);
     const ham = (aDeck.rooms||[]).find(r=>r.id==="bridge" && r.poly);
     if(ham){ let lo=Infinity,hi=-Infinity; ham.poly.forEach(p=>{lo=Math.min(lo,p[1]);hi=Math.max(hi,p[1]);});
       out += `<rect x="${X(Math.max(0,lo))}" y="${y-22}" width="${Math.max(2,X(hi)-X(Math.max(0,lo)))}" height="22" rx="3" fill="#f2b44133" stroke="#f2b441" stroke-width="1.5" stroke-dasharray="4 3"/>`;
@@ -68,7 +71,7 @@ function render(){
   }
   // external garbage maw boom, ghosted, off the aft (Deck D row, beyond the hull)
   const dIdx = decks.findIndex(d=>d.id==="deck-d");
-  if(dIdx>=0){ const y = PAD + 14 + dIdx*(DH+GAP), xm = X(ext[dIdx][1]);
+  if(dIdx>=0){ const y = PAD + 32 + dIdx*(DH+GAP), xm = X(ext[dIdx][1]);
     out += `<path d="M${xm} ${y+DH*0.4} l 34 6 l 10 14 l -8 6 l -36 -6" fill="#9a6b5b33" stroke="#9a6b5b" stroke-width="1.5" stroke-dasharray="4 3"/>`;
     out += `<text x="${xm+6}" y="${y+DH+16}" fill="#9a6b5b" font-size="11">garbage maw — external boom (not walkable)</text>`;
   }

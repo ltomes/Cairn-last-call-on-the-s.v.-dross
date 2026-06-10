@@ -1,0 +1,1038 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>S.V. Dross — Warden Control</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --amber: #f2b441;
+    --teal: #4fd1c5;
+    --coral: #ff7a6b;
+    --slate: #1b262d;
+    --bg: #0c1115;
+    --card: #161d23;
+    --line: #2a343c;
+    --txt: #e7eef2;
+    --dim: #8b99a3;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    background: var(--bg); color: var(--txt);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    min-height: 100%;
+  }
+  body { padding-bottom: env(safe-area-inset-bottom); }
+
+  header {
+    position: sticky; top: 0; z-index: 20;
+    background: linear-gradient(180deg, #0e151b 70%, rgba(14,21,27,0));
+    padding: 14px 16px 10px;
+  }
+  .titlerow { display: flex; align-items: baseline; gap: 10px; }
+  h1 { font-size: 17px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--amber); }
+  .sub { font-size: 11px; color: var(--dim); letter-spacing: 0.1em; }
+
+  /* top control bar: clear screen / stop sound / black out.
+     Clear screen + Black out BOTH only hide the visual (ambience keeps playing).
+     Stop sound is the ONLY button that silences the ambience. */
+  .ctrlbar { display: flex; gap: 8px; margin-top: 10px; align-items: stretch; }
+  .ctrlbar button {
+    flex: 1; padding: 13px 4px; border-radius: 12px; cursor: pointer;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  }
+  .ctrlbar button small {
+    font-size: 9px; font-weight: 600; letter-spacing: 0.02em; text-transform: none;
+    opacity: 0.7; line-height: 1.15;
+  }
+  #clearvis {
+    border: 1px solid var(--teal); background: rgba(79,209,197,0.10); color: #c9f3ee;
+  }
+  #clearvis:active { background: rgba(79,209,197,0.25); }
+  #stopsound {
+    border: 1px solid var(--amber); background: rgba(242,180,65,0.10); color: #ffe7b8;
+  }
+  #stopsound:active { background: rgba(242,180,65,0.25); }
+  /* Black out is the big emergency screen-off: wider + bolder border. */
+  #blackout {
+    flex: 1.5; border: 2px solid var(--coral); background: rgba(255,122,107,0.14); color: #ffd9d2;
+    font-size: 13px;
+  }
+  #blackout:active { background: rgba(255,122,107,0.30); }
+
+  /* tabs */
+  nav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  nav button {
+    flex: 1 1 auto; min-width: 92px; padding: 12px 4px; border: 1px solid var(--line); border-radius: 10px;
+    background: var(--card); color: var(--dim);
+    font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+  }
+  nav button.active { color: #0c1115; background: var(--teal); border-color: var(--teal); font-weight: 700; }
+
+  main { padding: 14px 14px 40px; }
+  section { display: none; }
+  section.active { display: block; }
+
+  .grid {
+    display: grid; gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  .decklabel {
+    grid-column: 1 / -1;
+    margin: 8px 2px 0; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--amber); border-bottom: 1px solid var(--line); padding-bottom: 6px;
+  }
+
+  .card {
+    border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    background: var(--card); cursor: pointer; position: relative;
+    transition: transform 80ms ease, border-color 120ms ease;
+  }
+  .card:active { transform: scale(0.97); border-color: var(--teal); }
+  .thumbwrap { aspect-ratio: 16 / 10; background: #0a0e11; position: relative; }
+  .thumbwrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .thumbwrap .noart {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    color: #44515a; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; text-align: center; padding: 8px;
+  }
+  .meta { padding: 9px 10px; }
+  .meta .nm { font-size: 13px; font-weight: 600; line-height: 1.25; }
+  .meta .ty { font-size: 10px; color: var(--dim); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 3px; }
+
+  .badge {
+    position: absolute; top: 6px; right: 6px; z-index: 2;
+    padding: 3px 8px; border-radius: 999px; font-size: 9px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    background: rgba(255,122,107,0.92); color: #2a0c08;
+  }
+
+  /* maps + sounds rows */
+  .row {
+    display: flex; align-items: center; gap: 12px; width: 100%;
+    padding: 14px; margin-bottom: 10px;
+    border: 1px solid var(--line); border-radius: 12px; background: var(--card);
+    cursor: pointer; text-align: left; color: var(--txt);
+  }
+  .row:active { border-color: var(--teal); }
+  .row .ic { font-size: 22px; width: 30px; text-align: center; }
+  .row .rt { flex: 1; }
+  .row .rt .nm { font-size: 15px; font-weight: 600; }
+  .row .rt .sm { font-size: 11px; color: var(--dim); margin-top: 2px; }
+  .row .stop {
+    padding: 8px 14px; border-radius: 8px; border: 1px solid var(--coral);
+    background: rgba(255,122,107,0.12); color: #ffd9d2; font-size: 12px;
+    letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
+  }
+  .row .stop:active { background: rgba(255,122,107,0.3); }
+
+  /* party progression rows */
+  .prow {
+    display: flex; align-items: center; gap: 10px; width: 100%;
+    padding: 12px 12px; margin-bottom: 8px;
+    border: 1px solid var(--line); border-radius: 12px; background: var(--card);
+    cursor: pointer; text-align: left; color: var(--txt);
+  }
+  .prow:active { border-color: var(--teal); }
+  .prow.current { border-color: var(--amber); background: rgba(242,180,65,0.08); }
+  .prow .here {
+    width: 26px; text-align: center; font-size: 16px; color: var(--amber);
+    visibility: hidden;
+  }
+  .prow.current .here { visibility: visible; }
+  .prow .rt { flex: 1; min-width: 0; }
+  .prow .rt .nm { font-size: 14px; font-weight: 600; line-height: 1.25; }
+  .prow .rt .tags { display: flex; gap: 6px; margin-top: 4px; align-items: center; }
+  .tag {
+    display: inline-block; padding: 2px 8px; border-radius: 999px;
+    font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .tag.deck { background: rgba(79,209,197,0.15); color: var(--teal); border: 1px solid rgba(79,209,197,0.4); }
+  .tag.spoil { background: rgba(255,122,107,0.92); color: #2a0c08; }
+  .tag.mute { background: rgba(139,153,163,0.15); color: var(--dim); border: 1px solid var(--line); }
+  .prow .mini {
+    padding: 9px 11px; border-radius: 8px; border: 1px solid var(--line);
+    background: rgba(79,209,197,0.08); color: var(--teal); font-size: 11px;
+    letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; flex: none;
+  }
+  .prow .mini:active { background: rgba(79,209,197,0.25); }
+  .prow .herebtn { border-color: var(--amber); color: var(--amber); }
+
+  .note {
+    padding: 18px; border: 1px dashed var(--line); border-radius: 12px;
+    color: var(--dim); font-size: 13px; line-height: 1.55;
+  }
+  .note code { color: var(--teal); font-family: ui-monospace, monospace; }
+
+  /* voices & fx tab */
+  .fxbar {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    margin-bottom: 12px; padding: 10px 12px;
+    border: 1px solid var(--line); border-radius: 12px; background: var(--card);
+  }
+  .toggle { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; font-weight: 600; }
+  .toggle input { width: 18px; height: 18px; accent-color: var(--teal); }
+  .fxhint { font-size: 11px; color: var(--dim); letter-spacing: 0.04em; }
+
+  .speakbox { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .speakbox input[type=text] {
+    flex: 1 1 160px; min-width: 0; padding: 12px 12px; border-radius: 10px;
+    border: 1px solid var(--line); background: #0a0e11; color: var(--txt); font-size: 15px;
+  }
+  .speakbox select {
+    flex: 0 0 auto; padding: 10px 8px; border-radius: 10px;
+    border: 1px solid var(--line); background: var(--card); color: var(--txt); font-size: 13px;
+  }
+  .speakbox button {
+    flex: 0 0 auto; padding: 12px 18px; border-radius: 10px; cursor: pointer;
+    border: 1px solid var(--amber); background: rgba(242,180,65,0.12); color: #ffe7b8;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .speakbox button:active { background: rgba(242,180,65,0.3); }
+
+  .npcblock { margin-bottom: 16px; }
+  .npcblock .nhead {
+    display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+    margin: 6px 2px 8px; border-bottom: 1px solid var(--line); padding-bottom: 6px;
+  }
+  .npcblock .nhead .nn { font-size: 14px; font-weight: 700; letter-spacing: 0.06em; }
+  .npcblock .nhead .nt { font-size: 10px; color: var(--dim); letter-spacing: 0.1em; text-transform: uppercase; }
+  .npcblock .nhead .spoil {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 999px; background: rgba(255,122,107,0.92); color: #2a0c08;
+  }
+  .linebtn {
+    display: flex; gap: 10px; align-items: flex-start; width: 100%; text-align: left;
+    padding: 11px 12px; margin-bottom: 8px; border: 1px solid var(--line);
+    border-radius: 10px; background: var(--card); color: var(--txt); cursor: pointer; line-height: 1.4;
+  }
+  .linebtn:active { border-color: var(--teal); }
+  .linebtn .lt {
+    flex: 0 0 96px; font-size: 9px; color: var(--dim); letter-spacing: 0.06em;
+    text-transform: uppercase; padding-top: 2px;
+  }
+  .linebtn .lx { flex: 1; font-size: 13px; }
+  .sfxgrid { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); margin-bottom: 6px; }
+  .sfxbtn {
+    padding: 14px 10px; border: 1px solid var(--line); border-radius: 10px;
+    background: var(--card); color: var(--txt); cursor: pointer; font-size: 13px; font-weight: 600;
+    text-align: center;
+  }
+  .sfxbtn:active { border-color: var(--teal); background: rgba(79,209,197,0.08); }
+
+  /* O₂ tab */
+  .o2panel {
+    border: 1px solid var(--line); border-radius: 14px; background: var(--card);
+    padding: 16px; margin-bottom: 14px;
+  }
+  .o2big {
+    display: flex; align-items: baseline; gap: 10px; justify-content: center;
+    margin-bottom: 6px; font-variant-numeric: tabular-nums;
+  }
+  .o2big .lbl { font-size: 22px; font-weight: 700; color: var(--dim); }
+  .o2big .pct { font-size: 64px; font-weight: 800; line-height: 1; color: var(--teal); }
+  .o2bar2 { height: 14px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; }
+  .o2fill2 { height: 100%; width: 0%; border-radius: 999px; background: var(--teal); transition: width 300ms ease, background 300ms ease; }
+  .o2state { text-align: center; font-size: 11px; color: var(--dim); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 8px; }
+  .o2state b { color: var(--amber); }
+  .o2quick { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 12px; }
+  .o2quick button {
+    padding: 14px 4px; border-radius: 10px; border: 1px solid var(--line);
+    background: var(--card); color: var(--txt); font-size: 15px; font-weight: 700; cursor: pointer;
+  }
+  .o2quick button:active { border-color: var(--teal); background: rgba(79,209,197,0.1); }
+  .o2nudge { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
+  .o2nudge button {
+    padding: 16px 4px; border-radius: 10px; border: 1px solid var(--amber);
+    background: rgba(242,180,65,0.10); color: #ffe7b8; font-size: 17px; font-weight: 800; cursor: pointer;
+  }
+  .o2nudge button:active { background: rgba(242,180,65,0.28); }
+  .o2labelrow { display: flex; gap: 8px; margin-bottom: 12px; }
+  .o2labelrow input {
+    flex: 1 1 auto; min-width: 0; padding: 12px; border-radius: 10px;
+    border: 1px solid var(--line); background: #0a0e11; color: var(--txt); font-size: 15px;
+  }
+  .o2labelrow button {
+    flex: 0 0 auto; padding: 12px 16px; border-radius: 10px; cursor: pointer;
+    border: 1px solid var(--teal); background: rgba(79,209,197,0.12); color: #c9f3ee;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .o2labelrow button:active { background: rgba(79,209,197,0.28); }
+  .o2toggles { display: flex; gap: 10px; }
+  .o2toggles button {
+    flex: 1; padding: 14px 4px; border-radius: 12px; cursor: pointer;
+    border: 1px solid var(--line); background: var(--card); color: var(--txt);
+    font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .o2toggles button.on { background: var(--teal); color: #0c1115; border-color: var(--teal); }
+  .o2toggles button.on.run { background: var(--amber); border-color: var(--amber); }
+
+  /* 3D tab */
+  .threednote { font-size: 12px; color: var(--dim); letter-spacing: 0.06em; margin: 0 2px 10px; }
+  .castbar { display: flex; gap: 8px; margin-bottom: 10px; align-items: stretch; }
+  .castbar button {
+    flex: 1; padding: 13px 6px; border-radius: 10px; cursor: pointer;
+    border: 1px solid var(--line); background: var(--card); color: var(--txt);
+    font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .castbar button:active { border-color: var(--teal); }
+  .castbar button.on { background: var(--teal); color: #0c1115; border-color: var(--teal); }
+  .iframewrap {
+    width: 100%; height: 72vh; min-height: 360px; border: 1px solid var(--line);
+    border-radius: 12px; overflow: hidden; background: #0e1418;
+  }
+  .iframewrap iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+  /* toast */
+  #toast {
+    position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom));
+    transform: translateX(-50%) translateY(20px);
+    background: #0e151b; border: 1px solid var(--teal); color: var(--teal);
+    padding: 12px 20px; border-radius: 999px; font-size: 13px; letter-spacing: 0.04em;
+    opacity: 0; pointer-events: none; transition: opacity 200ms ease, transform 200ms ease;
+    z-index: 50; max-width: 90vw; box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  #toast.err { border-color: var(--coral); color: var(--coral); }
+</style>
+</head>
+<body>
+  <header>
+    <div class="titlerow">
+      <h1>Warden Control</h1>
+      <span class="sub" id="hostsub"></span>
+    </div>
+    <div class="ctrlbar">
+      <button id="clearvis">🖼 Clear screen<small>hide image · audio plays on</small></button>
+      <button id="stopsound">🔇 Stop ambience<small>silence the looping bed</small></button>
+      <button id="stopfx">🛑 Stop voices/FX<small>cut NPC voice + sound effects</small></button>
+    </div>
+    <nav>
+      <button data-tab="party" class="active">Party</button>
+      <button data-tab="o2">O₂</button>
+      <button data-tab="rooms">Rooms</button>
+      <button data-tab="maps">Maps</button>
+      <button data-tab="sounds">Sounds</button>
+      <button data-tab="voices">Voices &amp; FX</button>
+      <button data-tab="threed">3D</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="party" class="active"><div id="partyList"></div></section>
+    <section id="o2">
+      <div class="o2panel">
+        <div class="o2big"><span class="lbl">O₂</span><span class="pct" id="o2Pct">--%</span></div>
+        <div class="o2bar2"><div class="o2fill2" id="o2Fill"></div></div>
+        <div class="o2state" id="o2State">hidden on TV</div>
+      </div>
+      <div class="o2quick">
+        <button data-o2="80">80</button><button data-o2="70">70</button>
+        <button data-o2="60">60</button><button data-o2="50">50</button>
+        <button data-o2="40">40</button><button data-o2="30">30</button>
+        <button data-o2="20">20</button><button data-o2="10">10</button>
+        <button data-o2="0">0</button>
+      </div>
+      <div class="o2nudge">
+        <button data-o2d="-5">−5</button><button data-o2d="-1">−1</button>
+        <button data-o2d="1">+1</button><button data-o2d="5">+5</button>
+      </div>
+      <div class="o2labelrow">
+        <input type="text" id="o2LabelInput" placeholder="Scene label (e.g. Scene 2 — Crawlspace)" autocomplete="off" />
+        <button id="o2LabelBtn" type="button">Set</button>
+      </div>
+      <div class="o2toggles">
+        <button id="o2ShowBtn" type="button">Show on TV</button>
+        <button id="o2RunBtn" type="button" class="run">Pulse: off</button>
+      </div>
+    </section>
+    <section id="rooms"><div class="grid" id="roomsGrid"></div></section>
+    <section id="maps"><div id="mapsList"></div></section>
+    <section id="sounds"><div id="soundsList"></div></section>
+    <section id="voices">
+      <div class="fxbar">
+        <label class="toggle">
+          <input type="checkbox" id="localTts" />
+          <span>Speak on this phone</span>
+        </label>
+        <span class="fxhint">off = speak on the TV · on = speak here (safety net)</span>
+      </div>
+      <div class="speakbox">
+        <input type="text" id="sayText" placeholder="Type a line to speak…" autocomplete="off" />
+        <select id="sayNpc"></select>
+        <button id="sayBtn" type="button">Speak</button>
+      </div>
+      <div id="sfxList"></div>
+      <div id="voiceBoard"></div>
+    </section>
+    <section id="threed">
+      <div class="threednote">drag to orbit · pinch to zoom — pose the ship here on the phone</div>
+      <div class="castbar">
+        <button id="castToggle" type="button">📺 Cast to TV</button>
+        <button id="castOnce" type="button">Send current view</button>
+      </div>
+      <div class="iframewrap"><iframe id="threedFrame" title="3D deck view" loading="lazy"></iframe></div>
+    </section>
+  </main>
+
+  <div id="toast"></div>
+
+  <!-- ship data: window.DROSS_SHIP (decks + rooms). No external/CDN scripts. -->
+  <script src="../assets/ship.js"></script>
+  <!-- NPC voices: window.DROSS_NPCS (names, voice prefs, canned lines). Warden-only. -->
+  <script src="../assets/npc-lines.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    // API host derived from the page URL — never hardcoded. Public-repo safe.
+    var PUSH_URL = 'http://' + location.hostname + ':8899/push';
+    var STATE_URL = 'http://' + location.hostname + ':8899/state';
+    document.getElementById('hostsub').textContent = location.hostname + ':8899';
+
+    var SHIP = window.DROSS_SHIP || { decks: [] };
+    var ROOMS_BASE = '../assets/rooms/';
+    var MAPS_BASE = '../assets/maps/';
+    var AUDIO_BASE = '../assets/audio/';
+
+    // ---- toast -----------------------------------------------------------
+    var toastEl = document.getElementById('toast');
+    var toastTimer = null;
+    function toast(msg, isErr) {
+      toastEl.textContent = msg;
+      toastEl.classList.toggle('err', !!isErr);
+      toastEl.classList.add('show');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () { toastEl.classList.remove('show'); }, 1800);
+    }
+
+    // ---- push ------------------------------------------------------------
+    function push(payload, okMsg) {
+      // Cache-bust image/map URLs: room art is regenerated under the SAME filename, and both the display's
+      // same-URL dedupe and the WebView image cache would otherwise keep showing a stale picture.
+      if ((payload.kind === 'image' || payload.kind === 'map') && typeof payload.src === 'string'
+          && payload.src.indexOf('?') === -1) {
+        payload = Object.assign({}, payload, { src: payload.src + '?v=' + Date.now() });
+      }
+      fetch(PUSH_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+        .then(function (r) {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          if (okMsg) toast(okMsg);
+        })
+        .catch(function (e) {
+          toast('display offline? ' + e.message, true);
+        });
+    }
+
+    // ---- tabs ------------------------------------------------------------
+    var tabBtns = document.querySelectorAll('nav button');
+    tabBtns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        tabBtns.forEach(function (x) { x.classList.remove('active'); });
+        b.classList.add('active');
+        document.querySelectorAll('section').forEach(function (s) { s.classList.remove('active'); });
+        document.getElementById(b.dataset.tab).classList.add('active');
+      });
+    });
+
+    // ---- top control bar ---------------------------------------------------
+    document.getElementById('clearvis').addEventListener('click', function () {
+      push({ kind: 'clear' }, 'Screen cleared (ambience keeps playing)');
+    });
+    document.getElementById('stopsound').addEventListener('click', function () {
+      push({ kind: 'stopsound' }, 'Ambience stopped');
+    });
+    document.getElementById('stopfx').addEventListener('click', function () {
+      push({ kind: 'stopfx' }, 'Voices/FX stopped');
+    });
+
+    // ---- PARTY (progression tracker) --------------------------------------
+    var partyList = document.getElementById('partyList');
+    var PARTY_KEY = 'dross-party-room';
+    var partyRooms = [];
+    (SHIP.decks || []).forEach(function (deck) {
+      (deck.rooms || []).forEach(function (room) {
+        if (room.image_prompt) partyRooms.push({ deck: deck, room: room });
+      });
+    });
+
+    // Which rooms have an ambience mp3? One HEAD check per room at load.
+    var audioCheck = {}; // room.id -> Promise<boolean>
+    partyRooms.forEach(function (e) {
+      var id = e.room.id;
+      audioCheck[id] = fetch(AUDIO_BASE + id + '.mp3', { method: 'HEAD' })
+        .then(function (r) { return r.ok; })
+        .catch(function () { return false; });
+    });
+
+    function setCurrentRoom(id) {
+      try { localStorage.setItem(PARTY_KEY, id); } catch (e) {}
+      partyList.querySelectorAll('.prow').forEach(function (el) {
+        el.classList.toggle('current', el.dataset.room === id);
+      });
+    }
+
+    partyRooms.forEach(function (e) {
+      var deck = e.deck, room = e.room;
+      var name = room.name || room.id;
+      var deckLetter = String(deck.id).replace(/^deck-/, '').toUpperCase();
+      var row = document.createElement('div');
+      row.className = 'prow';
+      row.dataset.room = room.id;
+      row.innerHTML =
+        '<div class="here">◆</div>' +
+        '<div class="rt"><div class="nm"></div><div class="tags"></div></div>' +
+        '<button class="mini herebtn" type="button">here♪</button>' +
+        '<button class="mini art" type="button">art</button>' +
+        '<button class="mini map" type="button">map</button>';
+      row.querySelector('.nm').textContent = name;
+      var tags = row.querySelector('.tags');
+      var dt = document.createElement('span');
+      dt.className = 'tag deck';
+      dt.textContent = 'Deck ' + deckLetter;
+      tags.appendChild(dt);
+      if (room.spoiler) {
+        var sp = document.createElement('span');
+        sp.className = 'tag spoil';
+        sp.textContent = 'spoiler';
+        tags.appendChild(sp);
+      }
+      audioCheck[room.id].then(function (ok) {
+        if (ok) return;
+        var mu = document.createElement('span');
+        mu.className = 'tag mute';
+        mu.textContent = 'no audio';
+        tags.appendChild(mu);
+      });
+
+      // ONLY the explicit "here♪" button moves the party + changes ambience — never the whole row
+      // (avoids accidentally swapping the soundscape when reaching for art/map).
+      row.querySelector('.herebtn').addEventListener('click', function () {
+        setCurrentRoom(room.id);
+        audioCheck[room.id].then(function (ok) {
+          if (ok) {
+            push(
+              { kind: 'sound', src: AUDIO_BASE + room.id + '.mp3', title: name + ' ambience', loop: true },
+              'Party → ' + name + ', ambience on'
+            );
+          } else {
+            toast('Party → ' + name + ' (no ambience track)');
+          }
+        });
+      });
+      row.querySelector('.art').addEventListener('click', function () {
+        push(
+          { kind: 'image', src: ROOMS_BASE + deck.id + '-' + room.id + '.png', title: name + ' — ' + (deck.name || deck.id) },
+          '→ ' + name
+        );
+      });
+      row.querySelector('.map').addEventListener('click', function () {
+        push(
+          { kind: 'map', src: MAPS_BASE + deck.id + '-player.png', title: (deck.name || deck.id) + ' — Deck Map' },
+          '→ map: ' + (deck.name || deck.id)
+        );
+      });
+      partyList.appendChild(row);
+    });
+    if (!partyRooms.length) {
+      partyList.innerHTML = '<div class="note">No rooms with art prompts found in ship.js.</div>';
+    } else {
+      var savedRoom = null;
+      try { savedRoom = localStorage.getItem(PARTY_KEY); } catch (e) {}
+      if (savedRoom) setCurrentRoom(savedRoom);
+    }
+
+    // ---- ROOMS -----------------------------------------------------------
+    var grid = document.getElementById('roomsGrid');
+    (SHIP.decks || []).forEach(function (deck) {
+      var hasAny = (deck.rooms || []).length > 0;
+      if (!hasAny) return;
+      var lbl = document.createElement('div');
+      lbl.className = 'decklabel';
+      lbl.textContent = deck.name || deck.id;
+      grid.appendChild(lbl);
+
+      (deck.rooms || []).forEach(function (room) {
+        var src = ROOMS_BASE + deck.id + '-' + room.id + '.png';
+        var title = (room.name || room.id) + ' — ' + (deck.name || deck.id);
+
+        var card = document.createElement('div');
+        card.className = 'card';
+
+        var tw = document.createElement('div');
+        tw.className = 'thumbwrap';
+
+        if (room.spoiler) {
+          var bd = document.createElement('div');
+          bd.className = 'badge';
+          bd.textContent = 'spoiler';
+          tw.appendChild(bd);
+        }
+
+        var img = document.createElement('img');
+        img.loading = 'lazy';
+        img.alt = room.name || room.id;
+        img.src = src;
+        img.onerror = function () {
+          img.remove();
+          var na = document.createElement('div');
+          na.className = 'noart';
+          na.textContent = 'no art yet';
+          tw.appendChild(na);
+        };
+        tw.appendChild(img);
+
+        var meta = document.createElement('div');
+        meta.className = 'meta';
+        var nm = document.createElement('div'); nm.className = 'nm'; nm.textContent = room.name || room.id;
+        var ty = document.createElement('div'); ty.className = 'ty'; ty.textContent = room.type || 'room';
+        meta.appendChild(nm); meta.appendChild(ty);
+
+        card.appendChild(tw);
+        card.appendChild(meta);
+        card.addEventListener('click', function () {
+          push({ kind: 'image', src: src, title: title }, '→ ' + (room.name || room.id));
+        });
+        grid.appendChild(card);
+      });
+    });
+
+    // ---- MAPS ------------------------------------------------------------
+    var mapsList = document.getElementById('mapsList');
+    // whole-ship views first
+    [
+      { file: 'side-elevation.png', label: 'Side elevation (profile)', sub: 'whole ship · deck stack' },
+      { file: 'ship-3d-cutaway.png', label: '3D cutaway', sub: 'whole ship · room volumes' },
+    ].forEach(function (m) {
+      var src = MAPS_BASE + m.file;
+      var row = document.createElement('button');
+      row.className = 'row';
+      row.innerHTML =
+        '<div class="ic">⛶</div>' +
+        '<div class="rt"><div class="nm"></div><div class="sm"></div></div>';
+      row.querySelector('.nm').textContent = m.label;
+      row.querySelector('.sm').textContent = m.sub + ' · ' + m.file;
+      row.addEventListener('click', function () {
+        push({ kind: 'map', src: src, title: m.label }, '→ map: ' + m.label);
+      });
+      mapsList.appendChild(row);
+    });
+    (SHIP.decks || []).forEach(function (deck) {
+      ['player', 'warden'].forEach(function (mode) {
+        var file = deck.id + '-' + mode + '.png';
+        var src = MAPS_BASE + file;
+        var label = (deck.name || deck.id) + ' (' + mode + ')';
+        var row = document.createElement('button');
+        row.className = 'row';
+        row.style.position = 'relative';
+        row.innerHTML =
+          '<div class="ic">▦</div>' +
+          '<div class="rt"><div class="nm"></div><div class="sm"></div></div>';
+        row.querySelector('.nm').textContent = label;
+        row.querySelector('.sm').textContent = 'deck map · ' + file;
+        if (mode === 'warden') {
+          var bd = document.createElement('div');
+          bd.className = 'badge';
+          bd.textContent = 'spoiler';
+          bd.style.top = '50%';
+          bd.style.transform = 'translateY(-50%)';
+          bd.style.right = '12px';
+          row.appendChild(bd);
+        }
+        row.addEventListener('click', function () {
+          push({ kind: 'map', src: src, title: label + ' — Deck Map' }, '→ map: ' + label);
+        });
+        mapsList.appendChild(row);
+      });
+    });
+    if (!(SHIP.decks || []).length) {
+      var noDecks = document.createElement('div');
+      noDecks.className = 'note';
+      noDecks.textContent = 'No decks found in ship.js.';
+      mapsList.appendChild(noDecks);
+    }
+
+    // ---- SOUNDS ----------------------------------------------------------
+    var soundsList = document.getElementById('soundsList');
+    function renderSounds(items) {
+      soundsList.innerHTML = '';
+      // global stop row
+      var stopRow = document.createElement('button');
+      stopRow.className = 'row';
+      stopRow.innerHTML =
+        '<div class="ic">⏹</div>' +
+        '<div class="rt"><div class="nm">Stop sound</div><div class="sm">silence the table audio</div></div>';
+      stopRow.addEventListener('click', function () { push({ kind: 'stopsound' }, 'Sound stopped'); });
+      soundsList.appendChild(stopRow);
+
+      items.forEach(function (s) {
+        var file = s.file;
+        var title = s.title || file;
+        var loop = s.loop !== false; // default loop ambience unless explicitly false
+        var src = AUDIO_BASE + file;
+        var row = document.createElement('div');
+        row.className = 'row';
+        row.innerHTML =
+          '<div class="ic">♪</div>' +
+          '<div class="rt"><div class="nm"></div><div class="sm"></div></div>' +
+          '<div class="stop">Stop</div>';
+        row.querySelector('.nm').textContent = title;
+        row.querySelector('.sm').textContent = file + (loop ? ' · loops' : '');
+        row.addEventListener('click', function (ev) {
+          if (ev.target.classList.contains('stop')) return;
+          push({ kind: 'sound', src: src, title: title, loop: loop }, '♪ ' + title);
+        });
+        row.querySelector('.stop').addEventListener('click', function () {
+          push({ kind: 'stopsound' }, 'Sound stopped');
+        });
+        soundsList.appendChild(row);
+      });
+    }
+
+    // Audio list isn't known at build time: fetch an optional index.json.
+    fetch(AUDIO_BASE + 'index.json', { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error('no index'); return r.json(); })
+      .then(function (arr) {
+        if (!Array.isArray(arr) || !arr.length) throw new Error('empty');
+        renderSounds(arr);
+      })
+      .catch(function () {
+        renderSounds([]);
+        var note = document.createElement('div');
+        note.className = 'note';
+        note.innerHTML =
+          'No sounds listed. Drop audio files in <code>docs/assets/audio/</code> and add ' +
+          '<code>docs/assets/audio/index.json</code> — an array of ' +
+          '<code>{"file":"drone.mp3","title":"Engine Drone","loop":true}</code>. ' +
+          'The Stop button above always works.';
+        soundsList.appendChild(note);
+      });
+
+    // ---- VOICES & FX -----------------------------------------------------
+    // Overlay layer: one-shot SFX + NPC TTS. These NEVER touch the ambience.
+    // SFX -> {kind:'sfx'}; NPC line -> {kind:'say', ...voice params} to the TV.
+    // The "speak on this phone" toggle is a safety net: when on, say-lines are
+    // spoken locally on this phone via the browser instead of pushed to the TV.
+    var NPCS = window.DROSS_NPCS || [];
+    var localTtsEl = document.getElementById('localTts');
+    var phoneSynth = window.speechSynthesis || null;
+    var phoneVoices = [];
+    function loadPhoneVoices() {
+      try { phoneVoices = phoneSynth ? phoneSynth.getVoices() : []; } catch (e) { phoneVoices = []; }
+    }
+    if (phoneSynth) {
+      loadPhoneVoices();
+      try { phoneSynth.onvoiceschanged = loadPhoneVoices; } catch (e) {}
+    }
+    if (!phoneSynth && localTtsEl) {
+      localTtsEl.disabled = true;
+      if (localTtsEl.parentElement) localTtsEl.parentElement.title = 'This browser has no speech synthesis.';
+    }
+
+    // Pick a concrete prefer-name when possible (so the TV can best-effort match
+    // by voice name); skip the bare "male"/"female" hint tokens.
+    function voiceNameFor(npc) {
+      var prefer = (npc.voice && npc.voice.prefer) || [];
+      for (var i = 0; i < prefer.length; i++) {
+        var p = prefer[i];
+        if (p && p !== 'male' && p !== 'female') return p;
+      }
+      return prefer[0] || null;
+    }
+
+    function speakOnPhone(npc, text) {
+      if (!phoneSynth) return;
+      if (!phoneVoices.length) loadPhoneVoices();
+      var u = new SpeechSynthesisUtterance(text);
+      u.pitch = Math.min(2, Math.max(0, (npc.voice && npc.voice.pitch) || 1));
+      u.rate = Math.min(2, Math.max(0.1, (npc.voice && npc.voice.rate) || 1));
+      var prefer = (npc.voice && npc.voice.prefer || []).map(function (s) { return String(s).toLowerCase(); });
+      var v = null;
+      for (var pi = 0; pi < prefer.length && !v; pi++) {
+        for (var vi = 0; vi < phoneVoices.length; vi++) {
+          if ((phoneVoices[vi].name || '').toLowerCase().indexOf(prefer[pi]) !== -1) { v = phoneVoices[vi]; break; }
+        }
+      }
+      if (v) u.voice = v;
+      phoneSynth.speak(u);
+    }
+
+    // Route an NPC line either to the TV (default) or to this phone (toggle on).
+    function sayLine(npc, text) {
+      if (localTtsEl && localTtsEl.checked && phoneSynth) {
+        speakOnPhone(npc, text);
+        toast('🗣 (phone) ' + npc.name);
+        return;
+      }
+      push({
+        kind: 'say',
+        text: text,
+        voice: voiceNameFor(npc),
+        pitch: (npc.voice && npc.voice.pitch) || 1,
+        rate: (npc.voice && npc.voice.rate) || 1,
+      }, '🗣 ' + npc.name + ' → TV');
+    }
+
+    // free-text speak row: populate NPC picker, wire Speak button
+    var sayNpc = document.getElementById('sayNpc');
+    var sayText = document.getElementById('sayText');
+    NPCS.forEach(function (npc, i) {
+      var o = document.createElement('option');
+      o.value = String(i);
+      o.textContent = npc.name + (npc.spoiler ? ' (spoiler)' : '');
+      sayNpc.appendChild(o);
+    });
+    document.getElementById('sayBtn').addEventListener('click', function () {
+      var t = (sayText.value || '').trim();
+      if (!t) { toast('Type a line first', true); return; }
+      var npc = NPCS[parseInt(sayNpc.value, 10) || 0];
+      if (!npc) { toast('No NPC voices loaded', true); return; }
+      sayLine(npc, t);
+    });
+    sayText.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') document.getElementById('sayBtn').click();
+    });
+
+    // SFX grid: loop:false entries from the audio index
+    var sfxList = document.getElementById('sfxList');
+    function renderSfx(items) {
+      var fx = (items || []).filter(function (s) { return s.loop === false; });
+      if (!fx.length) return;
+      var lbl = document.createElement('div');
+      lbl.className = 'decklabel';
+      lbl.textContent = 'Sound FX (one-shot)';
+      sfxList.appendChild(lbl);
+      var grid = document.createElement('div');
+      grid.className = 'sfxgrid';
+      fx.forEach(function (s) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'sfxbtn';
+        b.textContent = (s.title || s.file).replace(/^SFX\s*[—-]\s*/i, '');
+        b.addEventListener('click', function () {
+          push({ kind: 'sfx', src: AUDIO_BASE + s.file }, '💥 ' + (s.title || s.file));
+        });
+        grid.appendChild(b);
+      });
+      sfxList.appendChild(grid);
+    }
+    fetch(AUDIO_BASE + 'index.json', { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error('no index'); return r.json(); })
+      .then(function (arr) { if (Array.isArray(arr)) renderSfx(arr); })
+      .catch(function () {
+        var note = document.createElement('div');
+        note.className = 'note';
+        note.textContent = 'No SFX index found (docs/assets/audio/index.json).';
+        sfxList.appendChild(note);
+      });
+
+    // NPC canned-line board
+    var voiceBoard = document.getElementById('voiceBoard');
+    if (!NPCS.length) {
+      voiceBoard.innerHTML = '<div class="note">No NPC voices loaded (assets/npc-lines.js).</div>';
+    }
+    NPCS.forEach(function (npc) {
+      var block = document.createElement('div');
+      block.className = 'npcblock';
+      var head = document.createElement('div');
+      head.className = 'nhead';
+      var nn = document.createElement('span'); nn.className = 'nn'; nn.textContent = npc.name;
+      var nt = document.createElement('span'); nt.className = 'nt'; nt.textContent = npc.tag || '';
+      head.appendChild(nn); head.appendChild(nt);
+      if (npc.spoiler) { var sp = document.createElement('span'); sp.className = 'spoil'; sp.textContent = 'spoiler'; head.appendChild(sp); }
+      block.appendChild(head);
+      (npc.lines || []).forEach(function (line) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'linebtn';
+        var lt = document.createElement('span'); lt.className = 'lt'; lt.textContent = line.tag || '';
+        var lx = document.createElement('span'); lx.className = 'lx'; lx.textContent = '“' + line.text + '”';
+        b.appendChild(lt); b.appendChild(lx);
+        b.addEventListener('click', function () { sayLine(npc, line.text); });
+        block.appendChild(b);
+      });
+      voiceBoard.appendChild(block);
+    });
+
+    // ---- O₂ COUNTDOWN ----------------------------------------------------
+    // Mirrors persistent state.o2 from the server; the Warden drives the clock.
+    var o2PctEl = document.getElementById('o2Pct');
+    var o2FillEl = document.getElementById('o2Fill');
+    var o2StateEl = document.getElementById('o2State');
+    var o2LabelInput = document.getElementById('o2LabelInput');
+    var o2ShowBtn = document.getElementById('o2ShowBtn');
+    var o2RunBtn = document.getElementById('o2RunBtn');
+    // Optimistic local mirror so quick taps feel instant; reconciled by GET /state.
+    var o2 = { pct: null, running: false, label: '' };
+
+    function o2Color(pct) {
+      if (pct > 50) return '#4fd1c5';
+      if (pct >= 25) return '#f2b441';
+      return '#ff7a6b';
+    }
+    function renderO2() {
+      var has = typeof o2.pct === 'number';
+      var pct = has ? Math.max(0, Math.min(100, o2.pct)) : 0;
+      o2PctEl.textContent = has ? Math.round(pct) + '%' : '--%';
+      o2PctEl.style.color = has ? o2Color(pct) : 'var(--dim)';
+      o2FillEl.style.width = pct + '%';
+      o2FillEl.style.background = o2Color(pct);
+      o2ShowBtn.classList.toggle('on', has);
+      o2ShowBtn.textContent = has ? 'Hide on TV' : 'Show on TV';
+      o2RunBtn.classList.toggle('on', !!o2.running);
+      o2RunBtn.textContent = 'Pulse: ' + (o2.running ? 'on' : 'off');
+      o2StateEl.innerHTML = has
+        ? 'shown on TV · <b>' + Math.round(pct) + '%</b>' + (o2.label ? ' · ' + o2.label : '')
+        : 'hidden on TV';
+    }
+    function syncO2(remote) {
+      if (remote && typeof remote === 'object') {
+        o2.pct = (typeof remote.pct === 'number') ? remote.pct : null;
+        o2.running = !!remote.running;
+        o2.label = typeof remote.label === 'string' ? remote.label : '';
+        if (document.activeElement !== o2LabelInput) o2LabelInput.value = o2.label;
+      }
+      renderO2();
+    }
+
+    // O₂ → automatic GLADYS announcement (+ klaxon when low). GLADYS voice params from npc-lines.js.
+    var ALARM = 30;   // O₂ at/above this = safe: no klaxon, and rising back over it cuts a playing one
+    function o2Announce(pct) {
+      var line;
+      if (pct >= ALARM) {
+        push({ kind: 'stopfx' });      // back above the alarm level -> cut any lingering klaxon RIGHT AWAY
+        if (pct >= 70)      line = "Oxygen at " + pct + " percent. Everything is perfectly fine, dears.";
+        else if (pct >= 50) line = "Oxygen at " + pct + " percent. A touch stuffy, perhaps.";
+        else                line = "Oxygen at " + pct + " percent. We should look into that at some point.";
+      } else if (pct > 0) {
+        push({ kind: 'sfx', src: '../assets/audio/sfx-klaxon.mp3' });
+        line = "Oxygen at " + pct + " percent. Do hurry along, won't you?";
+      } else {
+        push({ kind: 'sfx', src: '../assets/audio/sfx-klaxon.mp3' });
+        line = "Oxygen depleted. It has been lovely knowing you all.";
+      }
+      push({ kind: 'say', text: line, voice: 'female', pitch: 1.25, rate: 0.92 });
+    }
+    document.querySelectorAll('.o2quick button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var pct = parseInt(b.dataset.o2, 10);
+        o2.pct = pct;                       // optimistic
+        renderO2();
+        push({ kind: 'o2set', pct: pct }, 'O₂ → ' + pct + '%');
+        o2Announce(pct);                    // GLADYS reacts automatically
+      });
+    });
+    document.querySelectorAll('.o2nudge button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var delta = parseInt(b.dataset.o2d, 10);
+        var base = typeof o2.pct === 'number' ? o2.pct : 0;
+        o2.pct = Math.max(0, Math.min(100, base + delta));   // optimistic
+        renderO2();
+        push({ kind: 'o2adjust', delta: delta }, 'O₂ ' + (delta >= 0 ? '+' : '') + delta);
+      });
+    });
+    document.getElementById('o2LabelBtn').addEventListener('click', function () {
+      var label = (o2LabelInput.value || '').trim();
+      o2.label = label; renderO2();
+      push({ kind: 'o2label', label: label }, label ? 'O₂ label set' : 'O₂ label cleared');
+    });
+    o2LabelInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') document.getElementById('o2LabelBtn').click();
+    });
+    o2ShowBtn.addEventListener('click', function () {
+      if (typeof o2.pct === 'number') {
+        // currently shown -> hide
+        o2.pct = null; renderO2();
+        push({ kind: 'o2off' }, 'O₂ hidden on TV');
+      } else {
+        var pct = 80; o2.pct = pct; renderO2();   // default to scene-1 80%
+        push({ kind: 'o2set', pct: pct }, 'O₂ shown on TV (' + pct + '%)');
+        o2Announce(pct);
+      }
+    });
+    o2RunBtn.addEventListener('click', function () {
+      o2.running = !o2.running; renderO2();
+      push({ kind: 'o2run', running: o2.running }, 'O₂ pulse ' + (o2.running ? 'on' : 'off'));
+    });
+    renderO2();
+
+    // Periodic reconciliation against the server's authoritative state.
+    function refreshState() {
+      fetch(STATE_URL, { cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (s) { if (s && s.o2) syncO2(s.o2); })
+        .catch(function () {});
+    }
+    refreshState();
+    setInterval(refreshState, 4000);
+
+    // ---- 3D tab (orbitable view on the phone) ----------------------------
+    // Lazy-load the iframe only when the 3D tab is first opened (heavy three.js).
+    var threedFrame = document.getElementById('threedFrame');
+    var threedLoaded = false;
+    function ensure3d() {
+      if (threedLoaded) return;
+      threedLoaded = true;
+      threedFrame.src = '../decks-3d.html';
+    }
+    var threedBtn = document.querySelector('nav button[data-tab="threed"]');
+    if (threedBtn) threedBtn.addEventListener('click', ensure3d);
+
+    // ---- CAST 3D VIEW TO THE TV ------------------------------------------
+    // The iframe postMessages {type:"cam",...} as the Warden orbits. We keep the
+    // latest pose and, while casting is ON, push it to the server (throttled to
+    // ~4/s) as {kind:"scene3d", cam} so the TV mirrors this phone's pose.
+    var castToggle = document.getElementById('castToggle');
+    var castOnce = document.getElementById('castOnce');
+    var casting = false;
+    var lastCam = null;
+    var castLast = 0, castPending = false;
+
+    window.addEventListener('message', function (ev) {
+      var d = ev && ev.data;
+      if (!d || d.type !== 'cam') return;
+      lastCam = { az: d.az, el: d.el, dist: d.dist, target: d.target };
+      if (casting) sendScene3d();
+    });
+    function sendScene3d() {
+      if (!lastCam) return;
+      var now = Date.now();
+      if (now - castLast < 250) {           // ~4/s
+        if (!castPending) {
+          castPending = true;
+          setTimeout(function () { castPending = false; if (casting) sendScene3d(); }, 250 - (now - castLast));
+        }
+        return;
+      }
+      castLast = now;
+      push({ kind: 'scene3d', cam: lastCam });
+    }
+    castToggle.addEventListener('click', function () {
+      casting = !casting;
+      castToggle.classList.toggle('on', casting);
+      if (casting) {
+        ensure3d();
+        if (lastCam) sendScene3d();
+        toast('📺 Casting 3D view to TV');
+      } else {
+        toast('Casting stopped (last view stays on TV)');
+      }
+    });
+    castOnce.addEventListener('click', function () {
+      ensure3d();
+      if (lastCam) {
+        castLast = 0;               // bypass throttle for the explicit one-shot
+        push({ kind: 'scene3d', cam: lastCam }, '📺 Sent current view to TV');
+      } else {
+        toast('Orbit the ship first to capture a view', true);
+      }
+    });
+  })();
+  </script>
+</body>
+</html>

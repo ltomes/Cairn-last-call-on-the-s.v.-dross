@@ -45,13 +45,62 @@ const RECT = {
   "cargo-airlock":{x:0,y:29,w:10,h:10}, "reclamation-maw":{x:10,y:29,w:10,h:10},
 };
 
-let hullN = 0, rectN = 0;
+// CANTED FOOTPRINTS — give perimeter rooms a prominent angled (non-rectangular) outer wall so the
+// generated flavour images and the deck plans both read the ship's true hull-conformed shape. We chamfer
+// each room's two OUTERMOST corners (farthest from the deck centroid, i.e. the hull-facing edge) deep
+// into the empty room->hull gap. The footprint only SHRINKS, so it can never overlap a neighbour. Rooms
+// already strongly angled by the hull-clip (cargo-hold) or explicit poly (bridge) are left alone; main
+// corridors (crawlspace/corr-*) stay rectangular by design.
+// LESSON (2026-06-09): chamfering perimeter rooms' corners (the old CANT list) DETACHED them from the
+// hull — mess-hall/rec-nook dropped to 0 hull-contact vertices, so the 3D view lost its hull-sloped
+// exterior walls and rooms floated inboard of the shell. The REAL canted walls come from the hull-clip
+// of the grown rects (RECT above); do NOT chamfer hull rooms in plan.
+const CANT = [];
+const OCT = ["salvaged-pod"];   // freestanding escape-pod OBJECT inside the hold (not a hull room) -> octagonal shell
+const r1 = n => Math.round(n * 10) / 10;
+const lerp = (a, b, d) => { const L = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1, t = Math.min(0.5, d / L); return [r1(a[0] + (b[0] - a[0]) * t), r1(a[1] + (b[1] - a[1]) * t)]; };
+function cantPoly(rect, ctr, nCorners, frac) {
+  const { x, y, w, h } = rect, C = [[x, y], [x + w, y], [x + w, y + h], [x, y + h]];
+  const cut = Math.max(1.5, Math.min(4.5, Math.min(w, h) * frac));
+  const dist = p => Math.hypot(p[0] - ctr[0], p[1] - ctr[1]);
+  const idx = new Set([0, 1, 2, 3].sort((a, b) => dist(C[b]) - dist(C[a])).slice(0, nCorners));
+  const out = [];
+  for (let i = 0; i < 4; i++) {
+    if (idx.has(i)) out.push(lerp(C[i], C[(i + 3) % 4], cut), lerp(C[i], C[(i + 1) % 4], cut));
+    else out.push([r1(C[i][0]), r1(C[i][1])]);
+  }
+  return out;
+}
+const centroidOf = hull => hull.reduce((a, p) => [a[0] + p[0] / hull.length, a[1] + p[1] / hull.length], [0, 0]);
+
+// Rooms START AT THE SHIP'S EDGE: any outboard rect edge within SNAP units of the deck-hull bbox is
+// pushed 1 unit PAST it (expand-only — never shrinks, never crosses a neighbour, since no room fits in
+// that margin). The hull-clip then trims back to the hull exactly, so every perimeter room's exterior
+// wall IS the sloped hull wall — a feature of the room, not a gap behind it.
+const SNAP = 2.2, NOSNAP = new Set(["salvaged-pod", "corr-a", "corr-b", "corr-c", "corr-d", "crawlspace"]);
+function snapToHull(rect, hull) {
+  const xs = hull.map(p => p[0]), ys = hull.map(p => p[1]);
+  const minx = Math.min(...xs), maxx = Math.max(...xs), miny = Math.min(...ys), maxy = Math.max(...ys);
+  let { x, y, w, h } = rect;
+  if (x - minx < SNAP) { const nx = Math.min(x, minx - 1); w += x - nx; x = nx; }
+  if (maxx - (x + w) < SNAP) w = Math.max(w, maxx + 1 - x);
+  if (y - miny < SNAP) { const ny = Math.min(y, miny - 1); h += y - ny; y = ny; }
+  if (maxy - (y + h) < SNAP) h = Math.max(h, maxy + 1 - y);
+  return { x, y, w, h };
+}
+
+let hullN = 0, rectN = 0, cantN = 0;
 for (const deck of d.decks) {
   if (HULL[deck.id]) { deck.hull = HULL[deck.id]; hullN++; }
   if (OUTLINE[deck.id]) deck.hull_outline = OUTLINE[deck.id]; else delete deck.hull_outline;
+  const ctr = centroidOf(deck.hull || [[0, 0]]);
   for (const r of deck.rooms) {
     if (RECT[r.id]) { Object.assign(r.rect, RECT[r.id]); rectN++; }
-    if (POLY[r.id]) r.poly = POLY[r.id]; else delete r.poly;
+    if (deck.hull && !NOSNAP.has(r.id) && !POLY[r.id]) Object.assign(r.rect, snapToHull(r.rect, deck.hull));
+    if (POLY[r.id]) r.poly = POLY[r.id];                       // explicit shape (bridge hammerhead) wins
+    else if (OCT.includes(r.id)) { r.poly = cantPoly(r.rect, ctr, 4, 0.4); cantN++; }   // all 4 corners -> octagon
+    else if (CANT.includes(r.id)) { r.poly = cantPoly(r.rect, ctr, 2, 0.55); cantN++; } // 2 outer corners -> trapezoid
+    else delete r.poly;
     if (r.id === "reclamation-maw") { r.name = "Reclamation Bay (rear cargo door)"; r.map_label = "Reclam. Bay"; }
   }
 }
@@ -66,4 +115,4 @@ fs.writeFileSync(P, JSON.stringify(d, null, 2) + "\n");
 // regen the web mirror
 const js = "/* GENERATED — mirror of setting/ship-layout.json; do not edit by hand. */\nwindow.DROSS_SHIP = " + JSON.stringify(d, null, 2) + ";\n";
 fs.writeFileSync(new URL("../docs/assets/ship.js", import.meta.url), js);
-console.log(`conformed ${hullN} hulls, ${rectN} rooms; relabelled maw; regenerated ship.js`);
+console.log(`conformed ${hullN} hulls, ${rectN} rooms, ${cantN} canted footprints; relabelled maw; regenerated ship.js`);

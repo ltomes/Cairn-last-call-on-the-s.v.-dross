@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S.V. Dross — 3D ship views</title>
+<meta name="description" content="3D isometric views of the S.V. Dross: the decks stacked as layers, the room boxes clipped to the hull, the exterior hull mesh, and an interactive textured model.">
+<style>
+  :root{ --bg:#0e1418; --ink:#e8e2d4; --amber:#f2b441; --teal:#4fd1c5; --muted:#8a9aa0; }
+  body{ background:var(--bg); color:var(--ink); font:15px/1.5 system-ui,sans-serif; margin:24px; }
+  h1{ color:var(--amber); font-size:20px; margin:0 0 4px; }
+  .crumbs{ margin-bottom:14px; } .crumbs a{ color:var(--teal); text-decoration:none; }
+  .grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:18px; max-width:1100px; }
+  figure{ margin:0; background:#121a1f; border:1px solid #25323a; border-radius:10px; padding:10px; }
+  figure img{ width:100%; height:auto; border-radius:6px; display:block; background:#0e1418; }
+  figcaption{ color:#b8c2c6; margin-top:8px; font-size:14px; }
+  figcaption b{ color:var(--ink); }
+  a.btn{ display:inline-block; margin-top:8px; color:#0e1418; background:var(--teal); padding:6px 12px; border-radius:6px; text-decoration:none; font-weight:600; }
+</style></head>
+<body>
+  <div class="crumbs"><a href="index.html">⟵ S.V. Dross hub</a> · <a href="maps.html">Deck maps</a> · <a href="profile.html">Side elevation</a> · 3D views</div>
+  <h1>S.V. Dross — 3D ship views</h1>
+
+  <div class="grid">
+    <figure>
+      <img src="assets/ship_3d_clipped.png" alt="Isometric 3D: decks stacked as layers, rooms clipped to the hull">
+      <figcaption><b>Decks as layers — rooms clipped to hull.</b> Isometric stack (A command on top → D cargo on the bottom); each room is a 3D box whose outboard walls follow the shell angle.</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/ship_3d.png" alt="Isometric 3D extrusion of the decks with hull outline and axes">
+      <figcaption><b>Decks as layers — with hull envelope.</b> Same stack with the hull ghosted around it; rooms = boxes, corridors = low slabs. <b>Now live and orbitable, built from the current maps:</b>
+      <br><a class="btn" href="decks-3d.html">▶ Open the interactive 3D decks</a></figcaption>
+    </figure>
+    <figure>
+      <img src="assets/hull_3d.png" alt="Exterior hull mesh with hammerhead bridge and aft cargo bulb">
+      <figcaption><b>Exterior hull.</b> The shell as a 3D mesh — hammerhead bridge with wings forward-on-top, fat spine, swollen aft cargo bulb, and the external maw boom. Decks labelled A cmd → D cargo.</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/ship_textured.png" onerror="this.style.display='none'" alt="">
+      <figcaption><b>Interactive textured model.</b> Orbit and zoom the textured hull in your browser (three.js; needs internet for the library). Baseline naive bake.
+      <br><a class="btn" href="viewer3d.html">▶ Open the orbit viewer</a></figcaption>
+    </figure>
+  </div>
+</body></html>

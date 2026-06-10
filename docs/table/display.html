@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>S.V. Dross — Table Display</title>
+<style>
+  :root { color-scheme: dark; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%; height: 100%; background: #000; overflow: hidden;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    cursor: none;
+  }
+  #stage { position: fixed; inset: 0; background: #000; }
+
+  /* crossfade: two stacked image layers */
+  .layer {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 600ms ease;
+    background: #000;
+  }
+  .layer.show { opacity: 1; }
+  .layer img {
+    max-width: 100%; max-height: 100%;
+    object-fit: contain;
+    image-rendering: auto;
+    display: block;
+  }
+
+  /* caption */
+  #caption {
+    position: fixed; left: 0; right: 0; bottom: 0;
+    padding: 4vh 6vw; text-align: center;
+    font-size: clamp(16px, 2.4vw, 34px);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: #f2e6c8;
+    background: linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0));
+    opacity: 0; transition: opacity 500ms ease; pointer-events: none;
+    text-shadow: 0 2px 18px #000;
+  }
+  #caption.show { opacity: 1; }
+
+  /* now-playing audio overlay */
+  #nowplaying {
+    position: fixed; left: 50%; top: 3vh; transform: translateX(-50%);
+    display: none; align-items: center; gap: 14px;
+    padding: 10px 20px; border-radius: 999px;
+    background: rgba(20,26,30,0.72);
+    border: 1px solid rgba(79,209,197,0.4);
+    color: #cfeee9; font-size: clamp(14px, 1.7vw, 24px);
+    letter-spacing: 0.04em; backdrop-filter: blur(6px);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+  }
+  #nowplaying.show { display: flex; }
+  .eq { display: inline-flex; align-items: flex-end; gap: 3px; height: 1.2em; }
+  .eq i {
+    width: 4px; background: #4fd1c5; border-radius: 2px;
+    animation: bounce 900ms ease-in-out infinite;
+  }
+  .eq i:nth-child(1){ animation-delay: 0ms; height: 40%; }
+  .eq i:nth-child(2){ animation-delay: 150ms; height: 90%; }
+  .eq i:nth-child(3){ animation-delay: 300ms; height: 60%; }
+  .eq i:nth-child(4){ animation-delay: 450ms; height: 100%; }
+  @keyframes bounce { 0%,100%{ transform: scaleY(0.35);} 50%{ transform: scaleY(1);} }
+
+  /* connection state pill, only visible when disconnected */
+  #conn {
+    position: fixed; top: 16px; right: 18px;
+    padding: 8px 16px; border-radius: 999px;
+    font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: #ffd0c8; background: rgba(40,12,10,0.8);
+    border: 1px solid rgba(255,122,107,0.5);
+    opacity: 0; transition: opacity 400ms ease; pointer-events: none;
+  }
+  #conn.show { opacity: 1; }
+
+  /* idle / black-out hint */
+  #idle {
+    position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+    color: #2a2f33; font-size: clamp(18px, 3vw, 48px);
+    letter-spacing: 0.3em; text-transform: uppercase;
+    opacity: 0; transition: opacity 700ms ease; pointer-events: none;
+    user-select: none;
+  }
+  #idle.show { opacity: 1; }
+
+  /* posed 3D ship view, mirrored from the phone (fills screen behind overlays) */
+  #scene3d {
+    position: fixed; inset: 0; border: 0; display: none; background: #0e1418;
+    width: 100%; height: 100%; z-index: 1;
+  }
+  #scene3d.show { display: block; }
+
+  /* O₂ countdown readout — TOP-LEFT, coexists with image/map (semi-translucent backing) */
+  #o2 {
+    position: fixed; top: 2.5vh; left: 2.5vw; z-index: 30;
+    display: none; flex-direction: column; gap: 0.5vh;
+    padding: 1.6vh 1.8vw; border-radius: 16px; min-width: 22vw; max-width: 38vw;
+    background: rgba(12,17,21,0.62);
+    border: 1px solid rgba(255,255,255,0.10);
+    backdrop-filter: blur(7px);
+    box-shadow: 0 10px 44px rgba(0,0,0,0.6);
+    color: #e7eef2;
+  }
+  #o2.show { display: flex; }
+  #o2.running { animation: o2pulse 2.4s ease-in-out infinite; }
+  @keyframes o2pulse {
+    0%,100% { box-shadow: 0 10px 44px rgba(0,0,0,0.6); }
+    50%     { box-shadow: 0 10px 44px rgba(0,0,0,0.6), 0 0 0 3px var(--o2glow, rgba(79,209,197,0.45)); }
+  }
+  #o2 .o2top {
+    display: flex; align-items: baseline; gap: 0.6vw;
+    font-variant-numeric: tabular-nums;
+  }
+  #o2 .o2lbl-o2 {
+    font-size: clamp(20px, 2.4vw, 40px); font-weight: 700; letter-spacing: 0.06em;
+    color: #9fb1b8;
+  }
+  #o2 .o2pct {
+    font-size: clamp(34px, 5.4vw, 92px); font-weight: 800; line-height: 1;
+    color: var(--o2col, #4fd1c5); text-shadow: 0 2px 16px rgba(0,0,0,0.5);
+  }
+  #o2 .o2bar {
+    height: 1.4vh; min-height: 9px; border-radius: 999px; overflow: hidden;
+    background: rgba(255,255,255,0.10); margin-top: 0.4vh;
+  }
+  #o2 .o2fill {
+    height: 100%; width: 0%; border-radius: 999px;
+    background: var(--o2col, #4fd1c5); transition: width 500ms ease, background 400ms ease;
+  }
+  #o2 .o2label {
+    font-size: clamp(13px, 1.5vw, 24px); letter-spacing: 0.06em;
+    color: #cfd8dd; text-transform: uppercase; opacity: 0.9;
+  }
+  #o2 .o2label:empty { display: none; }
+
+  /* gesture prompt to enter fullscreen */
+  #tapfs {
+    position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+    color: #6a7177; font-size: clamp(14px, 2vw, 26px); letter-spacing: 0.2em;
+    text-transform: uppercase; background: rgba(0,0,0,0.4);
+    z-index: 50; cursor: pointer;
+  }
+</style>
+</head>
+<body>
+  <div id="stage">
+    <div class="layer" id="layerA"></div>
+    <div class="layer" id="layerB"></div>
+  </div>
+  <iframe id="scene3d" title="posed 3D ship view" referrerpolicy="no-referrer"></iframe>
+  <div id="o2">
+    <div class="o2top"><span class="o2lbl-o2">O₂</span><span class="o2pct" id="o2pct">--%</span></div>
+    <div class="o2bar"><div class="o2fill" id="o2fill"></div></div>
+    <div class="o2label" id="o2label"></div>
+  </div>
+  <div id="idle">S.V. Dross</div>
+  <div id="caption"></div>
+  <div id="nowplaying">
+    <span class="eq"><i></i><i></i><i></i><i></i></span>
+    <span id="npText">now playing</span>
+  </div>
+  <div id="conn">reconnecting…</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // API host is derived from the page URL — never hardcoded. Safe for a public repo.
+  var SSE_URL = 'http://' + location.hostname + ':8899/events';
+
+  var layers = [document.getElementById('layerA'), document.getElementById('layerB')];
+  var front = 0; // which layer is currently shown
+  var caption = document.getElementById('caption');
+  var idle = document.getElementById('idle');
+  var nowplaying = document.getElementById('nowplaying');
+  var npText = document.getElementById('npText');
+  var conn = document.getElementById('conn');
+
+  var scene3d = document.getElementById('scene3d');
+  var o2box = document.getElementById('o2');
+  var o2pctEl = document.getElementById('o2pct');
+  var o2fillEl = document.getElementById('o2fill');
+  var o2labelEl = document.getElementById('o2label');
+
+  var audio = null;       // current Audio element
+  var lastImgSrc = null;  // avoid re-fading the same image
+  var lastVersion = -1;
+
+  // ---- O₂ readout (persistent state.o2) ----------------------------------
+  function renderO2(o2) {
+    if (!o2 || typeof o2.pct !== 'number') {
+      o2box.classList.remove('show', 'running');
+      return;
+    }
+    var pct = Math.max(0, Math.min(100, o2.pct));
+    // color grade: teal >50, amber 25–50, coral <25
+    var col, glow;
+    if (pct > 50) { col = '#4fd1c5'; glow = 'rgba(79,209,197,0.45)'; }
+    else if (pct >= 25) { col = '#f2b441'; glow = 'rgba(242,180,65,0.45)'; }
+    else { col = '#ff7a6b'; glow = 'rgba(255,122,107,0.5)'; }
+    o2box.style.setProperty('--o2col', col);
+    o2box.style.setProperty('--o2glow', glow);
+    o2pctEl.textContent = Math.round(pct) + '%';
+    o2fillEl.style.width = pct + '%';
+    o2labelEl.textContent = o2.label || '';
+    o2box.classList.add('show');
+    o2box.classList.toggle('running', !!o2.running);
+  }
+
+  // ---- posed 3D ship view (visual kind "scene3d") -------------------------
+  // The iframe is created once (lazy) and reused; each scene3d update is
+  // relayed into it as {type:"setcam",...} so the TV mirrors the phone's pose.
+  var scene3dReady = false;
+  var pendingCam = null;
+  function ensure3dFrame() {
+    if (scene3d.src) return;
+    scene3d.src = '../decks-3d.html';
+    scene3d.addEventListener('load', function () {
+      scene3dReady = true;
+      if (pendingCam) { sendCam(pendingCam); pendingCam = null; }
+    });
+  }
+  function sendCam(cam) {
+    if (!cam) return;
+    if (!scene3dReady) { pendingCam = cam; return; }
+    try { scene3d.contentWindow.postMessage(Object.assign({ type: 'setcam' }, cam), '*'); } catch (e) {}
+  }
+  function show3d(cam) {
+    ensure3dFrame();
+    scene3d.classList.add('show');
+    idle.classList.remove('show');
+    // hide the image layers while the 3D view owns the screen
+    layers[0].classList.remove('show');
+    layers[1].classList.remove('show');
+    lastImgSrc = null;
+    sendCam(cam);
+  }
+  function hide3d() {
+    scene3d.classList.remove('show');
+  }
+
+  function showImage(src, title) {
+    // NOTE: must NOT touch audio here — image/map is the visual channel only (dual-channel model).
+    idle.classList.remove('show');
+
+    if (src === lastImgSrc) {
+      // same image already up — just update caption
+      setCaption(title);
+      return;
+    }
+    lastImgSrc = src;
+
+    var next = (front + 1) % 2;
+    var nextLayer = layers[next];
+    var img = new Image();
+    img.alt = title || '';
+    img.onload = function () {
+      nextLayer.innerHTML = '';
+      nextLayer.appendChild(img);
+      nextLayer.classList.add('show');
+      layers[front].classList.remove('show');
+      front = next;
+    };
+    img.onerror = function () {
+      // missing asset — fall back to a readable message rather than a broken-image icon
+      nextLayer.innerHTML = '';
+      var msg = document.createElement('div');
+      msg.style.cssText = 'color:#ff7a6b;font-size:2.2vw;letter-spacing:.1em;text-align:center;padding:6vw;';
+      msg.textContent = 'missing art: ' + (src || '');
+      nextLayer.appendChild(msg);
+      nextLayer.classList.add('show');
+      layers[front].classList.remove('show');
+      front = next;
+    };
+    img.src = src;
+    setCaption(title);
+  }
+
+  function setCaption(title) {
+    if (title) {
+      caption.textContent = title;
+      caption.classList.add('show');
+    } else {
+      caption.classList.remove('show');
+    }
+  }
+
+  function audioStop() {
+    if (audio) {
+      try { audio.pause(); } catch (e) {}
+      audio.src = '';
+      audio = null;
+    }
+    nowplaying.classList.remove('show');
+  }
+
+  function playSound(src, title, loop) {
+    // A new sound replaces the old one.
+    audioStop();
+    audio = new Audio(src);
+    audio.loop = !!loop;
+    audio.play().catch(function () {
+      // Autoplay may be blocked until a user gesture; surface it on the now-playing chip.
+      npText.textContent = 'tap screen to start: ' + (title || src);
+    });
+    npText.textContent = 'now playing: ' + (title || src) + (loop ? '  ↻' : '');
+    nowplaying.classList.add('show');
+  }
+
+  function clearAll() {
+    audioStop();
+    lastImgSrc = null;
+    layers[0].classList.remove('show');
+    layers[1].classList.remove('show');
+    layers[0].innerHTML = '';
+    layers[1].innerHTML = '';
+    setCaption(null);
+    idle.classList.add('show');
+  }
+
+  // ---- one-shot overlay layer ---------------------------------------------
+  // SFX and NPC voice LAYER OVER the ambience and never touch it. SFX uses a
+  // fresh Audio element each time (so the ambience <audio> is untouched);
+  // speechSynthesis is independent of <audio> so it naturally layers too.
+  var ttsVoices = [];
+  function loadTtsVoices() {
+    try { ttsVoices = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+    catch (e) { ttsVoices = []; }
+  }
+  if (window.speechSynthesis) {
+    loadTtsVoices();
+    try { window.speechSynthesis.onvoiceschanged = loadTtsVoices; } catch (e) {}
+  }
+
+  var fxAudios = [];   // live overlay SFX elements, so "stop" can cut them
+  function playOneshot(msg) {
+    if (!msg || typeof msg !== 'object') return;
+    if (msg.overlay === 'sfx' && msg.src) {
+      // NEW Audio element every time — do NOT touch the ambience `audio`.
+      try {
+        var sfx = new Audio(msg.src);
+        sfx.loop = false;
+        fxAudios.push(sfx);
+        sfx.addEventListener('ended', function () { var i = fxAudios.indexOf(sfx); if (i >= 0) fxAudios.splice(i, 1); });
+        sfx.play().catch(function () {});
+      } catch (e) {}
+    } else if (msg.overlay === 'stop') {
+      // cut all overlay SFX + any NPC voice (native TTS and/or Web Speech). Ambience untouched.
+      fxAudios.forEach(function (a) { try { a.pause(); a.src = ''; } catch (e) {} });
+      fxAudios = [];
+      try { if (window.AndroidTTS && AndroidTTS.stop) AndroidTTS.stop(); } catch (e) {}
+      try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
+    } else if (msg.overlay === 'say' && msg.text) {
+      // Android System WebView has no working Web Speech synthesis — use the native bridge if present.
+      if (window.AndroidTTS && AndroidTTS.speak) {
+        try { AndroidTTS.speak(String(msg.text), Number(msg.pitch) || 1, Number(msg.rate) || 1); return; } catch (e) {}
+      }
+      if (!window.speechSynthesis || typeof SpeechSynthesisUtterance === 'undefined') return;
+      try {
+        var u = new SpeechSynthesisUtterance(msg.text);
+        if (typeof msg.pitch === 'number') u.pitch = Math.min(2, Math.max(0, msg.pitch));
+        if (typeof msg.rate === 'number') u.rate = Math.min(2, Math.max(0.1, msg.rate));
+        if (msg.voice) {
+          if (!ttsVoices.length) loadTtsVoices();
+          var want = String(msg.voice).toLowerCase();
+          var v = null;
+          for (var i = 0; i < ttsVoices.length; i++) {
+            if ((ttsVoices[i].name || '').toLowerCase().indexOf(want) !== -1) { v = ttsVoices[i]; break; }
+          }
+          if (v) u.voice = v;
+        }
+        window.speechSynthesis.speak(u);
+      } catch (e) {}
+    }
+  }
+
+  var curAudioSrc = null;
+  var curVisualSrc = null;
+  function apply(state) {
+    if (typeof state.version === 'number') {
+      if (state.version === lastVersion) return; // dedupe re-sends
+      lastVersion = state.version;
+    }
+    // Dual-channel state {visual, audio}: each channel renders independently so a
+    // map/image change never interrupts the ambience (and vice versa).
+    var v = state.visual, a = state.audio;
+    if (!v) {
+      curVisualSrc = null;
+      lastImgSrc = null;
+      hide3d();
+      layers[0].classList.remove('show'); layers[1].classList.remove('show');
+      setCaption(null);
+      idle.classList.add('show');
+    } else if (v.kind === 'scene3d') {
+      // posed 3D view owns the visual channel — relay the pose into the iframe
+      curVisualSrc = 'scene3d';
+      setCaption(null);
+      show3d(v.cam);
+    } else if (v.src !== curVisualSrc || curVisualSrc === 'scene3d') {
+      curVisualSrc = v.src;
+      hide3d();
+      idle.classList.remove('show');
+      // maps carry their own baked title/legend — suppress the display caption so it doesn't overlap them
+      showImage(v.src, v.kind === 'map' ? null : v.title);
+    }
+
+    // O₂ countdown is persistent and independent of the visual/audio channels.
+    renderO2(state.o2);
+    if (!a) {
+      curAudioSrc = null;
+      audioStop();
+    } else if (a.src !== curAudioSrc) {
+      curAudioSrc = a.src;
+      playSound(a.src, a.title, a.loop);
+    }
+  }
+
+  // ---- SSE with robust auto-reconnect -------------------------------------
+  var es = null;
+  var reconnectTimer = null;
+
+  function connect() {
+    if (reconnectTimer) { clearTimeout(reconnectTimer); reconnectTimer = null; }
+    try { if (es) es.close(); } catch (e) {}
+
+    es = new EventSource(SSE_URL);
+
+    es.addEventListener('open', function () {
+      conn.classList.remove('show');
+    });
+
+    es.addEventListener('state', function (ev) {
+      try { apply(JSON.parse(ev.data)); } catch (e) {}
+    });
+
+    // fire-and-forget overlay events (SFX / NPC voice) — layered, not stateful
+    es.addEventListener('oneshot', function (ev) {
+      try { playOneshot(JSON.parse(ev.data)); } catch (e) {}
+    });
+
+    es.addEventListener('error', function () {
+      // EventSource auto-retries (retry: 2000 from server), but if it lands in
+      // CLOSED we force a fresh connection.
+      conn.classList.add('show');
+      if (es && es.readyState === 2 /* CLOSED */) {
+        reconnectTimer = setTimeout(connect, 2000);
+      }
+    });
+  }
+
+  connect();
+
+  // Belt-and-suspenders: if no events for a while, kick the connection.
+  setInterval(function () {
+    if (!es || es.readyState === 2) connect();
+  }, 5000);
+
+  // A tap/keypress still unblocks audio autoplay (and requests fullscreen in a plain browser),
+  // but there's no on-screen prompt — the native TV app is already fullscreen.
+  function onGesture() {
+    var el = document.documentElement;
+    var req = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen;
+    if (req && !document.fullscreenElement) { try { req.call(el); } catch (e) {} }
+    if (audio) audio.play().catch(function(){});
+  }
+  document.addEventListener('click', onGesture);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') onGesture();
+  });
+
+  // start in idle state
+  clearAll();
+})();
+</script>
+</body>
+</html>

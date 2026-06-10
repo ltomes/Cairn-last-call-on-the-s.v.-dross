@@ -51,10 +51,20 @@
       <h3>Deck Maps <span class="badge warden">Warden</span></h3>
       <p>Deck plans rendered from the ship model, hull-conformed rooms with the waypoint guides and the airlock play marked. Player/Warden toggle. Print-friendly.</p>
     </a>
+    <a class="tile warden" href="decks-3d.html">
+      <div class="ico">🛰️</div>
+      <h3>3D Decks (interactive) <span class="badge warden">Warden</span></h3>
+      <p>Orbitable 3D space — the decks stacked as layers (A command on top → D cargo), rooms as boxes, corridors as low slabs, the hull envelope per deck. Drag to orbit, scroll to zoom. Built live from the current maps. Static renders + textured model on the <a href="ship-3d.html">3D views</a> page.</p>
+    </a>
     <a class="tile warden" href="profile.html">
       <div class="ico">📐</div>
       <h3>Hull Side Elevation <span class="badge warden">Warden</span></h3>
       <p>Orthographic profile — the four decks as stacked layers (A command on top → D cargo into the aft bulb), the hammerhead bridge forward and the external maw. Derived live from the ship model.</p>
+    </a>
+    <a class="tile warden" href="rooms.html">
+      <div class="ico">🖼️</div>
+      <h3>Room Images <span class="badge warden">Warden</span></h3>
+      <p>AI flavour images of each room — SD 3.5 + Depth ControlNet conditioned on the conformed geometry, prompted with each room's appliances, set-dressing, and waypoint. Browse by deck.</p>
     </a>
   </div>
 
@@ -62,7 +72,7 @@
   <div class="panel">
     <p class="small muted" style="margin-top:0">The full text lives in the repo as Markdown:</p>
     <ul class="small">
-      <li><a href="../players/pregens.md">players/pregens.md</a> — printable pregen cards. <span class="badge player">Player-safe</span></li>
+      <li><a href="read/pregens.html">Pregens</a> — printable pregen cards. <span class="badge player">Player-safe</span></li>
     </ul>
     <div class="warden-locked" data-warden="locked" style="margin-top:8px">
       <span class="lock">🔒</span>
@@ -73,10 +83,11 @@
       <button class="primary" onclick="Warden.enable()">🔓 Enable Warden Mode</button>
     </div>
     <ul class="small" data-warden="only" hidden>
-      <li><a href="../adventure/last-call.md">adventure/last-call.md</a> — the Warden's run-doc (pitch, pacing, scenes, stat blocks, the SADYS subplot). <span class="badge warden">Warden</span></li>
-      <li><a href="../system/rules-and-hacks.md">system/rules-and-hacks.md</a> — Cairn 2e recap + house rules (mentions the SADYS subplot). <span class="badge warden">Warden</span></li>
-      <li><a href="../setting/bermuda-reclamation.md">setting/bermuda-reclamation.md</a> — setting primer / lore (the Ascendance &amp; Brood Mama easter eggs). <span class="badge warden">Warden</span></li>
-      <li><a href="../setting/ship-layout.md">setting/ship-layout.md</a> — ship model + image-prompt library. <span class="badge warden">Warden</span></li>
+      <li><a href="read/WARDEN-PREP-TONIGHT.html">Warden Prep — Tonight</a> — at-the-table cheat sheet: scene flow, stat index, the airlock ruling, pacing levers. <span class="badge warden">Warden</span></li>
+      <li><a href="read/last-call.html">Run-doc — Last Call</a> — the Warden's run-doc (pitch, pacing, scenes, stat blocks, the SADYS subplot). <span class="badge warden">Warden</span></li>
+      <li><a href="read/rules-and-hacks.html">Rules &amp; Hacks</a> — Cairn 2e recap + house rules (mentions the SADYS subplot). <span class="badge warden">Warden</span></li>
+      <li><a href="read/bermuda-reclamation.html">Setting / Lore</a> — setting primer / lore (the Ascendance &amp; Brood Mama easter eggs). <span class="badge warden">Warden</span></li>
+      <li><a href="read/ship-layout.html">Ship Layout</a> — ship model + image-prompt library. <span class="badge warden">Warden</span></li>
     </ul>
   </div>
 

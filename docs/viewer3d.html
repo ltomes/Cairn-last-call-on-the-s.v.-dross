@@ -1,0 +1,21 @@
+<!doctype html><html><head><meta charset=utf8><title>S.V. Dross — textured 3D</title>
+<style>html,body{margin:0;height:100%;background:#0e1418;overflow:hidden;font:13px system-ui;color:#9fb1b8}
+#h{position:fixed;top:10px;left:12px;z-index:5;pointer-events:none}#h b{color:#f2b441}a{color:#4fd1c5;pointer-events:auto}</style></head><body>
+<div id=h><b>S.V. Dross — textured hull</b> · drag orbit · scroll zoom<br>
+<span style="color:#ff7a6b">baseline: naive blend of the 6 views (muddy/inconsistent) — iterative bake comes next</span><br>
+<a href="index.html">← hub</a></div>
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';import{OrbitControls}from'three/addons/controls/OrbitControls.js';import{GLTFLoader}from'three/addons/loaders/GLTFLoader.js';
+const sc=new THREE.Scene();sc.background=new THREE.Color(0x0e1418);
+const cam=new THREE.PerspectiveCamera(50,innerWidth/innerHeight,0.1,6000);cam.position.set(140,110,170);
+const r=new THREE.WebGLRenderer({antialias:true});r.setSize(innerWidth,innerHeight);document.body.appendChild(r.domElement);
+sc.add(new THREE.AmbientLight(0xffffff,0.85));const d=new THREE.DirectionalLight(0xffffff,0.8);d.position.set(120,220,160);sc.add(d);
+const ctl=new OrbitControls(cam,r.domElement);ctl.enableDamping=true;
+new GLTFLoader().load('assets/ship_textured.glb',g=>{g.scene.traverse(c=>{if(c.isMesh){c.material=new THREE.MeshStandardMaterial({vertexColors:true,roughness:0.85,metalness:0.1,flatShading:false,side:THREE.DoubleSide});}});
+ const bb=new THREE.Box3().setFromObject(g.scene),ct=bb.getCenter(new THREE.Vector3()),sz=bb.getSize(new THREE.Vector3());g.scene.position.sub(ct);sc.add(g.scene);
+ const mx=Math.max(sz.x,sz.y,sz.z);cam.position.set(mx*1.1,mx*0.8,mx*1.3);ctl.target.set(0,0,0);ctl.update();
+ const gr=new THREE.GridHelper(mx*2.2,22,0x223038,0x182228);gr.position.y=-sz.y/2-2;sc.add(gr);},undefined,e=>{document.getElementById('h').innerHTML+='<br><span style=color:#ff7a6b>glb load failed: '+e+'</span>';});
+addEventListener('resize',()=>{cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();r.setSize(innerWidth,innerHeight);});
+(function L(){requestAnimationFrame(L);ctl.update();r.render(sc,cam);})();
+</script></body></html>

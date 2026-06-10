@@ -41,9 +41,16 @@ A bit of grimy lived-in sci-fi sitcom, a bit of deadpan cosmic bureaucracy. The 
 
 A no-build, dependency-free static site you can open at the table on a phone or laptop:
 
-- **Crew Builder** (`docs/builder.html`) — *player-safe.* Loads the four pregens by default; edit names, stats, and kit; print or save a card; or roll a fresh recruit. Saves to the browser; export/import as JSON.
+- **Crew Builder** (`docs/builder.html`) — *player-safe.* Loads the pregens by default; edit names, stats, and kit; print or save a card; or roll a fresh recruit. Saves to the browser; export/import as JSON. (Cards are rendered from `docs/assets/pregens.js` — see the sync note below.)
 - **NPC Soundboard** (`docs/soundboard.html`) — *Warden, spoilers.* Tap-to-speak GLADYS, SADYS, Mr. Munch and the rest using your browser's built-in voice. No internet needed once loaded.
 - **Deck Maps** (`docs/maps.html`) — *Warden, spoilers.* Deck plans rendered live from the ship model (`docs/assets/ship.js`), with a **Warden/Player spoiler toggle** (player view hides the nest, SADYS, the infection spine, etc.) and a light/print theme. Edit `setting/ship-layout.json` and the maps follow.
+- **Table Display** (`docs/table/`) — *Warden second screen.* Push a **room image**, **deck map**, **sound/ambience**, **voice/FX one-shot**, or an **O₂ countdown** from your phone to a TV on the same LAN, plus a posable **3D deck view** mirrored to the screen. A tiny built-in Node server (`server.mjs`, no deps) fans state out over SSE + WebSocket. See [`docs/table/README.md`](docs/table/README.md) to run it — and for an example of wrapping `display.html` as an Android TV WebView app.
+- **Documents** (`docs/read/`) — the repo's Markdown (run-doc, prep, pregens, lore) rendered to styled HTML so it reads on **GitHub Pages** too (raw `.md` above `/docs` isn't served there). Regenerate with `setting/build-docs.py` after editing any source `.md`.
+
+> **Sync note — prose vs. data.** A couple of player-facing surfaces have **two copies**: the human-readable Markdown and the data file the app actually renders from. Editing one without the other leaves the app stale. Keep these paired:
+> - `players/pregens.md` (print/read) ↔ `docs/assets/pregens.js` (Crew Builder)
+> - `setting/ship-layout.json` entity **stats** ↔ `docs/assets/ship.js` (Maps) — regenerate `ship.js` with `node setting/conform-decks.mjs` (never hand-edit the generated mirror).
+> - any source `.md` ↔ `docs/read/*.html` — regenerate with `setting/build-docs.py`.
 
 Everything uses relative paths, so it serves identically from **GitHub Pages** (Settings → Pages → deploy from this branch, `/docs`), any static host (Netlify, S3/CloudFront, etc.), or just by opening `docs/index.html` directly.
 

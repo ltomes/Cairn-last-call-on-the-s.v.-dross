@@ -1,0 +1,92 @@
+[
+ {
+  "file": "bridge.mp3",
+  "title": "Bridge \u2014 autopilot watch",
+  "loop": true
+ },
+ {
+  "file": "gladys-core.mp3",
+  "title": "GLADYS Core \u2014 server closet",
+  "loop": true
+ },
+ {
+  "file": "stasis-bay.mp3",
+  "title": "Stasis Bay \u2014 cold waking",
+  "loop": true
+ },
+ {
+  "file": "holo-bay.mp3",
+  "title": "Holo Bay \u2014 projector flicker",
+  "loop": true
+ },
+ {
+  "file": "mess-hall.mp3",
+  "title": "Mess Hall \u2014 vending wall",
+  "loop": true
+ },
+ {
+  "file": "scrubber-corridor.mp3",
+  "title": "Scrubber Corridor \u2014 the way down",
+  "loop": true
+ },
+ {
+  "file": "scrubber-control.mp3",
+  "title": "Scrubber Control \u2014 fault alarm",
+  "loop": true
+ },
+ {
+  "file": "crawlspace.mp3",
+  "title": "Crawlspace \u2014 the squeeze",
+  "loop": true
+ },
+ {
+  "file": "maintenance-airlock.mp3",
+  "title": "Maintenance Airlock \u2014 do not cycle",
+  "loop": true
+ },
+ {
+  "file": "cargo-hold.mp3",
+  "title": "Cargo Hold \u2014 the nest",
+  "loop": true
+ },
+ {
+  "file": "salvaged-pod.mp3",
+  "title": "Salvaged Pod \u2014 gilded coffin",
+  "loop": true
+ },
+ {
+  "file": "cargo-airlock.mp3",
+  "title": "Cargo Airlock \u2014 the vacuum option",
+  "loop": true
+ },
+ {
+  "file": "sfx-klaxon.mp3",
+  "title": "SFX \u2014 ship klaxon",
+  "loop": false
+ },
+ {
+  "file": "sfx-airlock-cycle.mp3",
+  "title": "SFX \u2014 airlock cycles",
+  "loop": false
+ },
+ {
+  "file": "sfx-vending-drop.mp3",
+  "title": "SFX \u2014 vending machine dispenses",
+  "loop": false
+ },
+ {
+  "file": "sfx-alien-screech.mp3",
+  "title": "SFX \u2014 alien screech",
+  "loop": false
+ },
+ {
+  "file": "sfx-hatch-clang.mp3",
+  "title": "SFX \u2014 hatch slams",
+  "loop": false
+ },
+ {
+  "file": "sfx-scuttle.mp3",
+  "title": "SFX \u2014 something in the vents",
+  "loop": false
+ }
+]

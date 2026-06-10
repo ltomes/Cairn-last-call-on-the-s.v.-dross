@@ -151,6 +151,9 @@ The galley. Greasy, dim, humming. Three things to play with:
 **MR. MUNCH — passive-aggressive snack machine** (blocks the route). He's rolled himself across the only door to the scrubber corridor and won't budge until someone "completes their transaction." He has **exact-change demands**, sighs heavily, and editorializes about your snack choices.
 - *Solve him:* pay/improvise correct change (Dusty's Improviser is perfect), persuade him (**WIL save**), or simply tip him over (**STR save**, he is *very* offended). Smashing works but he screams the whole time and it's loud — see below.
 
+> **MR. MUNCH** · HP 4 · STR 12 · DEX 4 · WIL 12 · Armor 2
+> *He'd rather not fight — he's a puzzle, not a brawl.* But shove past his patience and he gets spiteful: hurled snacks **d6**, or an electrified grab **d8** (in reach). His own **WIL 12** is why a flat "move" bounces — you need a real pitch (a PC's WIL save) or a good shove (STR save). **Smashing him open the door works, but he shrieks the whole way down — and now everything in the nest knows the crew is coming** (the cargo-hold encounter starts alert; no surprise round for the players).
+
 **THE WEEPING COFFEE MACHINE** — pure flavor. Sentient, inconsolable, "no one drinks the decaf." A source of a clue if comforted: it saw "the wet thing" drag something shiny down the crawlspace.
 
 **THE INFECTED DISPENSER** — a vending machine crusted with pulsing alien growth. **Hostile.** It fires cans and arcs electricity. *First fight — keep it quick and silly.*
@@ -176,6 +179,8 @@ To reach the scrubber control they squeeze into the **service ducts** — crampe
 
 **The repair:** the scrubber intake is **choked with alien egg-sac gunk.** Clearing it is a **DEX or STR save** for anyone — *or* an automatic success for K-7 (Built for Repair). Success reroutes airflow and **slows** the O₂ drop. But pulling the gunk free reveals the horror underneath…
 
+> **Backstop clue (no roll — say this even to a heads-down repair crew):** the "gunk" is **warm**, it **pulses**, and when you pull a handful it **re-grips and pulls back.** Whatever's choking the scrubbers is **alive**, not a mechanical clog — and GLADYS has been cheerfully calling a nest "debris" this whole time. This is the moment the crew should *get it* without needing the coffee-machine or Bartleby social beats.
+
 **The scare — eggs.** Dozens of leathery, faintly glowing eggs packed into the warm machinery. As they watch, one **hatches.**
 
 > **SCUTTLER (juvenile alien)** · HP 3 · STR 6 · DEX 14 · Armor 0
@@ -183,7 +188,7 @@ To reach the scrubber control they squeeze into the **service ducts** — crampe
 
 Run a quick **chase-or-squish** — it bolts down the duct toward the cargo hold and they can follow it straight to the nest, or stomp it (and lose the lead). Either way: **the trail ends at the cargo hold.**
 
-**Plant the solution here:** Somewhere in the crawlspace they pass a **maintenance airlock** with a blinking *"SEAL FAULTY — DO NOT CYCLE"* warning. If they note it, great. If not, GLADYS mentions it offhandedly. This is the gun on the mantelpiece for Scene 3.
+**Plant the solution here:** Somewhere in the crawlspace they pass a **maintenance airlock** with a blinking *"SEAL FAULTY — DO NOT CYCLE"* warning. If they note it, great. If not, GLADYS mentions it offhandedly. This is the gun on the mantelpiece — it **teaches the trick** (vacuum kills; a faulty airlock can be cycled). *Note: this little duct-lock is far too small for a forklift-sized horror — it's the **idea**, not the weapon. The actual venting happens at the **big cargo airlock down in the hold** in Scene 3.*
 
 ➡️ **O₂ drops to 50%** (or hold steady if they cleared the intake well — reward the fix).
 
@@ -196,16 +201,18 @@ The **cargo hold.** Cavernous, freezing, strung with translucent webbing and war
 ### BROOD MAMA
 *A campy, googly-eyed, maternal horror the size of a forklift. She is not, in her view, the villain. She just wanted somewhere warm to raise the kids, and your ship had such lovely toasty machinery.*
 
-> **BROOD MAMA** · HP 12 · STR 15 · DEX 8 · Armor 1
+> **BROOD MAMA** · HP 12 · STR 15 · DEX 8 · **WIL 13** · Armor 1
 > *Attack:* lashing tongue **d8**, or acid spew **d10** (**blast** — hits everyone in the open, roll separately for each).
 > *Cocoon:* When a PC is taken down by her, instead of dying they're wrapped in webbing — a teammate can cut them free (no roll if they have a moment).
 > **WEAKNESS — VACUUM:** Exposure to space **instantly defeats her.** She knows it. She'll position to keep the party between herself and any airlock.
 
 **This fight is a trap if they brawl it.** Her d10 blast can chew through HP and into STR fast. The *intended* win is the clever one — and Cairn rewards exactly this:
 
-**The airlock play (the good ending):** Lure or shove Brood Mama into the faulty maintenance airlock and cycle it. **K-7 can operate the airlock from inside vacuum without harm** — that's its moment. Pulling this off might take a lure (Crown & Whisker as bait — *DEX*), a shove (*STR*, opposed by her bulk), or rigging the cycle (*K-7 auto* / *DEX* for anyone else). Reward planning with few or no rolls.
+**The airlock play (the good ending):** the hold has its own **massive cargo airlock** — the one built big enough for a forklift-sized horror — with a heavy cycle lever right there in the bay. Lure or shove Brood Mama inside and cycle it. (The Deck-C *"DO NOT CYCLE"* sign they passed in the crawlspace is what tipped them to the trick — *that* lock was too small; **this** one isn't.) **K-7 can operate the airlock from inside vacuum without harm** — that's its moment. Pulling this off might take a lure (Crown & Whisker as bait — *DEX*), a shove (*STR*, opposed by her bulk), or rigging the cycle (*K-7 auto* / *DEX* for anyone else). Reward planning with few or no rolls.
 
 **If they fight it straight:** totally allowed, just dangerous. With four PCs focusing fire (d6–d8 each) she can drop in 2–3 rounds — but expect at least one cocooning. Make her plead, threaten, and guilt-trip the whole time. *"After everything I've nested for you!"*
+
+**Third ending — talk her off the ship (the most Cairn one).** She isn't evil; she's a mum who picked a terrible nursery. A genuinely good pitch — a **WIL save to out-argue her WIL 13** — backed by an actual offer (let her have the derelict pod, or promise a tow somewhere warm) gets her to **gather her eggs and leave.** The scrubbers clear all the same. Lean into it if a player tries; it's the funniest, kindest win.
 
 **The moment she's vented or killed,** the egg-clog blows clear, the scrubbers roar back, and **air climbs back to safe.** GLADYS: *"Oh, lovely, I can breathe again! Well — you can. I'll be honest, I never quite understood why I had a respiration setting."*
 

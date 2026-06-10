@@ -81,20 +81,19 @@ window.DROSS_PREGENS = [
     role: "Reclaim-Chemist, Apprentice — optional 5th / swap-in",
     blurb: "Signed on as an apprentice, then the crew nap-cycled and forgot to log him. Talks in a flat drone, gregarious in a way that makes people take a small step back. Young. Stained. Regarded as dangerous — mostly secondhand. It’s the chemistry.",
     str: 8, dex: 10, wil: 12, hp: 3, armor: 3,
-    armorNote: "hardsuit + visor + hatch-shield",
+    armorNote: "hardsuit + visor; Armor 2 the turn you swing the two-handed plasma cutter",
     items: [
-      "Patched reclamation hardsuit (Armor 2, bulky)",
-      "Welding visor (+1 Armor)",
-      "A torn-off blast-hatch, carried as a shield (+1 Armor)",
-      "Plasma cutter — solid weapon (d8); cuts bulkheads, slowly",
-      "Bolt-sling — pneumatic nut-slinger (ranged, d6)",
+      "Patched reclamation hardsuit (Armor 2, bulky) + welding visor (+1) = Armor 3 standing",
+      "A torn-off blast-hatch raised as a shield — takes BOTH hands, so you can't hold it up and swing the two-handed plasma cutter the same turn",
+      "Plasma cutter — TWO-HANDED solid weapon (d8); cuts bulkheads, slowly",
+      "Bolt-sling — ONE-HANDED pneumatic nut-slinger (ranged, d6); a hand stays free, so you keep Armor 3",
       "Mag-jacks (magnetic caltrops — scatter to slow a chaser)",
       "A cracked hull-scope (monocular)",
       "A telescoping inspection mirror",
       "B$9, a hand-torch, three foil ration packs (regrettable)"
     ],
     abilities: [
-      { name: "Suited Up", desc: "The small stuff — hurled cans, sparks, a stray sneeze of acid — just clatters off you. (That’s the Armor 3.)" },
+      { name: "Suited Up", desc: "The small stuff — hurled cans, sparks, a stray sneeze of acid — just clatters off you. That’s the Armor 3. Trade-off: any turn you attack with the two-handed plasma cutter you can’t keep the blast-hatch up, so you’re Armor 2 that turn; the one-handed bolt-sling keeps you at 3. (Tank, or swing — pick one.)" },
       { name: "Reclaim-Chemist (1/session)", desc: "Brew a single one-use gadget from junk on hand. Tell the Warden what you’re bodging together." },
       { name: "Packrat (watch it)", desc: "You over-pack. If your inventory is ever truly full, you’re so weighed down you’re at 0 HP until you drop something." }
     ],

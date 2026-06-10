@@ -31,6 +31,12 @@ funny first, soft stakes. Keep the voice.
 - **Ship model** — `setting/ship-layout.json` (canonical spatial layout **and** the
   image-prompt library), human guide `setting/ship-layout.md`, web mirror
   `docs/assets/ship.js` (regenerate after editing the JSON — command in the guide).
+- **Two-copies trap (bit us once).** Some player-facing data lives in BOTH a
+  human-readable `.md` and the data file the app renders from — edit one, the app
+  goes stale. Keep paired: `players/pregens.md` ↔ `docs/assets/pregens.js`
+  (Crew Builder); `setting/ship-layout.json` entity **stats** ↔ `docs/assets/ship.js`
+  (Maps; regen via `node setting/conform-decks.mjs`); any source `.md` ↔
+  `docs/read/*.html` (regen via `setting/build-docs.py`).
 
 ---
 
