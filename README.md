@@ -4,6 +4,8 @@
 
 > *Waste-reclamation barge. Skeleton crew. Something in the vending machines.*
 
+**▶ Live table tools:** **<https://ltomes.github.io/Cairn-last-call-on-the-s.v.-dross/>** — crew builder, deck maps, soundboard, room art, and the documents, in your browser (Warden tools gate behind a one-tap spoiler lock).
+
 A bit of grimy lived-in sci-fi sitcom, a bit of deadpan cosmic bureaucracy. The crew of a clapped-out garbage barge wake from stasis to a failing ship and have to get the air back on before they're embarrassingly impounded — which means mutinous vending machines, a maternal alien squatting in the machinery, and a ship's computer with feelings.
 
 ---
