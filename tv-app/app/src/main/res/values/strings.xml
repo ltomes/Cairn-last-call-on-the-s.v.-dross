@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dross Table</string>
+    <!-- REQUIRED: set this to your own server, then rebuild. It's the LAN host running
+         docs/table/server.mjs + the static docs/ server (default ports 8899 + 8866). -->
+    <string name="display_url">http://YOUR-SERVER:8866/table/display.html</string>
+</resources>

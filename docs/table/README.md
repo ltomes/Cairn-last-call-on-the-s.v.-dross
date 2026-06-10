@@ -65,13 +65,18 @@ For a native Android TV (or any) client, the server also speaks plain
 6. Quickest possible "app": a WebView pointed at
    `http://<host>:8866/table/display.html` already does all of the above.
 
-## Example: wrap `display.html` as an Android TV WebView app
+## Android TV WebView app — `tv-app/`
+
+A complete, buildable version ships in **[`tv-app/`](../../tv-app/)** (Gradle
+project; see [`tv-app/INSTALL.md`](../../tv-app/INSTALL.md) to set the server URL,
+build, and sideload). Use it directly, or follow the essentials below to roll your
+own.
 
 Smart-TV browsers are inconsistent about autoplay, fullscreen, and cache, and
 many TVs don't ship a browser at all. The most reliable kiosk is a thin
-**WebView APK** that loads `display.html` on boot. This is an *example* — adapt
-the package name and server URL to your setup. Nothing here needs the network
-beyond your own LAN, and **no credentials or device IDs belong in the app**.
+**WebView APK** that loads `display.html` on boot. Set the package name and server
+URL to your setup. Nothing here needs the network beyond your own LAN, and **no
+credentials or device IDs belong in the app**.
 
 **Minimal `MainActivity`** (the WebView settings are the load-bearing part):
 

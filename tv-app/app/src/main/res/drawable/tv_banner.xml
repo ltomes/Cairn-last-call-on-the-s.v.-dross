@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TV launcher banner, 320x180 dp aspect -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="320dp"
+    android:height="180dp"
+    android:viewportWidth="320"
+    android:viewportHeight="180">
+    <path
+        android:fillColor="#1B2430"
+        android:pathData="M0,0 L320,0 L320,180 L0,180 Z" />
+    <!-- hex mark -->
+    <path
+        android:fillColor="#E8A33D"
+        android:pathData="M60,40 L95,60 L95,120 L60,140 L25,120 L25,60 Z" />
+    <path
+        android:fillColor="#1B2430"
+        android:pathData="M60,55 L82,68 L82,112 L60,125 L38,112 L38,68 Z" />
+    <!-- 'DROSS TABLE' block letters as simple bars (stylized) -->
+    <path
+        android:fillColor="#E8E2D6"
+        android:pathData="M120,70 L290,70 L290,86 L120,86 Z" />
+    <path
+        android:fillColor="#E8A33D"
+        android:pathData="M120,96 L250,96 L250,110 L120,110 Z" />
+</vector>
